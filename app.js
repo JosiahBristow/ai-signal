@@ -517,9 +517,9 @@
     return (
       '<article class="card cat-' + a.cat + '">' +
         '<div class="card-top">' + badgeHTML(a) +
-          '<button class="read-toggle" type="button" data-url="' + esc(a.url) + '" aria-label="站内阅读">' +
-            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg>' +
-            "阅读</button>" +
+          '<button class="read-toggle" type="button" data-url="' + esc(a.url) + '" aria-expanded="false">' +
+            '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>' +
+            "全文</button>" +
           '<button class="comment-toggle" type="button" data-term="' + term + '" aria-expanded="false">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
             "评论</button>" +
@@ -535,6 +535,7 @@
           (a.comments > 0 ? '<span class="meta-sep">·</span><span class="meta-item">' + fmtNum(a.comments) + " 评</span>" : "") +
           heatBadge(a) +
         "</div>" +
+        '<div class="card-full" hidden></div>' +
         '<div class="comment-box" data-box="' + term + '"></div>' +
       "</article>"
     );
@@ -711,14 +712,39 @@
     if (closeBtn) closeBtn.blur();
   }
 
+  function expandCard(card, url) {
+    var full = card.querySelector(".card-full");
+    var btn = card.querySelector(".read-toggle");
+    if (!full) return;
+    if (card.classList.contains("expanded")) {
+      card.classList.remove("expanded");
+      full.hidden = true;
+      if (btn) btn.setAttribute("aria-expanded", "false");
+      return;
+    }
+    if (card.dataset.loaded !== "1") {
+      var art = readerIndex ? readerIndex[urlKey(url)] : null;
+      if (art && art.content) {
+        full.innerHTML = art.content;
+      } else {
+        full.innerHTML = '<div class="card-full-note">暂无全文快照' +
+          '<a href="' + esc(url) + '" target="_blank" rel="noopener">前往原文 ↗</a></div>';
+      }
+      card.dataset.loaded = "1";
+    }
+    card.classList.add("expanded");
+    full.hidden = false;
+    if (btn) btn.setAttribute("aria-expanded", "true");
+  }
+
   function setupReader() {
     document.addEventListener("click", function (e) {
       var hero = e.target.closest("#hero-card");
       var readBtn = e.target.closest(".read-toggle");
       var link = e.target.closest(".card-link");
       if (hero) { e.preventDefault(); openReader(hero.getAttribute("href")); return; }
-      if (readBtn) { e.preventDefault(); openReader(readBtn.getAttribute("data-url")); return; }
-      if (link) { e.preventDefault(); openReader(link.getAttribute("href")); return; }
+      if (readBtn) { e.preventDefault(); expandCard(readBtn.closest(".card"), readBtn.getAttribute("data-url")); return; }
+      if (link) { e.preventDefault(); expandCard(link.closest(".card"), link.getAttribute("href")); return; }
     });
     var overlay = document.getElementById("reader-overlay");
     if (!overlay) return;

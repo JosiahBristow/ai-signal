@@ -1217,6 +1217,85 @@ body.reader-open { overflow: hidden; }
   .reader-body { padding: 18px 18px 26px; }
 }
 
+/* ---------------- Card inline full-text ---------------- */
+
+.card-full {
+  border-top: 1px dashed var(--line);
+  padding: 16px 18px 8px;
+  font-family: var(--font-body);
+  font-size: 14.5px;
+  line-height: 1.8;
+  color: var(--text);
+}
+.card-full p { margin: 0 0 0.9em; }
+.card-full img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-m);
+  margin: 10px 0;
+  display: block;
+}
+.card-full a { color: var(--accent-2); text-decoration: underline; text-underline-offset: 3px; }
+.card-full h1, .card-full h2, .card-full h3, .card-full h4 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 1.2em 0 0.5em;
+  font-size: 16px;
+}
+.card-full blockquote {
+  margin: 1em 0;
+  padding: 8px 14px;
+  border-left: 3px solid var(--accent);
+  background: var(--surface);
+  border-radius: 0 var(--radius-s) var(--radius-s) 0;
+  color: var(--text-dim);
+}
+.card-full ul, .card-full ol { margin: 0 0 0.9em; padding-left: 1.4em; }
+.card-full li { margin: 0.3em 0; }
+.card-full pre {
+  background: var(--bg-soft);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-s);
+  padding: 12px 14px;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.6;
+  margin: 0 0 0.9em;
+}
+.card-full code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  background: var(--bg-soft);
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+.card-full pre code { background: none; padding: 0; }
+.card-full hr { border: none; border-top: 1px solid var(--line); margin: 1.4em 0; }
+.card-full figure { margin: 1em 0; }
+.card-full figcaption { font-size: 12px; color: var(--text-faint); text-align: center; margin-top: 4px; }
+.card-full table { width: 100%; border-collapse: collapse; margin: 1em 0; font-size: 13.5px; }
+.card-full th, .card-full td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; }
+.card-full th { background: var(--bg-soft); }
+
+.card-full-note {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--text-dim);
+  font-size: 13px;
+  padding: 4px 0 8px;
+}
+.card-full-note a { color: var(--accent-2); }
+
+.read-toggle svg { transition: transform 0.18s ease; }
+.card.expanded .read-toggle {
+  color: var(--accent);
+  border-color: color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.card.expanded .read-toggle svg { transform: rotate(180deg); }
+
 /* ---------------- Responsive ---------------- */
 
 @media (max-width: 980px) {
