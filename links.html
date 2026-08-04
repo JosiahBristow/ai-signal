@@ -113,5 +113,52 @@
 </footer>
 
 <script src="common.js"></script>
+<script>
+  /* 网站导航图标降级加载：依次探测备用 favicon 服务，全部失败则回退为首字母占位图标 */
+  (function () {
+    "use strict";
+    var PROVIDERS = [
+      function (d) { return "https://www.google.com/s2/favicons?domain=" + d + "&sz=64"; },
+      function (d) { return "https://icons.fastly.net/icon?url=" + d + "&size=64"; },
+      function (d) { return "https://icons.duckduckgo.com/ip3/" + d + ".ico"; },
+      function (d) { return "https://favicon.im/" + d; }
+    ];
+    function letterIcon(name) {
+      var ch = (name || "?").trim().charAt(0).toUpperCase() || "?";
+      var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">' +
+        '<rect width="64" height="64" rx="14" fill="#262b32"/>' +
+        '<text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-family="-apple-system, system-ui, sans-serif" font-size="26" font-weight="700" fill="#4fd8ff">' + ch + "</text></svg>";
+      return "data:image/svg+xml," + encodeURIComponent(svg);
+    }
+    function domainOf(src) {
+      var m = (src || "").match(/[?&]domain=([^&]+)/);
+      return m ? decodeURIComponent(m[1]) : "";
+    }
+    document.querySelectorAll("img.li-icon").forEach(function (img) {
+      var domain = domainOf(img.getAttribute("src"));
+      if (!domain) return;
+      var item = img.closest(".link-item");
+      var name = item ? (item.querySelector(".li-name") || {}).textContent : "";
+      img.referrerPolicy = "no-referrer";
+      var i = 0;
+      function next() {
+        if (i >= PROVIDERS.length) {
+          img.src = letterIcon(name);
+          img.style.background = "transparent";
+          img.style.border = "none";
+          img.style.padding = "0";
+          return;
+        }
+        var src = PROVIDERS[i++](domain);
+        var probe = new Image();
+        probe.referrerPolicy = "no-referrer";
+        probe.onload = function () { img.src = src; };
+        probe.onerror = function () { next(); };
+        probe.src = src;
+      }
+      next();
+    });
+  })();
+</script>
 </body>
 </html>
