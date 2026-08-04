@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 发展历史 · AI SIGNAL</title>
+<meta name="description" content="人工智能发展简史时间线：从 1943 年神经元模型到 2026 年大模型与 AGI 之争。">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("signal-theme");
+      document.documentElement.setAttribute("data-theme", t || "auto");
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="history">
+
+<a class="skip-link" href="#main">跳到正文</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="SIGNAL 首页">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="brand-name">AI <span class="accent">SIGNAL</span></span>
+      <span class="brand-tag">实时新闻聚合 · 中英双语</span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="index.html" data-page="news">新闻</a>
+      <a href="links.html" data-page="links">网站导航</a>
+      <a href="history.html" data-page="history">发展历史</a>
+    </nav>
+    <div class="header-actions">
+      <span class="signal off" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <div id="theme-mount"></div>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="main">
+  <section class="page-hero">
+    <span class="mono-eyebrow">SIGNAL // TIMELINE</span>
+    <h1>AI 发展历史</h1>
+    <p class="lead">从 1943 年的神经元模型到今天的大模型竞赛，一条浓缩的人工智能发展时间线。</p>
+  </section>
+
+  <section class="era-filters" id="era-filters" aria-label="按年代筛选"></section>
+
+  <section class="timeline" id="timeline" aria-label="时间线"></section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">
+      SIGNAL // TIMELINE · 按公开资料整理，聚焦关键里程碑
+    </p>
+  </div>
+</footer>
+
+<script src="common.js"></script>
+<script src="history.js"></script>
+</body>
+</html>

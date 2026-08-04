@@ -1,0 +1,47 @@
+name: build-feeds
+
+on:
+  schedule:
+    - cron: '*/15 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore: ['feeds.json', 'articles.json']
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install feed builder dependencies
+        run: npm ci
+        working-directory: scripts
+
+      - name: Build RSS snapshot
+        run: node build-feeds.mjs
+        working-directory: scripts
+
+      - name: Build full-text snapshot
+        run: node build-articles.mjs
+        working-directory: scripts
+
+      - name: Commit and push feeds.json
+        run: |
+          if ! git diff --quiet feeds.json articles.json; then
+            git config user.name "signal-bot"
+            git config user.email "actions@users.noreply.github.com"
+            git add feeds.json articles.json
+            git commit -m "chore: refresh RSS + full-text snapshot"
+            git push
+            echo "snapshot updated"
+          else
+            echo "no changes to feeds.json"
+          fi

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="auto">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SIGNAL · 实时 AI 新闻</title>
+<meta name="description" content="实时聚合中英文 AI 最新新闻：模型发布、融资商业、政策监管、研究论文、芯片算力等九大分类。">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("signal-theme");
+      document.documentElement.setAttribute("data-theme", t || "auto");
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="news">
+
+<a class="skip-link" href="#main">跳到正文</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="SIGNAL 首页">
+      <span class="brand-mark" aria-hidden="true">
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+        <i></i><i></i><i></i><i></i>
+      </span>
+      <span class="brand-name">AI <span class="accent">SIGNAL</span></span>
+      <span class="brand-tag">实时新闻聚合 · 中英双语</span>
+    </a>
+
+    <nav class="main-nav" aria-label="主导航">
+      <a href="index.html" data-page="news">新闻</a>
+      <a href="links.html" data-page="links">网站导航</a>
+      <a href="history.html" data-page="history">发展历史</a>
+    </nav>
+
+    <div class="header-actions">
+      <span class="live-wrap" title="每 5 分钟自动刷新">
+        <span class="signal" id="signal-bars" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="live-label">LIVE</span>
+      </span>
+      <button class="header-btn" id="refresh-btn" type="button" title="立即刷新">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+        <span class="btn-text">刷新</span>
+      </button>
+      <div id="theme-mount"></div>
+    </div>
+  </div>
+</header>
+
+<div class="ticker" aria-hidden="true">
+  <div class="ticker-inner">
+    <span class="ticker-label">信号流</span>
+    <div class="ticker-viewport">
+      <div class="ticker-track" id="ticker-track"></div>
+    </div>
+  </div>
+</div>
+
+<main class="container" id="main">
+  <div class="filterbar" role="toolbar" aria-label="筛选与搜索">
+    <div class="filter-group" id="lang-filters" aria-label="按语言筛选"></div>
+    <div class="filter-group" id="cat-filters" aria-label="按分类筛选"></div>
+    <div class="filter-group" id="src-filters" aria-label="按来源筛选"></div>
+    <div class="search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="search-input" placeholder="搜索标题 / 来源…" aria-label="搜索新闻">
+    </div>
+  </div>
+
+  <section class="featured" aria-label="头条区">
+    <a class="hero" id="hero-card" href="#" target="_blank" rel="noopener"></a>
+    <aside class="hot-panel" aria-label="热门排行">
+      <div class="panel-head">
+        <h2>热门 TOP 5</h2>
+        <span class="panel-sub" id="hot-note">信号强度</span>
+      </div>
+      <ol class="hot-list" id="hot-list"></ol>
+    </aside>
+  </section>
+
+  <section aria-label="新闻列表">
+    <div class="section-head">
+      <h2 id="feed-title">全部新闻</h2>
+      <span class="count" id="feed-count"></span>
+    </div>
+    <div class="grid" id="feed-grid"></div>
+    <button class="load-more" id="load-more" type="button" hidden>加载更多</button>
+  </section>
+</main>
+
+<div class="reader-overlay" id="reader-overlay" hidden>
+  <div class="reader-panel" role="dialog" aria-modal="true" aria-label="文章阅读模式">
+    <header class="reader-head">
+      <div class="reader-head-top">
+        <span class="badge badge-src" id="reader-src"></span>
+        <span class="badge badge-cat" id="reader-cat"></span>
+        <span class="reader-hint">站内阅读</span>
+      </div>
+      <h2 class="reader-title" id="reader-title"></h2>
+      <div class="reader-meta" id="reader-meta"></div>
+      <div class="reader-actions">
+        <a class="header-btn" id="reader-open" href="#" target="_blank" rel="noopener">
+          查看原文
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"/><path d="M7 7h10v10"/></svg>
+        </a>
+        <button class="header-btn" id="reader-close" type="button">关闭</button>
+      </div>
+    </header>
+    <div class="reader-body" id="reader-body"></div>
+    <footer class="reader-foot">
+      <span>内容由 AI SIGNAL 于 15 分钟快照周期内抓取，版权归原作者所有 · 以原文为准</span>
+      <a id="reader-foot-link" href="#" target="_blank" rel="noopener">打开原文</a>
+    </footer>
+  </div>
+</div>
+
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <h3>关于</h3>
+        <p>AI SIGNAL 是一个纯前端实时新闻聚合器，无服务器、无追踪。默认每 5 分钟自动刷新，切回页面时立即同步。所有内容版权归原网站所有，本站仅聚合链接与摘要。</p>
+      </div>
+      <div>
+        <h3>数据源状态</h3>
+        <div class="source-status" id="source-status"></div>
+      </div>
+      <div>
+        <h3>导航</h3>
+        <ul>
+          <li><a href="links.html">AI 网站导航</a></li>
+          <li><a href="history.html">AI 发展历史</a></li>
+        </ul>
+      </div>
+    </div>
+    <p style="margin-top:22px;font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">
+      SIGNAL // RECEIVING FREQUENCY · <span id="last-update">尚未同步</span>
+    </p>
+  </div>
+</footer>
+
+<script src="common.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
