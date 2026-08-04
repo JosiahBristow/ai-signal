@@ -6,10 +6,10 @@
   /* ============ 配置 ============ */
 
   var GISCUS = {
-    repo: "",
-    repoId: "",
+    repo: "JosiahBristow/ai-signal",
+    repoId: "R_kgDOTtbIbA",
     category: "Announcements",
-    categoryId: "",
+    categoryId: "DIC_kwDOTtbIbM4DCpyn",
     lang: "zh-CN"
   };
 
@@ -648,7 +648,7 @@
     s.setAttribute("data-strict", "0");
     s.setAttribute("data-reactions-enabled", "1");
     s.setAttribute("data-emit-metadata", "0");
-    s.setAttribute("data-input-position", "top");
+    s.setAttribute("data-input-position", "bottom");
     s.setAttribute("data-theme", giscusTheme());
     s.setAttribute("data-lang", GISCUS.lang || "zh-CN");
     s.setAttribute("data-loading", "lazy");
