@@ -734,14 +734,25 @@
     if (closeBtn) closeBtn.blur();
   }
 
+  function isMobile() {
+    return window.matchMedia && window.matchMedia("(max-width: 700px)").matches;
+  }
+
+  function collapseCard(card) {
+    var full = card.querySelector(".card-full");
+    var btn = card.querySelector(".read-toggle");
+    if (!full) return;
+    card.classList.remove("expanded");
+    full.hidden = true;
+    if (btn) btn.setAttribute("aria-expanded", "false");
+  }
+
   function expandCard(card, url) {
     var full = card.querySelector(".card-full");
     var btn = card.querySelector(".read-toggle");
     if (!full) return;
     if (card.classList.contains("expanded")) {
-      card.classList.remove("expanded");
-      full.hidden = true;
-      if (btn) btn.setAttribute("aria-expanded", "false");
+      collapseCard(card);
       return;
     }
     if (card.dataset.loaded !== "1") {
@@ -759,14 +770,27 @@
     if (btn) btn.setAttribute("aria-expanded", "true");
   }
 
+  /* 点击卡片：桌面端 → 浮动窗口读全文；手机端 → 内联展开 */
+  function handleArticleClick(card, url) {
+    if (isMobile()) expandCard(card, url);
+    else openReader(url);
+  }
+
   function setupReader() {
     document.addEventListener("click", function (e) {
       var hero = e.target.closest("#hero-card");
       var readBtn = e.target.closest(".read-toggle");
       var link = e.target.closest(".card-link");
       if (hero) { e.preventDefault(); openReader(hero.getAttribute("href")); return; }
-      if (readBtn) { e.preventDefault(); expandCard(readBtn.closest(".card"), readBtn.getAttribute("data-url")); return; }
-      if (link) { e.preventDefault(); expandCard(link.closest(".card"), link.getAttribute("href")); return; }
+      if (readBtn) { e.preventDefault(); handleArticleClick(readBtn.closest(".card"), readBtn.getAttribute("data-url")); return; }
+      if (link) { e.preventDefault(); handleArticleClick(link.closest(".card"), link.getAttribute("href")); return; }
+    });
+    /* 手机端：点击任意位置折叠已展开的卡片 */
+    document.addEventListener("click", function (e) {
+      if (!isMobile()) return;
+      var expanded = document.querySelector(".card.expanded");
+      if (!expanded || expanded.contains(e.target)) return;
+      collapseCard(expanded);
     });
     var overlay = document.getElementById("reader-overlay");
     if (!overlay) return;
