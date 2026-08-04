@@ -555,6 +555,7 @@
           '<span class="meta-item">' + relTime(a.time) + "</span>" +
           (a.comments > 0 ? '<span class="meta-sep">·</span><span class="meta-item">' + fmtNum(a.comments) + " 评</span>" : "") +
           heatBadge(a) +
+          '<a class="card-open" href="' + esc(a.url) + '" target="_blank" rel="noopener" title="在新标签页打开原文">原文 ↗</a>' +
         "</div>" +
         '<div class="card-full" hidden></div>' +
         '<div class="comment-box" data-box="' + term + '"></div>' +

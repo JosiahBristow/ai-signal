@@ -704,6 +704,25 @@ button {
   font-size: 10.5px;
   color: var(--text-faint);
 }
+.card-open {
+  margin-left: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  color: var(--accent-2);
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--accent-2) 40%, transparent);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+  white-space: nowrap;
+}
+.card-open:hover {
+  color: var(--text);
+  background: color-mix(in srgb, var(--accent-2) 12%, transparent);
+  border-color: color-mix(in srgb, var(--accent-2) 60%, transparent);
+}
 
 /* Badges */
 .badge {
