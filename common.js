@@ -30,7 +30,7 @@
 
   function currentTheme() {
     var t = storedTheme();
-    return THEMES.some(function (x) { return x.id === t; }) ? t : "auto";
+    return THEMES.some(function (x) { return x.id === t; }) ? t : "mac";
   }
 
   function resolvedTheme() {
