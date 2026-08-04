@@ -175,13 +175,13 @@
 
   function relTime(ts) {
     var d = Date.now() - ts;
-    if (d < 0) return "刚刚";
+    if (d < 0) return window.t ? window.t("刚刚") : "刚刚";
     var m = d / 60000;
-    if (m < 1) return "刚刚";
-    if (m < 60) return Math.floor(m) + " 分钟前";
+    if (m < 1) return window.t ? window.t("刚刚") : "刚刚";
+    if (m < 60) return Math.floor(m) + " " + (window.t ? window.t("分钟前") : "分钟前");
     var h = m / 60;
-    if (h < 24) return Math.floor(h) + " 小时前";
-    return Math.floor(h / 24) + " 天前";
+    if (h < 24) return Math.floor(h) + " " + (window.t ? window.t("小时前") : "小时前");
+    return Math.floor(h / 24) + " " + (window.t ? window.t("天前") : "天前");
   }
 
   function djb2(str) {
@@ -374,7 +374,7 @@
       state.visible = PAGE_SIZE;
       render();
       var up = document.getElementById("last-update");
-      if (up) up.textContent = relTime(state.lastSync) + " 同步";
+      if (up) up.textContent = relTime(state.lastSync) + (window.t ? window.t(" 同步") : " 同步");
       return state.all.length;
     });
   }
@@ -407,15 +407,20 @@
 
   /* ============ 渲染：筛选栏 ============ */
 
+  function catLabel(c) {
+    return window.SIGNAL_LANG === "en" ? (c.en || c.zh) : c.zh;
+  }
+
   function buildFilters() {
-    var langs = [["all", "全部"], ["zh", "中文"], ["en", "English"]];
-    renderChips("lang-filters", "语言", langs, function (v) { return state.lang === v; }, function (v) { state.lang = v; rerender(); });
+    var T = function (s) { return window.t ? window.t(s) : s; };
+    var langs = [["all", T("全部")], ["zh", "中文"], ["en", "English"]];
+    renderChips("lang-filters", T("语言"), langs, function (v) { return state.lang === v; }, function (v) { state.lang = v; rerender(); });
 
-    var cats = [["all", "全部"]].concat(CATEGORIES.map(function (c) { return [c.id, c.zh]; }));
-    renderChips("cat-filters", "分类", cats, function (v) { return state.cat === v; }, function (v) { state.cat = v; rerender(); }, function (id) { return "cat-" + id; });
+    var cats = [["all", T("全部")]].concat(CATEGORIES.map(function (c) { return [c.id, catLabel(c)]; }));
+    renderChips("cat-filters", T("分类"), cats, function (v) { return state.cat === v; }, function (v) { state.cat = v; rerender(); }, function (id) { return "cat-" + id; });
 
-    var srcs = [["all", "全部"]].concat(SOURCES.map(function (s) { return [s.id, s.label]; }));
-    renderChips("src-filters", "来源", srcs, function (v) { return state.src === v; }, function (v) { state.src = v; rerender(); });
+    var srcs = [["all", T("全部")]].concat(SOURCES.map(function (s) { return [s.id, s.label]; }));
+    renderChips("src-filters", T("来源"), srcs, function (v) { return state.src === v; }, function (v) { state.src = v; rerender(); });
   }
 
   function renderChips(elId, label, items, isActive, onClick, dotCls) {
@@ -455,7 +460,7 @@
     var cat = catById(a.cat);
     var html = "";
     html += '<span class="badge badge-src">' + esc(src ? src.label : a.source) + "</span>";
-    html += '<span class="badge badge-cat">' + esc(cat.zh) + "</span>";
+    html += '<span class="badge badge-cat">' + esc(catLabel(cat)) + "</span>";
     if (Date.now() - a.time < 2 * 3600000) html += '<span class="badge badge-new">新</span>';
     return html;
   }
@@ -493,7 +498,7 @@
       '<div class="hero-eyebrow">' +
         '<span class="badge badge-live">LIVE</span>' +
         '<span class="badge badge-src">' + esc(src ? src.label : a.source) + "</span>" +
-        '<span class="badge badge-cat">' + esc(cat.zh) + "</span>" +
+        '<span class="badge badge-cat">' + esc(catLabel(cat)) + "</span>" +
       "</div>" +
       (a.cover ? '<div class="hero-cover"><img src="' + esc(a.cover) + '" alt="" loading="lazy" onerror="this.closest(\'.hero-cover\').remove()"></div>' : "") +
       "<h1 class=\"hero-title\">" + esc(a.title) + "</h1>" +
@@ -501,7 +506,7 @@
       '<div class="hero-meta">' +
         '<span class="badge badge-src">' + relTime(a.time) + "</span>" +
         heatBadge(a) +
-        (a.comments > 0 ? '<span class="badge badge-src">' + fmtNum(a.comments) + " 评论</span>" : "") +
+        (a.comments > 0 ? '<span class="badge badge-src">' + fmtNum(a.comments) + " " + (window.t ? window.t("评论") : "评论") + "</span>" : "") +
       "</div>";
   }
 
@@ -510,11 +515,11 @@
     var note = document.getElementById("hot-note");
     if (!el) return;
     if (!list.length) {
-      el.innerHTML = '<li style="border:none;color:var(--text-faint);font-size:12.5px;padding:10px 2px">暂无数据</li>';
+      el.innerHTML = '<li style="border:none;color:var(--text-faint);font-size:12.5px;padding:10px 2px">' + (window.t ? window.t("暂无数据") : "暂无数据") + "</li>";
       return;
     }
     var hot = hotList(list);
-    if (note) note.textContent = "按互动热度加权排序";
+    if (note) note.textContent = window.t ? window.t("按互动热度加权排序") : "按互动热度加权排序";
     el.innerHTML = hot.map(function (a, i) {
       var src = sourceById(a.source);
       return "<li><a href=\"" + esc(a.url) + "\" target=\"_blank\" rel=\"noopener\">" +
@@ -534,16 +539,17 @@
     var src = sourceById(a.source);
     var cat = catById(a.cat);
     var term = djb2(a.url);
+    var T = function (s) { return window.t ? window.t(s) : s; };
     return (
       '<article class="card cat-' + a.cat + '">' +
         coverHTML(a) +
         '<div class="card-top">' + badgeHTML(a) +
           '<button class="read-toggle" type="button" data-url="' + esc(a.url) + '" aria-expanded="false">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>' +
-            "全文</button>" +
+            T("全文") + "</button>" +
           '<button class="comment-toggle" type="button" data-term="' + term + '" aria-expanded="false">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' +
-            "评论</button>" +
+            T("评论") + "</button>" +
         "</div>" +
         '<a class="card-link" href="' + esc(a.url) + '" target="_blank" rel="noopener">' +
           "<h3 class=\"card-title\">" + esc(a.title) + "</h3>" +
@@ -553,9 +559,9 @@
           '<span class="meta-item">' + esc(src ? src.label : a.source) + "</span>" +
           '<span class="meta-sep">·</span>' +
           '<span class="meta-item">' + relTime(a.time) + "</span>" +
-          (a.comments > 0 ? '<span class="meta-sep">·</span><span class="meta-item">' + fmtNum(a.comments) + " 评</span>" : "") +
+          (a.comments > 0 ? '<span class="meta-sep">·</span><span class="meta-item">' + fmtNum(a.comments) + (window.SIGNAL_LANG === "en" ? " comments" : " 评") + "</span>" : "") +
           heatBadge(a) +
-          '<a class="card-open" href="' + esc(a.url) + '" target="_blank" rel="noopener" title="在新标签页打开原文">原文 ↗</a>' +
+          '<a class="card-open" href="' + esc(a.url) + '" target="_blank" rel="noopener" title="' + T("在新标签页打开原文") + '">' + T("原文 ↗") + "</a>" +
         "</div>" +
         '<div class="card-full" hidden></div>' +
         '<div class="comment-box" data-box="' + term + '"></div>' +
@@ -568,13 +574,14 @@
     var titleEl = document.getElementById("feed-title");
     var countEl = document.getElementById("feed-count");
     var more = document.getElementById("load-more");
+    var T = function (s) { return window.t ? window.t(s) : s; };
     if (!grid) return;
 
     if (!list.length) {
-      grid.innerHTML = '<div class="empty-state">没有匹配的新闻<span class="hint">试试切换筛选或关键词</span></div>';
+      grid.innerHTML = '<div class="empty-state">' + T("没有匹配的新闻") + '<span class="hint">' + T("试试切换筛选或关键词") + "</span></div>";
       if (more) more.hidden = true;
-      if (titleEl) titleEl.textContent = "全部新闻";
-      if (countEl) countEl.textContent = "0 条";
+      if (titleEl) titleEl.textContent = T("全部新闻");
+      if (countEl) countEl.textContent = "0" + (window.SIGNAL_LANG === "en" ? " items" : " 条");
       return;
     }
 
@@ -582,16 +589,17 @@
     grid.innerHTML = show.map(cardHTML).join("");
 
     if (titleEl) titleEl.textContent = filterTitle();
-    if (countEl) countEl.textContent = list.length + " 条";
+    if (countEl) countEl.textContent = list.length + (window.SIGNAL_LANG === "en" ? " items" : " 条");
     if (more) more.hidden = show.length >= list.length;
   }
 
   function filterTitle() {
+    var T = function (s) { return window.t ? window.t(s) : s; };
     var parts = [];
-    if (state.cat !== "all") parts.push(catById(state.cat).zh);
+    if (state.cat !== "all") parts.push(catLabel(catById(state.cat)));
     if (state.lang !== "all") parts.push(state.lang === "zh" ? "中文" : "English");
     if (state.src !== "all") parts.push(sourceById(state.src).label);
-    return (parts.length ? parts.join(" · ") : "全部新闻");
+    return (parts.length ? parts.join(" · ") : T("全部新闻"));
   }
 
   function render() {
@@ -629,9 +637,13 @@
     return t === "paper" ? "light" : "dark";
   }
 
+  function giscusLang() {
+    return window.SIGNAL_LANG === "en" ? "en" : (GISCUS.lang || "zh-CN");
+  }
+
   function mountGiscus(box, term) {
     if (!GISCUS.repo || !GISCUS.repoId || !GISCUS.categoryId) {
-      box.innerHTML = '<div class="comment-note">评论系统待配置。请安装 Giscus 并填写 app.js 中的 GISCUS 配置后启用讨论。</div>';
+      box.innerHTML = '<div class="comment-note">' + (window.t ? window.t("评论系统待配置。请安装 Giscus 并填写 app.js 中的 GISCUS 配置后启用讨论。") : "评论系统待配置。请安装 Giscus 并填写 app.js 中的 GISCUS 配置后启用讨论。") + "</div>";
       return;
     }
     box.innerHTML = "";
@@ -650,7 +662,7 @@
     s.setAttribute("data-emit-metadata", "0");
     s.setAttribute("data-input-position", "bottom");
     s.setAttribute("data-theme", giscusTheme());
-    s.setAttribute("data-lang", GISCUS.lang || "zh-CN");
+    s.setAttribute("data-lang", giscusLang());
     s.setAttribute("data-loading", "lazy");
     box.appendChild(s);
   }
@@ -668,6 +680,7 @@
       btn.setAttribute("aria-expanded", open ? "true" : "false");
       if (open && !box.dataset.mounted) {
         box.dataset.mounted = "1";
+        box.dataset.giscusLang = giscusLang();
         mountGiscus(box, "ai-news-" + term);
       }
     });
@@ -675,6 +688,17 @@
       document.querySelectorAll("iframe.giscus-frame").forEach(function (f) {
         f.contentWindow.postMessage({ giscus: { setTheme: giscusTheme() } }, "https://giscus.app");
       });
+    });
+    document.addEventListener("signal:lang", function () {
+      var boxes = document.querySelectorAll(".comment-box.open");
+      for (var i = 0; i < boxes.length; i++) {
+        var box = boxes[i];
+        if (box.dataset.mounted && box.dataset.giscusLang !== giscusLang()) {
+          var term = box.getAttribute("data-box");
+          box.dataset.giscusLang = giscusLang();
+          mountGiscus(box, "ai-news-" + term);
+        }
+      }
     });
   }
 
@@ -760,8 +784,8 @@
       if (art && art.content) {
         full.innerHTML = art.content;
       } else {
-        full.innerHTML = '<div class="card-full-note">暂无全文快照' +
-          '<a href="' + esc(url) + '" target="_blank" rel="noopener">前往原文 ↗</a></div>';
+        full.innerHTML = '<div class="card-full-note">' + (window.t ? window.t("暂无全文快照") : "暂无全文快照") +
+          '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + (window.t ? window.t("前往原文 ↗") : "前往原文 ↗") + "</a></div>";
       }
       card.dataset.loaded = "1";
     }
@@ -811,7 +835,7 @@
     if (!el) return;
     el.innerHTML = SOURCES.map(function (s) {
       var st = state.sourceOk[s.id] || { ok: false, n: 0 };
-      return '<span class="src-chip ' + (st.ok ? "ok" : "bad") + '">' + esc(s.label) + ' <span class="s-count">' + (st.ok ? st.n + " 条" : "不可用") + "</span></span>";
+      return '<span class="src-chip ' + (st.ok ? "ok" : "bad") + '">' + esc(s.label) + ' <span class="s-count">' + (st.ok ? st.n + (window.SIGNAL_LANG === "en" ? " items" : " 条") : (window.t ? window.t("不可用") : "不可用")) + "</span></span>";
     }).join("");
   }
 
@@ -854,6 +878,16 @@
     if (more) more.addEventListener("click", function () {
       state.visible += PAGE_STEP;
       renderGrid(filtered());
+    });
+
+    document.addEventListener("signal:lang", function () {
+      buildFilters();
+      if (state.all.length) {
+        state.tickerBuilt = false;
+        buildTicker();
+        render();
+        renderSourceStatus();
+      }
     });
 
     window.addEventListener("focus", function () {
