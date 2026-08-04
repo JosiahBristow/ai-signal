@@ -105,6 +105,111 @@ html[data-theme="ink"] {
   --cat-l: 72%;
 }
 
+/* ============================================================
+   MAC 风格主题 —— 仿 macOS 外观（毛玻璃 / SF 字体 / 红绿灯）
+   亮暗跟随系统：亮色 = macOS 浅色，暗色 = macOS 深色
+   ============================================================ */
+
+html[data-theme="mac"] {
+  color-scheme: light dark;
+
+  --font-display: -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-body: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Helvetica Neue", "PingFang SC", "Microsoft YaHei", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, "Cascadia Code", monospace;
+
+  --radius-s: 8px;
+  --radius-m: 14px;
+  --radius-l: 20px;
+
+  --bg: #f5f5f7;
+  --bg-soft: #e8e8ed;
+  --surface: rgba(255, 255, 255, 0.68);
+  --surface-2: rgba(255, 255, 255, 0.88);
+  --line: rgba(0, 0, 0, 0.08);
+  --line-strong: rgba(0, 0, 0, 0.16);
+  --text: #1d1d1f;
+  --text-dim: #6e6e73;
+  --text-faint: #86868b;
+  --accent: #0071e3;
+  --accent-2: #007aff;
+  --accent-contrast: #ffffff;
+  --live: #ff3b30;
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.05), 0 10px 30px rgba(0, 0, 0, 0.1);
+  --shadow-hover: 0 2px 4px rgba(0, 0, 0, 0.06), 0 20px 50px rgba(0, 0, 0, 0.16);
+  --glow: 0 0 0 3px rgba(0, 122, 255, 0.18);
+  --cat-l: 46%;
+}
+
+@media (prefers-color-scheme: dark) {
+  html[data-theme="mac"] {
+    --bg: #1c1c1e;
+    --bg-soft: #28282b;
+    --surface: rgba(58, 58, 60, 0.72);
+    --surface-2: rgba(72, 72, 74, 0.9);
+    --line: rgba(255, 255, 255, 0.1);
+    --line-strong: rgba(255, 255, 255, 0.2);
+    --text: #f5f5f7;
+    --text-dim: #aeaeb2;
+    --text-faint: #86868b;
+    --accent: #0a84ff;
+    --accent-2: #64d2ff;
+    --accent-contrast: #ffffff;
+    --live: #ff453a;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.4), 0 12px 34px rgba(0, 0, 0, 0.5);
+    --shadow-hover: 0 2px 6px rgba(0, 0, 0, 0.4), 0 22px 54px rgba(0, 0, 0, 0.65);
+    --glow: 0 0 0 3px rgba(10, 132, 255, 0.24);
+    --cat-l: 72%;
+  }
+}
+
+/* Mac 背景氛围：柔和渐变 + 毛玻璃质感 */
+html[data-theme="mac"] body {
+  background-image:
+    radial-gradient(70% 50% at 12% -8%, rgba(0, 113, 227, 0.14), transparent 58%),
+    radial-gradient(60% 45% at 92% 4%, rgba(100, 210, 255, 0.12), transparent 55%),
+    radial-gradient(55% 55% at 70% 110%, rgba(175, 82, 222, 0.08), transparent 60%);
+  background-attachment: fixed;
+}
+
+/* Mac 毛玻璃表面 */
+html[data-theme="mac"] .site-header,
+html[data-theme="mac"] .ticker,
+html[data-theme="mac"] .hero,
+html[data-theme="mac"] .hot-panel,
+html[data-theme="mac"] .card,
+html[data-theme="mac"] .links-col,
+html[data-theme="mac"] .skeleton,
+html[data-theme="mac"] .theme-panel,
+html[data-theme="mac"] .reader-panel {
+  -webkit-backdrop-filter: blur(18px) saturate(1.7);
+  backdrop-filter: blur(18px) saturate(1.7);
+}
+html[data-theme="mac"] .site-header {
+  background: color-mix(in srgb, var(--bg) 55%, transparent);
+}
+html[data-theme="mac"] .ticker {
+  background: color-mix(in srgb, var(--bg-soft) 55%, transparent);
+}
+
+/* Mac 顶部红绿灯（菜单栏样式） */
+html[data-theme="mac"] .header-inner::before {
+  content: "";
+  flex-shrink: 0;
+  width: 52px;
+  height: 12px;
+  background:
+    radial-gradient(circle 5px at 6px 6px, #ff5f57 98%, transparent 100%),
+    radial-gradient(circle 5px at 26px 6px, #febc2e 98%, transparent 100%),
+    radial-gradient(circle 5px at 46px 6px, #28c840 98%, transparent 100%);
+}
+
+/* Mac 菜单栏文字用系统样式 */
+html[data-theme="mac"] .brand-name { font-weight: 600; letter-spacing: -0.01em; }
+html[data-theme="mac"] .brand-tag,
+html[data-theme="mac"] .filter-label,
+html[data-theme="mac"] .live-label,
+html[data-theme="mac"] .ticker-label { text-transform: none; letter-spacing: 0.02em; }
+
 @media (prefers-color-scheme: dark) {
   html[data-theme="auto"] {
     color-scheme: dark;
@@ -1259,6 +1364,7 @@ body.reader-open { overflow: hidden; }
   .reader-overlay { padding: 0; align-items: stretch; }
   .reader-panel { max-height: 100vh; width: 100%; border: none; border-radius: 0; }
   .reader-body { padding: 18px 18px 26px; }
+  html[data-theme="mac"] .header-inner::before { display: none; }
 }
 
 /* ---------------- Card inline full-text ---------------- */

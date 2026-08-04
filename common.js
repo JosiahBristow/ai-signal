@@ -9,6 +9,7 @@
     { id: "midnight", label: "午夜",   swatch: "linear-gradient(135deg,#0b0c0e 50%,#4fd8ff 50%)" },
     { id: "aurora",   label: "极光",   swatch: "linear-gradient(135deg,#181730 50%,#c792ea 50%)" },
     { id: "ink",      label: "墨绿",   swatch: "linear-gradient(135deg,#12211b 50%,#7fd6a8 50%)" },
+    { id: "mac",      label: "Mac 风格", swatch: "linear-gradient(135deg,#f5f5f7 50%,#0071e3 50%)" },
     { id: "auto",     label: "跟随系统", swatch: "conic-gradient(#ffffff,#000000,#ffffff)" }
   ];
 
@@ -34,7 +35,7 @@
 
   function resolvedTheme() {
     var t = currentTheme();
-    if (t === "auto") return mql && mql.matches ? "dark" : "light";
+    if (t === "auto" || t === "mac") return mql && mql.matches ? "dark" : "light";
     return t === "paper" ? "light" : "dark";
   }
 
