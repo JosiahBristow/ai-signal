@@ -140,5 +140,33 @@
         document.dispatchEvent(new CustomEvent("signal:refresh"));
       });
     }
+
+    /* 一键返回顶部 */
+    var topBtn = document.createElement("button");
+    topBtn.type = "button";
+    topBtn.className = "back-top";
+    topBtn.setAttribute("aria-label", "返回顶部");
+    topBtn.setAttribute("aria-hidden", "true");
+    topBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg>';
+    document.body.appendChild(topBtn);
+    var topTimer = null;
+    function syncTop() {
+      var y = window.scrollY || document.documentElement.scrollTop;
+      var show = y > 480;
+      topBtn.classList.toggle("show", show);
+      topBtn.setAttribute("aria-hidden", show ? "false" : "true");
+    }
+    topBtn.addEventListener("click", function () {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+    window.addEventListener("scroll", function () {
+      if (topTimer) return;
+      topTimer = setTimeout(function () {
+        topTimer = null;
+        syncTop();
+      }, 80);
+    }, { passive: true });
+    syncTop();
   });
 })();
