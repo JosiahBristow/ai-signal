@@ -19,8 +19,8 @@ GitHub Actions and read same-origin. HN / DEV.to are fetched live via their APIs
   rate-limited; r.jina.ai / codetabs / corsproxy / cors.eu.org are unreliable or
   blocked. Full-text fetching therefore happens server-side in CI only.
 - Git: initialized with `main` branch, remote `origin` =
-  `git@github.com:JosiahBristow/ai-news-collection.git` (SSH). Hosted on GitHub
-  Pages (project site) at `https://josiahbristow.github.io/ai-news-collection/`
+  `git@github.com:JosiahBristow/ai-signal.git` (SSH). Hosted on GitHub
+  Pages (project site) at `https://josiahbristow.github.io/ai-signal/`
   once Pages is enabled for branch `main`, root `/`. `.nojekyll` present so
   Pages serves the static files directly. `feeds.yml` runs on push to `main` and
   on schedule; signal-bot commits snapshot refreshes — always `git pull --rebase`

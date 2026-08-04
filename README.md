@@ -3,7 +3,7 @@
 纯前端、零依赖、多主题的中英双语 AI 新闻聚合站。无服务器、无追踪：GitHub Actions
 定时抓取 RSS 与头条全文生成静态快照，页面直接同源读取，HN / DEV.to 走官方 API。
 
-> 在线站点：<https://josiahbristow.github.io/ai-news-collection/>
+> 在线站点：<https://josiahbristow.github.io/ai-signal/>
 
 ## 功能特性
 
