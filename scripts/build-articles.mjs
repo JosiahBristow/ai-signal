@@ -13,8 +13,8 @@ const FEEDS_IN = join(ROOT, "feeds.json");
 const OUT = join(ROOT, "articles.json");
 const UA = "Mozilla/5.0 (compatible; SignalNews/1.0; +https://github.com)";
 
-const LIMIT = 30;
-const CONCURRENCY = 5;
+const LIMIT = 80;
+const CONCURRENCY = 6;
 const TIMEOUT = 20000;
 const MIN_TEXT = 120;
 
@@ -185,6 +185,27 @@ async function main() {
   const targets = all.filter((a) => a && a.url && /^https?:\/\//.test(a.url)).slice(0, LIMIT);
   console.log(`待抓取 ${targets.length} 篇文章…`);
 
+  /* 保留旧快照：不在本次目标列表中的文章（已滑出最新 N 条）继续沿用历史内容，
+     避免卡片随刷新失去全文；覆盖随运行次数逐步扩大。 */
+  const keepPrev = [];
+  if (existsSync(OUT)) {
+    try {
+      const prev = JSON.parse(readFileSync(OUT, "utf8"));
+      const prevArt = prev.articles || [];
+      const fresh = new Set(targets.map((a) => a.url));
+      const seen = new Set();
+      for (const p of prevArt) {
+        if (p && p.url && !fresh.has(p.url) && !seen.has(p.url)) {
+          seen.add(p.url);
+          keepPrev.push(p);
+        }
+      }
+      console.log(`沿用历史快照 ${keepPrev.length} 篇`);
+    } catch (e) {
+      console.error("读取旧 articles.json 失败，跳过保留:", e.message);
+    }
+  }
+
   const out = [];
   let done = 0;
   for (let i = 0; i < targets.length; i += CONCURRENCY) {
@@ -201,7 +222,7 @@ async function main() {
   }
 
   out.sort((a, b) => b.textLen - a.textLen);
-  const payload = { builtAt: new Date().toISOString(), articles: out };
+  const payload = { builtAt: new Date().toISOString(), articles: [...out, ...keepPrev] };
 
   let prev = null;
   if (existsSync(OUT)) {
