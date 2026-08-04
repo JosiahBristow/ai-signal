@@ -431,6 +431,7 @@
 
   function rerender() {
     state.visible = PAGE_SIZE;
+    buildFilters();
     render();
   }
 
