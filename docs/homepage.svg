@@ -1,0 +1,171 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 820" font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0c0e"/>
+      <stop offset="1" stop-color="#101216"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1280" height="820" fill="url(#bg)" rx="18"/>
+
+  <!-- Browser chrome -->
+  <rect x="40" y="40" width="1200" height="740" rx="14" fill="#0e0f12" stroke="#262b32"/>
+  <rect x="40" y="40" width="1200" height="40" rx="14" fill="#15171b"/>
+  <rect x="40" y="66" width="1200" height="14" fill="#15171b"/>
+  <circle cx="70" cy="60" r="7" fill="#ff5f57"/>
+  <circle cx="90" cy="60" r="7" fill="#febc2e"/>
+  <circle cx="110" cy="60" r="7" fill="#28c840"/>
+  <rect x="140" y="52" width="900" height="16" rx="8" fill="#1c2024"/>
+  <text x="220" y="64" fill="#5d6671" font-size="11">josiahbristow.github.io/ai-signal/</text>
+
+  <!-- Header -->
+  <g>
+    <rect x="60" y="96" width="1160" height="52" rx="10" fill="#101216"/>
+    <g font-size="16">
+      <rect x="80" y="112" width="18" height="18" rx="3" fill="#4fd8ff"/>
+      <rect x="102" y="112" width="18" height="18" rx="3" fill="#4fd8ff" opacity="0.6"/>
+      <rect x="80" y="132" width="18" height="18" rx="3" fill="#4fd8ff" opacity="0.4"/>
+      <rect x="102" y="132" width="18" height="18" rx="3" fill="#4fd8ff" opacity="0.25"/>
+      <text x="130" y="130" fill="#e8eaed" font-weight="700">AI </text>
+      <text x="164" y="130" fill="#ffc24b" font-weight="700">SIGNAL</text>
+      <text x="248" y="129" fill="#5d6671" font-size="12">实时新闻聚合 · 中英双语</text>
+    </g>
+    <g font-size="13">
+      <rect x="470" y="108" width="54" height="28" rx="14" fill="#16181c"/>
+      <text x="486" y="126" fill="#e8eaed">新闻</text>
+      <rect x="534" y="108" width="72" height="28" rx="14" fill="#16181c"/>
+      <text x="552" y="126" fill="#9ba3ad">网站导航</text>
+      <rect x="616" y="108" width="72" height="28" rx="14" fill="#16181c"/>
+      <text x="634" y="126" fill="#9ba3ad">发展历史</text>
+    </g>
+    <g>
+      <circle cx="880" cy="124" r="5" fill="#4fd8ff"/>
+      <circle cx="895" cy="124" r="5" fill="#4fd8ff" opacity="0.6"/>
+      <circle cx="910" cy="124" r="5" fill="#4fd8ff" opacity="0.3"/>
+      <text x="926" y="128" fill="#4fd8ff" font-size="13" font-weight="700">LIVE</text>
+      <rect x="1000" y="108" width="66" height="28" rx="14" fill="#16181c"/>
+      <text x="1016" y="126" fill="#e8eaed" font-size="12">🔄 刷新</text>
+      <rect x="1080" y="108" width="60" height="28" rx="14" fill="#16181c"/>
+      <text x="1092" y="126" fill="#e8eaed" font-size="12">🌐 EN</text>
+      <rect x="1154" y="108" width="52" height="28" rx="14" fill="#16181c"/>
+      <text x="1164" y="126" fill="#e8eaed" font-size="12">🎨 主题</text>
+    </g>
+  </g>
+
+  <!-- Ticker -->
+  <g>
+    <rect x="60" y="158" width="1160" height="34" rx="9" fill="#10161c" stroke="#1f2a33"/>
+    <rect x="60" y="158" width="86" height="34" rx="9" fill="#ffc24b"/>
+    <text x="82" y="179" fill="#1a1203" font-size="12.5" font-weight="700">📡 信号流</text>
+    <text x="170" y="178" fill="#c9d2da" font-size="12.5">🐣 HN 深度求索发布新推理模型 ·  💰 量子位 国内大模型融资再创纪录 ·  ⚖️ The Verge EU AI Act 新规落地 ·  🧠 36氪 千问 3 测评出炉</text>
+  </g>
+
+  <!-- Filters -->
+  <g font-size="12">
+    <text x="80" y="218" fill="#5d6671">语言</text>
+    <rect x="108" y="206" width="52" height="22" rx="11" fill="#1c2024"/>
+    <text x="122" y="221" fill="#e8eaed">全部</text>
+    <rect x="166" y="206" width="52" height="22" rx="11" fill="#16181c"/>
+    <text x="180" y="221" fill="#9ba3ad">中文</text>
+    <rect x="224" y="206" width="66" height="22" rx="11" fill="#16181c"/>
+    <text x="238" y="221" fill="#9ba3ad">English</text>
+
+    <text x="320" y="218" fill="#5d6671">分类</text>
+    <rect x="356" y="206" width="96" height="22" rx="11" fill="#1c2024"/>
+    <text x="376" y="221" fill="#e8eaed">🧠 模型与发布</text>
+    <rect x="458" y="206" width="88" height="22" rx="11" fill="#16181c"/>
+    <text x="472" y="221" fill="#9ba3ad">💰 融资与商业</text>
+    <rect x="552" y="206" width="66" height="22" rx="11" fill="#16181c"/>
+    <text x="566" y="221" fill="#9ba3ad">⚖️ 政策</text>
+
+    <text x="648" y="218" fill="#5d6671">来源</text>
+    <rect x="684" y="206" width="34" height="22" rx="11" fill="#16181c"/>
+    <text x="690" y="221" fill="#9ba3ad">HN</text>
+    <rect x="724" y="206" width="54" height="22" rx="11" fill="#16181c"/>
+    <text x="730" y="221" fill="#9ba3ad">DEV.to</text>
+
+    <circle cx="1040" cy="217" r="8" fill="none" stroke="#3a4150"/>
+    <circle cx="1043" cy="214" r="4" fill="none" stroke="#3a4150"/>
+    <rect x="1060" y="206" width="170" height="22" rx="11" fill="#16181c"/>
+    <text x="1072" y="221" fill="#5d6671">🔍 搜索标题 / 来源…</text>
+  </g>
+
+  <!-- Hero -->
+  <g>
+    <rect x="60" y="244" width="760" height="240" rx="14" fill="#10161c" stroke="#1f2a33"/>
+    <rect x="80" y="266" width="54" height="20" rx="10" fill="#ffc24b"/>
+    <text x="92" y="280" fill="#1a1203" font-size="11" font-weight="700">LIVE</text>
+    <rect x="142" y="266" width="96" height="20" rx="10" fill="#1c2024"/>
+    <text x="154" y="280" fill="#4fd8ff" font-size="11">Hacker News</text>
+    <rect x="246" y="266" width="88" height="20" rx="10" fill="#1c2024"/>
+    <text x="258" y="280" fill="#c792ea" font-size="11">🧠 模型与发布</text>
+    <text x="80" y="330" fill="#e8eaed" font-size="24" font-weight="700">DeepSeek 发布新一代推理模型，基准测试全面超越前代</text>
+    <text x="80" y="356" fill="#9ba3ad" font-size="13.5">新模型在数学推理与代码生成上达到 SOTA，推理成本进一步下降，社区反响热烈……</text>
+    <rect x="80" y="392" width="120" height="7" rx="3.5" fill="#262b32"/>
+    <rect x="80" y="408" width="200" height="7" rx="3.5" fill="#262b32"/>
+    <text x="80" y="456" fill="#5d6671" font-size="12">▲ 2.3k 分 · 半小时前 · 452 评</text>
+    <text x="760" y="456" fill="#4fd8ff" font-size="12">查看全文 →</text>
+  </g>
+
+  <!-- Hot panel -->
+  <g>
+    <rect x="836" y="244" width="384" height="240" rx="14" fill="#10161c" stroke="#1f2a33"/>
+    <text x="858" y="274" fill="#e8eaed" font-size="15" font-weight="700">🔥 热门 TOP 5</text>
+    <g font-size="12.5">
+      <text x="858" y="310" fill="#ffc24b" font-weight="700">1</text>
+      <text x="880" y="310" fill="#c9d2da">DeepSeek 新一代推理模型发布</text>
+      <text x="858" y="332" fill="#5d6671" font-size="11">HN · 半小时前</text>
+      <text x="890" y="376" fill="#ffc24b" font-weight="700">2</text>
+      <text x="912" y="376" fill="#c9d2da">Anthropic 发布 Claude 新版本</text>
+      <text x="890" y="398" fill="#5d6671" font-size="11">The Verge · 1 小时前</text>
+      <text x="890" y="442" fill="#ffc24b" font-weight="700">3</text>
+      <text x="912" y="442" fill="#c9d2da">欧盟 AI 法案实施细则出炉</text>
+      <text x="890" y="464" fill="#5d6671" font-size="11">36氪 · 2 小时前</text>
+    </g>
+  </g>
+
+  <!-- Section head -->
+  <g>
+    <text x="80" y="530" fill="#e8eaed" font-size="17" font-weight="700">全部新闻</text>
+    <text x="168" y="528" fill="#5d6671" font-size="12">128 条</text>
+  </g>
+
+  <!-- Cards -->
+  <g>
+    <rect x="60" y="548" width="380" height="140" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <circle cx="80" cy="568" r="10" fill="#4fd8ff"/>
+    <text x="74" y="573" fill="#0b0c0e" font-size="10">HN</text>
+    <circle cx="108" cy="568" r="10" fill="#c792ea"/>
+    <text x="101" y="573" fill="#0b0c0e" font-size="10">安全</text>
+    <text x="80" y="606" fill="#e8eaed" font-size="14" font-weight="600">研究者发现新提示注入攻击手法</text>
+    <text x="80" y="630" fill="#9ba3ad" font-size="12">通过隐藏字符绕过内容过滤器，多款主流助手受影响…</text>
+    <text x="80" y="668" fill="#5d6671" font-size="11.5">HN · 5 分钟前</text>
+    <text x="220" y="668" fill="#5d6671" font-size="11.5">▲ 980</text>
+    <text x="400" y="668" fill="#4fd8ff" font-size="12">原文 ↗</text>
+
+    <rect x="450" y="548" width="380" height="140" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <circle cx="470" cy="568" r="10" fill="#ffc24b"/>
+    <text x="464" y="573" fill="#0b0c0e" font-size="10">TC</text>
+    <circle cx="498" cy="568" r="10" fill="#4fd8ff"/>
+    <text x="491" y="573" fill="#0b0c0e" font-size="10">融资</text>
+    <text x="470" y="606" fill="#e8eaed" font-size="14" font-weight="600">AI 芯片新锐完成 5 亿美元融资</text>
+    <text x="470" y="630" fill="#9ba3ad" font-size="12">估值翻倍，聚焦推理场景的专用芯片引发关注…</text>
+    <text x="470" y="668" fill="#5d6671" font-size="11.5">TechCrunch · 12 分钟前</text>
+    <text x="790" y="668" fill="#4fd8ff" font-size="12">原文 ↗</text>
+
+    <rect x="840" y="548" width="380" height="140" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <circle cx="860" cy="568" r="10" fill="#7fd6a8"/>
+    <text x="854" y="573" fill="#0b0c0e" font-size="10">量子位</text>
+    <circle cx="896" cy="568" r="10" fill="#ffc24b"/>
+    <text x="889" y="573" fill="#0b0c0e" font-size="10">模型</text>
+    <text x="860" y="606" fill="#e8eaed" font-size="14" font-weight="600">国产开源大模型集体上新</text>
+    <text x="860" y="630" fill="#9ba3ad" font-size="12">多家中厂发布 MoE 架构新模型，主打低显存推理…</text>
+    <text x="860" y="668" fill="#5d6671" font-size="11.5">量子位 · 20 分钟前</text>
+    <text x="1180" y="668" fill="#4fd8ff" font-size="12">原文 ↗</text>
+  </g>
+
+  <g>
+    <rect x="60" y="700" width="1160" height="52" rx="10" fill="#10161c" stroke="#1f2a33"/>
+    <text x="560" y="732" fill="#4fd8ff" font-size="14" font-weight="700">▾ 加载更多</text>
+  </g>
+</svg>

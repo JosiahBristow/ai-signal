@@ -1,0 +1,93 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 620" font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0c0e"/>
+      <stop offset="1" stop-color="#101216"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4fd8ff"/>
+    </marker>
+    <marker id="arrG" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#7fd6a8"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="620" fill="url(#bg)" rx="18"/>
+
+  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">⏱️ 数据快照管道（每 15 分钟一轮）</text>
+  <text x="50" y="80" font-size="13.5" fill="#7f8b96">GitHub Actions cron 调度 → 构建 → 提交 → Pages 同步 → 浏览器读取，全自动、幂等、零服务器</text>
+
+  <!-- Steps row -->
+  <g font-size="13.5">
+    <!-- 1 trigger -->
+    <rect x="50" y="120" width="210" height="120" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="70" y="148" fill="#ffc24b" font-size="15" font-weight="600">1️⃣ 触发</text>
+    <text x="70" y="174" fill="#c9d2da">cron '*/15 * * * *'</text>
+    <text x="70" y="194" fill="#7f8b96" font-size="11.5">push → main 也触发</text>
+    <text x="70" y="212" fill="#7f8b96" font-size="11.5">workflow_dispatch 手动</text>
+
+    <!-- 2 build feeds -->
+    <rect x="290" y="120" width="250" height="120" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="310" y="148" fill="#4fd8ff" font-size="15" font-weight="600">2️⃣ 抓 RSS</text>
+    <text x="310" y="174" fill="#c9d2da">node build-feeds.mjs</text>
+    <text x="310" y="194" fill="#7f8b96" font-size="11.5">fast-xml-parser 解析</text>
+    <text x="310" y="212" fill="#7f8b96" font-size="11.5">36氪 关键词过滤 · 提取封面</text>
+
+    <!-- 3 build articles -->
+    <rect x="570" y="120" width="250" height="120" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="590" y="148" fill="#4fd8ff" font-size="15" font-weight="600">3️⃣ 抓全文</text>
+    <text x="590" y="174" fill="#c9d2da">node build-articles.mjs</text>
+    <text x="590" y="194" fill="#7f8b96" font-size="11.5">cheerio 抽取 + 白名单消毒</text>
+    <text x="590" y="212" fill="#7f8b96" font-size="11.5">并发 6 · 失败重试 3 次</text>
+
+    <!-- 4 commit -->
+    <rect x="850" y="120" width="210" height="120" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="870" y="148" fill="#ffc24b" font-size="15" font-weight="600">4️⃣ 提交</text>
+    <text x="870" y="174" fill="#c9d2da">signal-bot</text>
+    <text x="870" y="194" fill="#7f8b96" font-size="11.5">有变化才 commit + push</text>
+    <text x="870" y="212" fill="#7f8b96" font-size="11.5">幂等 · 无谓提交自动跳过</text>
+  </g>
+
+  <!-- arrows step row -->
+  <g stroke="#4fd8ff" stroke-width="2.5" fill="none" marker-end="url(#arr)" opacity="0.9">
+    <path d="M260 180 L290 180"/>
+    <path d="M540 180 L570 180"/>
+    <path d="M820 180 L850 180"/>
+  </g>
+
+  <!-- Result -->
+  <g>
+    <rect x="50" y="280" width="520" height="96" rx="14" fill="#0f1b17" stroke="#2b3a34"/>
+    <text x="70" y="310" fill="#7fd6a8" font-size="16" font-weight="600">📦 同源快照产物</text>
+    <text x="70" y="336" fill="#c9d2da" font-size="13">feeds.json — 列表 / 摘要 / 封面 / 时间戳</text>
+    <text x="70" y="358" fill="#c9d2da" font-size="13">articles.json — 全文 / 消毒后 HTML / 正文长度</text>
+
+    <rect x="610" y="280" width="520" height="96" rx="14" fill="#0f1b17" stroke="#2b3a34"/>
+    <text x="630" y="310" fill="#7fd6a8" font-size="16" font-weight="600">🖥️ 浏览器消费</text>
+    <text x="630" y="336" fill="#c9d2da" font-size="13">快照存在 → 同源读取，绕开 CORS 限制</text>
+    <text x="630" y="358" fill="#c9d2da" font-size="13">快照缺失 → 自动回退 RSS 代理 / 新标签页</text>
+  </g>
+
+  <g stroke="#4fd8ff" stroke-width="2.5" fill="none" marker-end="url(#arr)" opacity="0.9">
+    <path d="M950 240 C 950 258, 940 264, 880 280"/>
+    <path d="M880 240 C 880 258, 890 264, 930 280"/>
+  </g>
+
+  <!-- Timeline strip -->
+  <g font-size="12.5">
+    <text x="50" y="430" font-size="16" font-weight="600" fill="#e8eaed">🗓️ 一轮构建的时间轴</text>
+    <rect x="50" y="448" width="1180" height="54" rx="10" fill="#10161c" stroke="#1f2a33"/>
+    <text x="70" y="480" fill="#c9d2da">T+0s 触发</text>
+    <text x="250" y="480" fill="#c9d2da">T+2s 抓 4 个 RSS 源</text>
+    <text x="500" y="480" fill="#c9d2da">T+10s 抓最多 80 篇全文（并发 6）</text>
+    <text x="860" y="480" fill="#c9d2da">T+30s 提交 · Pages 数秒内完成同步</text>
+  </g>
+
+  <!-- Note -->
+  <g font-size="12" fill="#7f8b96">
+    <rect x="50" y="530" width="1180" height="52" rx="10" fill="#10161c" stroke="#1f2a33"/>
+    <text x="70" y="554" fill="#c792ea">⚠️ 浏览器 CORS 现实：</text>
+    <text x="250" y="554" fill="#7f8b96">仅 allorigins 可在浏览器端使用但限流严重；r.jina.ai / codetabs / corsproxy / cors.eu.org 不可靠或被墙。因此全文抓取必须在 CI 服务端完成。</text>
+    <text x="70" y="572" fill="#7f8b96">快照被 Git 版本化：历史内容天然有回滚能力，且旧文章全文不会因刷新丢失。</text>
+  </g>
+</svg>

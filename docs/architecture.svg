@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 680" font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0c0e"/>
+      <stop offset="1" stop-color="#101216"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4fd8ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="680" fill="url(#bg)" rx="18"/>
+
+  <!-- Layer titles -->
+  <g font-size="20" font-weight="700" fill="#4fd8ff">
+    <text x="50" y="52">🗂️ 数据源层</text>
+    <text x="390" y="52">⚙️ 构建层 · GitHub Actions</text>
+    <text x="720" y="52">🗄️ 存储层 · GitHub</text>
+    <text x="960" y="52">🖥️ 渲染层 · 浏览器</text>
+  </g>
+
+  <!-- Column 1: Sources -->
+  <g>
+    <rect x="40" y="70" width="300" height="20" fill="none"/>
+    <g font-size="13.5">
+      <rect x="40" y="76" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="98" fill="#ffc24b">📰 TechCrunch AI</text>
+      <text x="60" y="114" fill="#6d7783" font-size="11.5">RSS/Atom · 抓取上限 30 条</text>
+      <rect x="40" y="130" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="152" fill="#ffc24b">📰 The Verge AI</text>
+      <text x="60" y="168" fill="#6d7783" font-size="11.5">RSS/Atom · 抓取上限 30 条</text>
+      <rect x="40" y="184" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="206" fill="#ffc24b">📰 量子位</text>
+      <text x="60" y="222" fill="#6d7783" font-size="11.5">RSS · 抓取上限 20 条</text>
+      <rect x="40" y="238" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="260" fill="#ffc24b">📰 36氪</text>
+      <text x="60" y="276" fill="#6d7783" font-size="11.5">RSS · 关键词过滤「AI」后入库</text>
+      <rect x="40" y="292" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="314" fill="#7fd6a8">🔗 Hacker News API</text>
+      <text x="60" y="330" fill="#6d7783" font-size="11.5">Algolia search · 浏览器直连</text>
+      <rect x="40" y="346" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="368" fill="#7fd6a8">🔗 DEV.to API</text>
+      <text x="60" y="384" fill="#6d7783" font-size="11.5">tag=ai · 浏览器直连</text>
+      <rect x="40" y="400" width="300" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="60" y="422" fill="#c792ea">🌐 原文页面</text>
+      <text x="60" y="438" fill="#6d7783" font-size="11.5">CI 端直连抓取正文（无 CORS）</text>
+    </g>
+  </g>
+
+  <!-- Column 2: CI -->
+  <g>
+    <g font-size="13.5">
+      <rect x="380" y="76" width="310" height="110" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="400" y="100" fill="#4fd8ff" font-size="14" font-weight="600">🛠️ feeds.yml（cron */15 + push）</text>
+      <text x="400" y="126" fill="#c9d2da" font-size="12.5">node build-feeds.mjs</text>
+      <text x="400" y="146" fill="#7f8b96" font-size="11.5">fast-xml-parser 解析 4 个 RSS/Atom 源</text>
+      <text x="400" y="162" fill="#7f8b96" font-size="11.5">归一化 / 去重 / 提取封面 → feeds.json</text>
+      <text x="400" y="180" fill="#4fd8ff" font-size="11.5">→ feeds.json</text>
+
+      <rect x="380" y="200" width="310" height="112" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="400" y="224" fill="#4fd8ff" font-size="14" font-weight="600">📄 全文快照构建</text>
+      <text x="400" y="250" fill="#c9d2da" font-size="12.5">node build-articles.mjs</text>
+      <text x="400" y="270" fill="#7f8b96" font-size="11.5">cheerio 抽取正文 · 白名单消毒</text>
+      <text x="400" y="286" fill="#7f8b96" font-size="11.5">并发 6 · 20s 超时 · 兜底 3 次重试</text>
+      <text x="400" y="304" fill="#4fd8ff" font-size="11.5">→ articles.json</text>
+
+      <rect x="380" y="326" width="310" height="88" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="400" y="350" fill="#ffc24b" font-size="14" font-weight="600">🤖 signal-bot 提交</text>
+      <text x="400" y="374" fill="#c9d2da" font-size="12.5">git add feeds.json articles.json</text>
+      <text x="400" y="392" fill="#7f8b96" font-size="11.5">无变化则跳过，避免无谓提交</text>
+
+      <rect x="380" y="428" width="310" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="400" y="457" fill="#c9d2da" font-size="13">⏱️ 每 15 分钟自动刷新快照</text>
+    </g>
+  </g>
+
+  <!-- Column 3: Storage -->
+  <g>
+    <g font-size="13.5">
+      <rect x="720" y="76" width="210" height="96" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="740" y="102" fill="#7fd6a8" font-size="14" font-weight="600">📦 Git 仓库</text>
+      <text x="740" y="126" fill="#c9d2da" font-size="12.5">main 分支 · 快照随提交滚动</text>
+      <text x="740" y="146" fill="#7f8b96" font-size="11.5">.nojekyll · 纯静态文件</text>
+
+      <rect x="720" y="186" width="210" height="120" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="740" y="212" fill="#7fd6a8" font-size="14" font-weight="600">🌍 GitHub Pages</text>
+      <text x="740" y="238" fill="#c9d2da" font-size="12.5">josiahbristow.github.io</text>
+      <text x="740" y="256" fill="#c9d2da" font-size="12.5">/ai-signal/</text>
+      <text x="740" y="278" fill="#7f8b96" font-size="11.5">同源托管 · 无 CORS · 零成本</text>
+
+      <rect x="720" y="320" width="210" height="46" rx="10" fill="#15171b" stroke="#262b32"/>
+      <text x="740" y="349" fill="#c9d2da" font-size="13">📈 HTTPS 全球 CDN</text>
+    </g>
+  </g>
+
+  <!-- Column 4: Browser -->
+  <g>
+    <g font-size="13.5">
+      <rect x="960" y="76" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="100" fill="#4fd8ff" font-size="14" font-weight="600">📥 同源读取快照</text>
+      <text x="980" y="120" fill="#7f8b96" font-size="11.5">fetch feeds.json / articles.json（带头）</text>
+
+      <rect x="960" y="146" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="170" fill="#4fd8ff" font-size="14" font-weight="600">🔗 直连官方 API</text>
+      <text x="980" y="190" fill="#7f8b96" font-size="11.5">HN Algolia + DEV.to（带 CORS 头）</text>
+
+      <rect x="960" y="216" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="240" fill="#4fd8ff" font-size="14" font-weight="600">🧠 前端引擎 app.js</text>
+      <text x="980" y="260" fill="#7f8b96" font-size="11.5">加载 / 去重 / 分类 / 热度 / 渲染</text>
+
+      <rect x="960" y="286" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="310" fill="#4fd8ff" font-size="14" font-weight="600">📖 站内阅读模式</text>
+      <text x="980" y="330" fill="#7f8b96" font-size="11.5">渲染已消毒全文 · 无快照回退新页</text>
+
+      <rect x="960" y="356" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="380" fill="#4fd8ff" font-size="14" font-weight="600">💬 Giscus 评论</text>
+      <text x="980" y="400" fill="#7f8b96" font-size="11.5">GitHub Discussions 为后端</text>
+
+      <rect x="960" y="426" width="280" height="56" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="980" y="450" fill="#ffc24b" font-size="14" font-weight="600">🎨 主题 / 🌐 双语</text>
+      <text x="980" y="470" fill="#7f8b96" font-size="11.5">6 套主题 · 中英切换 · localStorage</text>
+    </g>
+  </g>
+
+  <!-- Arrows -->
+  <g stroke="#4fd8ff" stroke-width="2.5" fill="none" marker-end="url(#arr)" opacity="0.9">
+    <path d="M340 420 C 356 420, 364 420, 380 420"/>
+    <path d="M340 99 C 356 99, 364 99, 380 99"/>
+    <path d="M690 160 C 706 160, 712 160, 720 160"/>
+    <path d="M690 246 C 706 246, 712 246, 720 246"/>
+    <path d="M930 104 C 946 104, 952 104, 960 104"/>
+    <path d="M930 246 C 946 246, 952 246, 960 246"/>
+  </g>
+
+  <!-- Legend -->
+  <g font-size="12" fill="#7f8b96">
+    <rect x="40" y="600" width="1200" height="46" rx="10" fill="#10161c" stroke="#1f2a33"/>
+    <text x="60" y="625">🟡 RSS 快照源（CI 抓取）</text>
+    <text x="300" y="625">🟢 官方开放 API（浏览器直连）</text>
+    <text x="600" y="625">🟣 原文网页（CI 抓全文）</text>
+    <text x="830" y="625" fill="#c9d2da">运行链路：数据源 → CI 快照 → Git 仓库 → Pages → 浏览器</text>
+  </g>
+</svg>

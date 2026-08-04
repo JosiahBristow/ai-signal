@@ -1,110 +1,286 @@
-# AI SIGNAL · 实时 AI 新闻聚合台
+# 📡 AI SIGNAL · 实时 AI 新闻聚合台
 
-纯前端、零依赖、多主题的中英双语 AI 新闻聚合站。无服务器、无追踪：GitHub Actions
-定时抓取 RSS 与头条全文生成静态快照，页面直接同源读取，HN / DEV.to 走官方 API。
+> **纯前端 · 零依赖 · 无服务器 · 无追踪 · 中英双语** —— 一个开着就能用的实时 AI 新闻信号台。
 
-> 在线站点：<https://josiahbristow.github.io/ai-signal/>
+<p align="center">
 
-## 功能特性
+[![在线站点](https://img.shields.io/badge/%F0%9F%8C%90%20%E5%9C%A8%E7%BA%BF%E7%AB%99%E7%82%B9-josiahbristow.github.io%2Fai-signal-4fd8ff?style=for-the-badge&logo=githubpages&logoColor=white)](https://josiahbristow.github.io/ai-signal/)
+[![GitHub Pages 状态](https://img.shields.io/github/deployments/JosiahBristow/ai-signal/github-pages?style=for-the-badge&logo=github&label=GitHub%20Pages)](https://josiahbristow.github.io/ai-signal/)
+[![构建流程](https://img.shields.io/github/actions/workflow/status/JosiahBristow/ai-signal/feeds.yml?style=for-the-badge&logo=githubactions&logoColor=white&label=build-feeds)](https://github.com/JosiahBristow/ai-signal/actions/workflows/feeds.yml)
+[![Stars](https://img.shields.io/github/stars/JosiahBristow/ai-signal?style=for-the-badge&logo=github)](https://github.com/JosiahBristow/ai-signal/stargazers)
+[![最近提交](https://img.shields.io/github/last-commit/JosiahBristow/ai-signal?style=for-the-badge&logo=git&logoColor=white&label=last%20commit)](https://github.com/JosiahBristow/ai-signal/commits/main)
+[![Node](https://img.shields.io/badge/Node-%E2%89%A520-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![运行时](https://img.shields.io/badge/%E8%BF%90%E8%A1%8C%E6%97%B6-HTML%20%E2%8B%AF%20CSS%20%E2%8B%AF%20JS-f7df1e?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/zh-CN/docs/Web/HTML)
 
-- **实时聚合** — TechCrunch AI、The Verge AI、量子位、36氪（AI 关键词过滤）+ Hacker News、DEV.to
-- **快照优先** — CI 每 15 分钟生成 `feeds.json`，浏览器同源读取，绕开浏览器 CORS 限制
-- **站内阅读** — 全文快照 `articles.json` 支持在站内直接读原文（服务端白名单消毒后渲染，无快照时自动回退新标签页）
-- **智能分类** — 模型发布 / 融资商业 / 政策监管 / 安全风险 / 芯片算力 / 机器人 / 研究 / 应用 / 其他，共 9 类自动归类
-- **头条与热门** — 大头条区、热门 TOP5、滚动信号流 ticker
-- **搜索与筛选** — 关键词搜索 + 按语言 / 分类 / 来源过滤
-- **多主题** — 晨报 / 午夜 / 极光 / 墨绿 + 跟随系统，localStorage 记忆
-- **评论** — Giscus 接入（需填写配置后启用）
-- **自动刷新** — 默认每 5 分钟同步，切回页面立即更新
+</p>
 
-## 页面
+---
 
-| 页面 | 说明 |
+## 🧭 项目介绍
+
+### 这是什么？
+
+**AI SIGNAL** 是一个 **实时聚合中英文 AI 领域最新动态** 的新闻站。它把散落在各个角落的 AI 信息 —— 英文科技媒体的 RSS、中文 AI 媒体的头条、Hacker News / DEV.to 的技术讨论 —— 汇聚成一个「信号台」：
+
+- **📰 一个页面看全**：TechCrunch AI、The Verge AI、量子位、36氪、Hacker News、DEV.to，六大来源实时滚动。
+- **🧠 自动分类**：模型发布 / 融资商业 / 政策监管 / 安全风险 / 芯片算力 / 机器人 / 研究 / 应用 / 其他，共 **9 大类** 免人工打标。
+- **🔥 热度排名**：基于社区互动与新鲜度的加权信号强度，找出「此刻最该看的 TOP 5」。
+- **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
+- **🌓 六套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 跟随系统，一键即用。
+
+### 核心能力一览
+
+| Emoji | 能力 | 说明 |
+| --- | --- | --- |
+| ⚡ | 实时聚合 | 每 15 分钟快照 + 每 5 分钟前端自动刷新，切回页面立即同步 |
+| 🗂️ | 六大来源 | 4 个 RSS/Atom 源（快照）+ HN Algolia API + DEV.to API（浏览器直连） |
+| 🧠 | 智能分类 | 标题 + 摘要关键词打分，9 大分类自动归类 |
+| 🔥 | 热度算法 | 互动量（点赞/评论）与新鲜度加权，热榜即时刷新 |
+| 📖 | 站内阅读 | `articles.json` 全文快照，服务端白名单消毒后渲染 |
+| 💬 | 评论系统 | Giscus 接入 GitHub Discussions，无需自建后端 |
+| 🌐 | 中英双语 | 全站 i18n 文案 + 按语言筛选新闻，互不影响 |
+| 🎨 | 多主题 | 6 套视觉主题，localStorage 记忆，首屏前注入防闪烁 |
+| 🔍 | 搜索筛选 | 关键词搜索 + 语言 / 分类 / 来源三维过滤 |
+| 📜 | 时间线 | 1943 → 今天的 AI 发展历史时间线（`history.html`） |
+| 🗺️ | 网站导航 | 精选 AI 站点分类导航（`links.html`） |
+
+### 三张页面
+
+| 页面 | Emoji | 说明 |
+| --- | --- | --- |
+| [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
+| [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
+| [`history.html`](history.html) | 📜 | AI 发展历史时间线：关键里程碑 |
+
+---
+
+## 🎯 项目定位
+
+### 解决了什么痛点？
+
+1. **🚫 浏览器 CORS 限制** —— 浏览器无法直接抓取绝大多数 RSS 与网页全文。传统方案需要自建后端做代理，成本高、维护重。**AI SIGNAL 用「CI 服务端抓取 + 静态快照」绕开 CORS**，浏览器只做同源读取。
+2. **☁️ 不想维护服务器** —— 纯静态站点托管在 GitHub Pages，**零服务器、零数据库、零追踪、零成本**。数据由 GitHub Actions 定时写入 Git 仓库，天然拥有版本历史与回滚能力。
+3. **📚 信息太分散** —— 中文 AI 动态、英文科技新闻、社区讨论散落在不同平台。AI SIGNAL 把它们归一化进**同一条时间线**，并按语言 / 分类 / 来源自由切片。
+
+### 设计哲学
+
+- 🗼 **快照优先**：CI 端抓取生成 JSON 快照 → 浏览器同源读取。快照是单一事实来源，缺了才回退。
+- 🪶 **零依赖运行时**：站点本体是纯 HTML/CSS/JS，所有 Node 依赖只存在于 `scripts/` 构建期。
+- 🛡️ **安全兜底**：全文一律服务端白名单消毒后才进 `innerHTML`；无快照时绝不在浏览器端代抓，只回退到新标签页。
+- 💾 **Git 即数据库**：快照提交进仓库，历史内容有版本、可回滚、可审计。
+
+### 与常见方案对比
+
+| 方案 | 服务器 | 数据库 | CORS 规避 | 成本 | 全文阅读 |
+| --- | --- | --- | --- | --- | --- |
+| **AI SIGNAL（本项目）** | ❌ 无 | ❌ 无（Git 即库） | ✅ CI 快照 | 💸 免费 | ✅ 站内快照 |
+| 自建后端聚合站 | ✅ 需要 | ✅ 需要 | ✅ | 💰 服务器费用 | ✅ |
+| 浏览器直连 RSS | ❌ 无 | ❌ | ❌ 大多被 CORS 拦截 | 💸 免费 | ❌ 无 |
+| 第三方聚合平台 | ❌ 无 | ❌ | ✅ | 🆓 免费但受制于人 | 视平台而定 |
+
+---
+
+## 🧠 实现原理
+
+### 1️⃣ 整体架构：四层流水线
+
+```
+数据源层 ──► 构建层(CI) ──► 存储层(GitHub) ──► 渲染层(浏览器)
+```
+
+![系统架构图](docs/architecture.svg)
+
+- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；原文网页（CI 端抓全文）。
+- **构建层**：`feeds.yml` 工作流，每 15 分钟一轮，生成并提交两个快照文件。
+- **存储层**：GitHub 仓库 `main` 分支 + GitHub Pages 静态托管，`.nojekyll` 保证纯静态直接服务。
+- **渲染层**：浏览器同源 `fetch` 快照，HN/DEV.to 直连官方 API，Giscus 走 iframe，全部无框架拼装。
+
+### 2️⃣ 数据管道：快照优先，幂等写入
+
+![数据快照管道](docs/pipeline.svg)
+
+```mermaid
+flowchart LR
+    A[cron 每 15 分钟] --> B[build-feeds.mjs]
+    B -->|fast-xml-parser| C[feeds.json<br/>列表/摘要/封面]
+    B --> D[build-articles.mjs]
+    D -->|cheerio 抽取+消毒| E[articles.json<br/>全文/正文长度]
+    C --> F[signal-bot commit & push]
+    E --> F
+    F --> G[GitHub Pages]
+    G --> H[浏览器同源读取]
+```
+
+关键设计：
+
+- **幂等**：新旧快照逐字节比对，**无变化则不提交**，避免制造空 commit。
+- **并发与兜底**：全文抓取并发 6、20s 超时、3 次退避重试；单个源失败不影响整体。
+- **历史保留**：滑出最新窗口的旧文章**沿用历史快照**，卡片不会随刷新丢失全文。
+- **36氪 特殊处理**：全量 feed 用中文 AI 关键词表过滤后入库，保证每一条都「真·AI」。
+
+### 3️⃣ 前端引擎（`app.js`）运行流程
+
+![首页布局](docs/homepage.svg)
+
+`app.js` 是一个 IIFE 封装的状态机，核心链路：
+
+```
+加载快照 ──► 六大来源并行加载 ──► 合并 + URL 规范化去重
+  ──► 热度打分 + 智能分类 ──► 渲染（头条/热榜/列表/ticker）
+  ──► 每 5 分钟自动刷新 · 窗口聚焦立即同步
+```
+
+- **去重**：`urlKey()` 抹掉 hash 与 UTM 参数后比较 host + path，跨源同一篇文章只留一份（保留热度更高者）。
+- **加载策略**：RSS 源优先读快照，快照缺失才走 `fetchRss()` 代理链（allorigins → codetabs，失败重试降级）。
+- **懒渲染**：首屏 24 条，`加载更多` 每次 +18；骨架屏 + 来源健康状态提示。
+- **ticker 信号流**：取最新 12 条双份拼接，CSS 动画无缝循环滚动。
+
+### 4️⃣ 智能分类器：关键词打分
+
+每条新闻以 **标题 + 摘要** 拼接后，对 9 个分类的预置关键词表做子串匹配，**第一个命中即归类**，全部未命中落入「其他」：
+
+```mermaid
+flowchart TD
+    A[标题 + 摘要] --> B{命中机器人关键词?}
+    B -->|是| C[🤖 机器人]
+    B -->|否| D{命中芯片/算力?}
+    D -->|是| E[🖥️ 芯片与算力]
+    D -->|否| F{命中论文/研究?}
+    F -->|是| G[🧪 研究与技术]
+    F -->|否| H{命中安全/漏洞?}
+    H -->|是| I[🛡️ 安全与风险]
+    H -->|否| J{命中政策/法案?}
+    J -->|是| K[⚖️ 政策与监管]
+    J -->|否| L{命中融资/收购?}
+    L -->|是| M[💰 融资与商业]
+    L -->|否| N{命中应用/产品?}
+    N -->|是| O[📱 应用与产品]
+    N -->|否| P{命中模型/发布?}
+    P -->|是| Q[🧠 模型与发布]
+    P -->|否| R[📦 其他]
+```
+
+### 5️⃣ 热度算法：互动 × 新鲜度
+
+每条新闻计算一个 `heat` 信号强度，驱动热榜与同文去重：
+
+```
+heat = 0.7 × (该源互动峰值归一化) + 0.3 × (新鲜度衰减)     # 有社区互动(HN/DEV.to)
+heat = 0.15 × (新鲜度衰减)                                  # 无互动(RSS 快照)
+
+互动值 = 点赞数 + 评论数 × 2
+新鲜度  = max(0, 1 - 发布时长 / 72h)     # 3 天线性衰减至 0
+```
+
+社区活跃的 HN/DEV.to 新闻天然靠前；RSS 源按时间排序作为时间线的补充，避免被「刷屏热点」淹没。
+
+### 6️⃣ 站内阅读与内容消毒
+
+![站内阅读与消毒](docs/reader.svg)
+
+全文内容 **在 CI 服务端完成抽取 + 白名单消毒后才落盘**，浏览器端只负责把已清洗的 HTML 渲染进浮层：
+
+| 步骤 | 手段 |
 | --- | --- |
-| `index.html` | 新闻首页（头条 / 热门 / 信号流 / 卡片列表 / 站内阅读） |
-| `links.html` | AI 网站导航 |
-| `history.html` | AI 发展历史时间线 |
+| 正文抽取 | 按候选容器文本长度打分，取「最长最像正文」的节点，最短 120 字 |
+| 元素剥离 | 30+ 条选择器删掉 script/style/iframe/广告/侧栏/相关推荐/评论区 |
+| 白名单消毒 | 仅 31 个标签放行；`a` 只保留 http(s) href 并强制 `_blank + rel=noopener`；`img` 强制 lazy + 绝对路径；其余属性全部剥离 |
+| 空节点清理 | 无内容节点 / 纯装饰节点递归移除 |
 
-## 技术栈
+> 🛡️ **安全底线**：绝不引入未验证的外部脚本，绝不保留 `javascript:` 链接，渲染结果只含干净的文本、链接与图片。
 
-- 运行时：纯 HTML / CSS / JavaScript，无框架、无构建步骤
-- CI 构建脚本（Node 20+）：`fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒）
-- 数据源：RSS/Atom 快照 + Hacker News / DEV.to 官方 API
+### 7️⃣ 主题系统与双语
 
-## 工作原理
+![主题系统](docs/themes.svg)
 
-```
-GitHub Actions (cron */15 + push to main)
-   │
-   ├─ scripts/build-feeds.mjs   抓取 4 个 RSS 源 ──► feeds.json
-   │
-   └─ scripts/build-articles.mjs 抓取头条全文 ──► articles.json
-                                                     │
-浏览器 (GitHub Pages 同源读取)  ◄────────────────────┘
-  ├─ feeds.json    ── 头条 / 卡片 / 信号流
-  ├─ articles.json ── 站内阅读模式
-  ├─ HN / DEV.to   ── 浏览器直接请求官方 API
-  └─ Giscus        ── 评论
-```
+- **主题**：`data-theme` 属性挂在 `<html>` 上，CSS 变量驱动整套配色。选择存 `localStorage`（`signal-theme`），且**在 `<head>` 内联脚本首屏前读回**，杜绝主题闪烁。`auto` 主题通过 `matchMedia` 监听系统深浅色。
+- **双语**：`common.js` 内置全站 i18n 词表，`window.t()` 统一翻译，`data-i18n` 标记批量应用；语言切换通过 `signal:lang` 自定义事件广播，Giscus 评论语言与主题同步跟随。
+- **事件总线**：主题、语言、刷新均以 `CustomEvent` 广播，模块间低耦合。
 
-## 目录结构
+---
+
+## 🗂️ 目录结构
 
 ```
 .
-├── index.html        # 新闻首页
-├── links.html        # 网站导航
-├── history.html      # 发展历史
-├── styles.css        # 多主题设计系统
-├── common.js         # 主题切换 / 导航高亮
-├── app.js            # 新闻引擎（加载/去重/分类/热度/渲染/读模式/评论）
-├── feeds.json        # RSS 快照（CI 生成）
-├── articles.json     # 全文快照（CI 生成）
-├── .github/workflows/feeds.yml  # 定时构建 + 提交
-└── scripts/
-    ├── build-feeds.mjs      # RSS 快照构建
-    ├── build-articles.mjs   # 全文快照构建
-    └── package.json         # 仅构建期依赖
+├── 📄 index.html            # 新闻首页（头条/热榜/列表/阅读模式）
+├── 📄 links.html            # AI 网站导航
+├── 📄 history.html          # AI 发展历史时间线
+├── 🎨 styles.css            # 六套主题设计系统（CSS 变量）
+├── ⚙️ common.js             # 主题切换 / 导航 / 双语 i18n
+├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
+├── 📦 feeds.json            # RSS 快照（CI 每 15 分钟生成）
+├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
+├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
+├── 📚 docs/                 # README 配图（架构/管道/阅读/主题 SVG 图）
+├── 🤖 .github/workflows/feeds.yml  # 定时构建 + 自动提交
+└── 📦 scripts/
+    ├── build-feeds.mjs      # RSS 快照构建（fast-xml-parser）
+    ├── build-articles.mjs   # 全文快照构建（cheerio 抽取+消毒）
+    └── package.json         # 仅构建期依赖（运行时零依赖）
 ```
 
-## 本地开发
+---
+
+## 🚀 快速开始
 
 ```bash
-# 安装脚本依赖（Node 20+）
+# ① 克隆仓库
+git clone git@github.com:JosiahBristow/ai-signal.git
+cd ai-signal
+
+# ② 安装脚本依赖（Node 20+）
 cd scripts && npm install
 
-# 构建 RSS 快照
-node scripts/build-feeds.mjs
+# ③ 构建 RSS 快照
+node build-feeds.mjs
 
-# 构建全文快照
-node scripts/build-articles.mjs
+# ④ 构建全文快照
+node build-articles.mjs
 
-# 语法检查
+# ⑤ 语法检查
+cd ..
 node --check app.js common.js history.js scripts/*.mjs
 
-# 冒烟测试（jsdom + mock fetch）
+# ⑥ 冒烟测试（jsdom + mock fetch）
 node /tmp/opencode/ai-test/smoke.js
 ```
 
-预览站点可直接用任意静态服务器，例如 `python3 -m http.server`。
+> 🖥️ 本地预览直接用任意静态服务器，例如 `python3 -m http.server`。
 
-## 部署（GitHub Pages）
+---
 
-1. 推送到仓库 `main` 分支
-2. **Settings → Pages → Source: Deploy from a branch → `main` / `/ (root)`**
-3. 等待几分钟后访问 `https://<username>.github.io/<repo>/`
+## 🌐 部署（GitHub Pages）
 
-仓库已包含 `.nojekyll`，Pages 会直接以纯静态方式提供服务。`feeds.yml`
-在 push 与定时调度时会自动刷新快照并提交。
+1. 📤 推送到仓库 `main` 分支。
+2. ⚙️ **Settings → Pages → Source: Deploy from a branch → `main` / `/(root)`**。
+3. ⏳ 等待几分钟，访问 `https://<username>.github.io/<repo>/`。
 
-## 配置
+仓库已包含 `.nojekyll`，Pages 直接以纯静态方式服务；`feeds.yml` 会在 **push 与每 15 分钟定时** 自动刷新并提交快照。
 
-- **Giscus 评论**：在 `app.js` 中填写 `GISCUS` 对象（`repo` / `repoId` /
-  `category` / `categoryId`）。未配置时评论区显示友好提示。
-- **数据源**：在 `app.js` 的 `SOURCES` 与 `scripts/build-feeds.mjs` 的 `FEEDS`
-  中增删。
-- **主题**：`common.js` + `styles.css` 中的 CSS 变量。
+---
 
-## 免责声明
+## ⚙️ 配置
 
-本站仅聚合链接与摘要，所有内容版权归原网站所有。全文快照用于站内阅读，请在
-15 分钟快照周期内以原文为准。
+| 配置项 | 位置 | 说明 |
+| --- | --- | --- |
+| 💬 Giscus 评论 | `app.js` 顶部 `GISCUS` | 填入 `repo` / `repoId` / `category` / `categoryId` 后启用，未配置时显示友好提示 |
+| 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` | 增删 RSS 源、关键词过滤、抓取上限 |
+| 🧠 分类关键词 | `app.js` 的 `CATEGORIES` | 每个分类的 `kw` 数组，命中即归类 |
+| 🎨 主题 | `common.js` + `styles.css` | CSS 变量与主题列表，新增主题只需加一个 `data-theme` 分支 |
+| 🌐 文案 | `common.js` 的 `I18N` | 中英词表，`zh`/`en` 字段 |
+
+---
+
+## 📄 免责声明
+
+> 📚 本站仅聚合链接与摘要，所有内容版权归原网站所有。全文快照用于站内阅读，请以 **15 分钟快照周期内** 的原文为准。
+>
+> 🔗 导航页收录的均为公开资源，跳转行为发生在原网站，本站不承担由此产生的内容责任。
+
+---
+
+<p align="center">
+  <b>📡 SIGNAL // RECEIVING FREQUENCY</b><br/>
+  <sub>纯前端 · 零依赖 · 无服务器 · 无追踪 —— 由 GitHub Actions + GitHub Pages 驱动</sub>
+</p>

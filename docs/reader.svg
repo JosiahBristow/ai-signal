@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 660" font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0c0e"/>
+      <stop offset="1" stop-color="#101216"/>
+    </linearGradient>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0 0 L10 5 L0 10 z" fill="#4fd8ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1280" height="660" fill="url(#bg)" rx="18"/>
+
+  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">📖 站内阅读模式：快照优先 · 安全兜底</text>
+  <text x="50" y="80" font-size="13.5" fill="#7f8b96">点击卡片 → 桌面端浮动窗口 / 手机端内联展开，全文来自已消毒的 articles.json 快照，绝不由浏览器直接渲染任何未经验证的内容</text>
+
+  <!-- Main vertical flow -->
+  <g font-size="13.5">
+    <rect x="50" y="120" width="360" height="72" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="70" y="148" fill="#ffc24b" font-size="15" font-weight="600">🖱️ 用户点击卡片</text>
+    <text x="70" y="172" fill="#7f8b96" font-size="12">hero / card-link / 全文按钮</text>
+
+    <rect x="50" y="240" width="360" height="72" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="70" y="268" fill="#4fd8ff" font-size="15" font-weight="600">🔍 查 readerIndex</text>
+    <text x="70" y="292" fill="#7f8b96" font-size="12">urlKey(规范化 URL) → articles.json</text>
+
+    <rect x="50" y="360" width="360" height="96" rx="12" fill="#0f1b17" stroke="#2b3a34"/>
+    <text x="70" y="388" fill="#7fd6a8" font-size="15" font-weight="600">✔️ 快照命中？</text>
+    <text x="70" y="412" fill="#c9d2da">有 content → 渲染消毒后的 HTML</text>
+    <text x="70" y="432" fill="#7f8b96" font-size="12">桌面：浮动窗口 · 手机：内联展开</text>
+
+    <rect x="50" y="504" width="360" height="72" rx="12" fill="#15171b" stroke="#262b32"/>
+    <text x="70" y="532" fill="#ffc24b" font-size="15" font-weight="600">⏭️ 快照未命中</text>
+    <text x="70" y="556" fill="#c9d2da">新标签页打开原文（不回退任何抓取）</text>
+  </g>
+
+  <g stroke="#4fd8ff" stroke-width="2.5" fill="none" marker-end="url(#arr)" opacity="0.9">
+    <path d="M230 192 L230 240"/>
+    <path d="M230 312 L230 360"/>
+    <path d="M230 456 L230 504"/>
+    <path d="M410 408 L430 408"/>
+  </g>
+
+  <!-- Right: sanitization -->
+  <g font-size="13.5">
+    <rect x="480" y="120" width="750" height="60" rx="12" fill="#10161c" stroke="#1f2a33"/>
+    <text x="500" y="146" fill="#c792ea" font-size="16" font-weight="600">🛡️ 服务端消毒管线（build-articles.mjs）</text>
+    <text x="500" y="168" fill="#7f8b96" font-size="12">所有全文在 CI 内清洗后才落盘，浏览器只负责渲染最终结果</text>
+
+    <g>
+      <rect x="480" y="210" width="230" height="150" rx="12" fill="#15171b" stroke="#262b32"/>
+      <text x="500" y="236" fill="#e8eaed" font-size="14" font-weight="600">1️⃣ 正文抽取</text>
+      <text x="500" y="258" fill="#7f8b96" font-size="12">候选容器按文本长度打分</text>
+      <text x="500" y="278" fill="#7f8b96" font-size="12">article / main / .post-content…</text>
+      <text x="500" y="298" fill="#7f8b96" font-size="12">最短 120 字，过短则放弃</text>
+      <text x="500" y="322" fill="#ffc24b" font-size="12">只取「最长最像正文」的节点</text>
+
+      <rect x="740" y="210" width="230" height="150" rx="12" fill="#15171b" stroke="#262b32"/>
+      <text x="760" y="236" fill="#e8eaed" font-size="14" font-weight="600">2️⃣ 元素剥离</text>
+      <text x="760" y="258" fill="#7f8b96" font-size="12">30+ 条选择器</text>
+      <text x="760" y="278" fill="#7f8b96" font-size="12">script/style/iframe/广告/</text>
+      <text x="760" y="298" fill="#7f8b96" font-size="12">侧栏/相关推荐/评论/分享</text>
+      <text x="760" y="322" fill="#ffc24b" font-size="12">逐层 remove + 空节点清理</text>
+
+      <rect x="1000" y="210" width="230" height="150" rx="12" fill="#15171b" stroke="#262b32"/>
+      <text x="1020" y="236" fill="#e8eaed" font-size="14" font-weight="600">3️⃣ 白名单消毒</text>
+      <text x="1020" y="258" fill="#7f8b96" font-size="12">仅 31 个标签放行</text>
+      <text x="1020" y="278" fill="#7f8b96" font-size="12">a 只保留 http(s) href</text>
+      <text x="1020" y="298" fill="#7f8b96" font-size="12">img 强制 lazy + 绝对路径</text>
+      <text x="1020" y="322" fill="#7f8b96" font-size="12">其余属性全部剥离</text>
+    </g>
+
+    <rect x="480" y="390" width="750" height="58" rx="12" fill="#0f1b17" stroke="#2b3a34"/>
+    <text x="500" y="416" fill="#7fd6a8" font-size="14" font-weight="600">🛡️ 渲染安全</text>
+    <text x="500" y="436" fill="#c9d2da" font-size="12.5">无 javascript: href · 无外部脚本 · 属性白名单 · 链接强制 _blank + rel=noopener</text>
+
+    <g font-size="12.5">
+      <rect x="480" y="478" width="230" height="66" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="500" y="502" fill="#e8eaed" font-weight="600">📱 手机端</text>
+      <text x="500" y="524" fill="#7f8b96">卡片内联展开 · 点外部折叠</text>
+
+      <rect x="740" y="478" width="230" height="66" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="760" y="502" fill="#e8eaed" font-weight="600">🖥️ 桌面端</text>
+      <text x="760" y="524" fill="#7f8b96">浮动窗口 · Esc / 遮罩关闭</text>
+
+      <rect x="1000" y="478" width="230" height="66" rx="12" fill="#10161c" stroke="#1f2a33"/>
+      <text x="1020" y="502" fill="#e8eaed" font-weight="600">🔗 双出口</text>
+      <text x="1020" y="524" fill="#7f8b96">查看原文 / 底部打开原文</text>
+    </g>
+  </g>
+</svg>
