@@ -54,6 +54,7 @@
         lang: sourceById(sid) ? sourceById(sid).lang : "en",
         time: a.time || Date.now(),
         excerpt: a.excerpt || "",
+        cover: a.cover || "",
         points: 0, comments: 0, eng: 0
       };
     });
@@ -68,6 +69,12 @@
       var idx = {};
       j.articles.forEach(function (a) { if (a && a.url) idx[urlKey(a.url)] = a; });
       readerIndex = idx;
+      if (state.all.length) {
+        state.all.forEach(function (it) {
+          var art = idx[urlKey(it.url)];
+          if (art && art.cover && !it.cover) it.cover = art.cover;
+        });
+      }
       return idx;
     }).catch(function () {
       readerIndex = null;
@@ -355,6 +362,12 @@
     });
     return Promise.all(jobs).then(function (groups) {
       state.all = finalize(merge(groups.reduce(function (acc, g) { return acc.concat(g); }, [])));
+      if (readerIndex) {
+        state.all.forEach(function (it) {
+          var art = readerIndex[urlKey(it.url)];
+          if (art && art.cover && !it.cover) it.cover = art.cover;
+        });
+      }
       state.lastSync = Date.now();
       renderSourceStatus();
       if (!state.tickerBuilt) buildTicker();
@@ -482,6 +495,7 @@
         '<span class="badge badge-src">' + esc(src ? src.label : a.source) + "</span>" +
         '<span class="badge badge-cat">' + esc(cat.zh) + "</span>" +
       "</div>" +
+      (a.cover ? '<div class="hero-cover"><img src="' + esc(a.cover) + '" alt="" loading="lazy" onerror="this.closest(\'.hero-cover\').remove()"></div>' : "") +
       "<h1 class=\"hero-title\">" + esc(a.title) + "</h1>" +
       (a.excerpt ? "<p class=\"hero-desc\">" + esc(a.excerpt) + "</p>" : "") +
       '<div class="hero-meta">' +
@@ -511,12 +525,18 @@
     }).join("");
   }
 
+  function coverHTML(a) {
+    if (!a.cover) return "";
+    return '<div class="card-cover"><img src="' + esc(a.cover) + '" alt="" loading="lazy" onerror="this.closest(\'.card-cover\').remove()"></div>';
+  }
+
   function cardHTML(a) {
     var src = sourceById(a.source);
     var cat = catById(a.cat);
     var term = djb2(a.url);
     return (
       '<article class="card cat-' + a.cat + '">' +
+        coverHTML(a) +
         '<div class="card-top">' + badgeHTML(a) +
           '<button class="read-toggle" type="button" data-url="' + esc(a.url) + '" aria-expanded="false">' +
             '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>' +

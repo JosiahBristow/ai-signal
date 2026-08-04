@@ -531,6 +531,19 @@ button {
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+.hero-cover {
+  margin: 0 0 16px;
+  border-radius: var(--radius-m);
+  overflow: hidden;
+  aspect-ratio: 16 / 9;
+  background: var(--bg-soft);
+}
+.hero-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 .hero-meta {
   display: flex;
   flex-wrap: wrap;
@@ -647,6 +660,19 @@ button {
   display: flex;
   align-items: center;
   gap: 8px;
+}
+.card-cover {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--line);
+}
+.card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 .card-link { display: block; padding: 0 16px; flex: 1; }
 .card-title {

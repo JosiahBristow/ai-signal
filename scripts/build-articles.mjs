@@ -133,7 +133,10 @@ function extract(html, baseUrl) {  const $ = cheerio.load(html);
   sanitizeNode($, clone, baseUrl);
   const textLen = (clone.text() || "").replace(/\s+/g, "").length;
   if (textLen < MIN_TEXT) return null;
-  return { content: clone.html(), textLen };
+  let cover = "";
+  const firstImg = clone.find("img[src]").first();
+  if (firstImg.length) cover = firstImg.attr("src") || "";
+  return { content: clone.html(), textLen, cover };
 }
 
 async function fetchText(url) {
@@ -164,6 +167,7 @@ async function runJob(a) {
       title: a.title,
       source: a.source,
       excerpt: a.excerpt || "",
+      cover: r.cover,
       content: r.content,
       textLen: r.textLen
     };

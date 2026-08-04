@@ -66,6 +66,41 @@ function text(v) {
   return "";
 }
 
+function absUrl(v, baseUrl) {
+  if (!v) return "";
+  try {
+    const u = new URL(v, baseUrl);
+    if (u.protocol === "http:" || u.protocol === "https:") return u.href;
+    return "";
+  } catch (e) {
+    return "";
+  }
+}
+
+/* 提取封面图：优先 enclosure / media:content / media:thumbnail，
+   再回退到 description/content 里的第一个 <img> */
+function extractCover(raw, baseUrl) {
+  if (!raw) return "";
+  let url = raw.cover || "";
+  const enc = raw.enclosure;
+  if (!url && enc) url = (typeof enc === "object" ? enc["@_url"] || enc.url || "" : String(enc)) || "";
+  if (!url && raw["media:content"]) {
+    const mc = Array.isArray(raw["media:content"]) ? raw["media:content"][0] : raw["media:content"];
+    url = mc["@_url"] || mc.url || "";
+  }
+  if (!url && raw["media:thumbnail"]) {
+    const mt = Array.isArray(raw["media:thumbnail"]) ? raw["media:thumbnail"][0] : raw["media:thumbnail"];
+    url = mt["@_url"] || mt.url || "";
+  }
+  if (!url) {
+    const html = [raw.description, raw.summary, raw.content, raw.desc]
+      .map(function (v) { return text(v); }).join(" ");
+    const m = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+    if (m) url = m[1];
+  }
+  return absUrl(url, baseUrl);
+}
+
 async function fetchText(url) {
   let lastErr;
   for (let attempt = 1; attempt <= 3; attempt++) {
@@ -99,7 +134,8 @@ function parseAtomEntries(feed) {
       title: text(e.title),
       link,
       date: text(e.published) || text(e.updated),
-      desc: text(e.summary) || text(e.content)
+      desc: text(e.summary) || text(e.content),
+      cover: extractCover(e, link)
     };
   });
 }
@@ -123,7 +159,8 @@ function normalize(id, items, cap) {
       title,
       url,
       time,
-      excerpt: truncate(stripHtml(raw.description || raw.summary || raw.content || ""), 150)
+      excerpt: truncate(stripHtml(raw.description || raw.summary || raw.content || raw.desc || ""), 150),
+      cover: extractCover(raw, url) || ""
     });
     if (out.length >= cap) break;
   }
