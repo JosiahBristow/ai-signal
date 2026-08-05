@@ -31,17 +31,19 @@
 - **📰 一个页面看全**：TechCrunch AI、The Verge AI、量子位、36氪、X 一线 AI 从业者动态、Hacker News、DEV.to，七大来源实时滚动。
 - **🧠 自动分类**：模型发布 / 融资商业 / 政策监管 / 安全风险 / 芯片算力 / 机器人 / 研究 / 应用 / 其他，共 **9 大类** 免人工打标。
 - **🔥 热度排名**：基于社区互动与新鲜度的加权信号强度，找出「此刻最该看的 TOP 5」。
+- **🏆 模型排行榜**：聚合 OpenRouter 月度使用量、Artificial Analysis 综合能力、HuggingFace 开源下载量三大公开榜单，每 30 分钟自动刷新。
 - **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
 - **📚 课程教程**：AI 基础 + Python 入门两门浓缩课，采用菜鸟教程式布局 —— 左侧章节目录（滚动高亮）+ 面包屑 + 上下章翻页 + 相关教程，代码块带语法高亮与一键复制。
 - **📜 有图历史**：AI 发展时间线按阶段展示，点击每个阶段进入带插图的详解。
 - **🌓 七套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 跟随系统，一键即用。
 
-### 📂 五大页面
+### 📂 六大页面
 
 | 页面 | Emoji | 说明 |
 | --- | --- | --- |
 | [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
 | [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
+| [`rank.html`](rank.html) | 🏆 | 大模型排行榜：使用量 / 综合能力 / 开源下载三大榜单标签切换 |
 | [`history.html`](history.html) | 📜 | AI 发展历史：五个阶段 + 插图详解 + 关键里程碑时间线 |
 | [`learn.html`](learn.html) | 📚 | AI 基础：机器学习 / 训练评估 / 学习范式 / 深度学习，22 节数据驱动渲染 |
 | [`python.html`](python.html) | 🐍 | Python 入门：基础语法 / 判断循环函数 / 数据容器 / 面向对象，22 节含 40 个高亮代码块 |
@@ -55,6 +57,7 @@
 | 🧠 | 智能分类 | 标题 + 摘要关键词打分，9 大分类自动归类 |
 | 🔥 | 热度算法 | 互动量（点赞/评论）与新鲜度加权，热榜即时刷新 |
 | 📖 | 站内阅读 | `articles.json` 全文快照，服务端白名单消毒后渲染 |
+| 🏆 | 模型排行榜 | `rankings.json` 聚合三大公开榜单，每 30 分钟 CI 刷新 |
 | 💬 | 评论系统 | Giscus 接入 GitHub Discussions，无需自建后端 |
 | 🌐 | 中英双语 | 全站 i18n 文案 + 按语言筛选新闻，互不影响 |
 | 🎨 | 多主题 | 7 套视觉主题，localStorage 记忆，首屏前注入防闪烁 |
@@ -131,8 +134,8 @@
 
 ![系统架构图](docs/architecture.svg)
 
-- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；原文网页（CI 端抓全文）。
-- **构建层**：`feeds.yml`（每 5 分钟一轮，生成并提交 `feeds.json`）+ `articles.yml`（每 15 分钟一轮，生成并提交 `articles.json`）。
+- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；大模型排行榜（OpenRouter / Artificial Analysis 页面 `__NEXT_DATA__` 提取 + HuggingFace 公开 JSON API）；原文网页（CI 端抓全文）。
+- **构建层**：`feeds.yml`（每 5 分钟一轮，生成并提交 `feeds.json`）+ `articles.yml`（每 15 分钟一轮，生成并提交 `articles.json`）+ `rankings.yml`（每 30 分钟一轮，生成并提交 `rankings.json`）。
 - **存储层**：GitHub 仓库 `main` 分支 + GitHub Pages 静态托管，`.nojekyll` 保证纯静态直接服务。
 - **渲染层**：浏览器同源 `fetch` 快照，HN/DEV.to 直连官方 API，Giscus 走 iframe，全部无框架拼装。
 
@@ -147,7 +150,10 @@ flowchart LR
     C --> F[signal-bot commit & push]
     A2[cron 每 15 分钟] --> B2[build-articles.mjs]
     B2 -->|cheerio 抽取+消毒| E[articles.json<br/>全文/正文长度]
+    A3[cron 每 30 分钟] --> B3[build-rankings.mjs]
+    B3 -->|__NEXT_DATA__ / JSON| R[rankings.json<br/>三榜快照]
     E --> F
+    R --> F
     F --> G[GitHub Pages]
     G --> H[浏览器同源读取]
 ```
@@ -266,6 +272,7 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 .
 ├── 📄 index.html            # 新闻首页（头条/热榜/列表/阅读模式）
 ├── 📄 links.html            # AI 网站导航
+├── 📄 rank.html             # 大模型排行榜（三榜标签切换）
 ├── 📄 history.html          # AI 发展历史（阶段详解 + 时间线）
 ├── 📄 learn.html            # AI 基础课程（菜鸟教程式布局）
 ├── 📄 python.html           # Python 入门课程（菜鸟教程式布局）
@@ -276,15 +283,18 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ├── 🐍 python.js             # Python 课程数据 + 渲染引擎（含代码高亮/复制）
 ├── 📦 feeds.json            # RSS + X 从业者快照（CI 每 5 分钟生成）
 ├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
+├── 📦 rankings.json         # 大模型排行榜快照（CI 每 30 分钟生成）
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
 ├── 🖼️ images/               # 历史页阶段插图（SVG）+ 课程配图（learn/、python/）
 ├── 📚 docs/                 # README 配图（架构/管道/阅读/主题/首页 SVG 图）
 ├── 🤖 .github/workflows/
 │   ├── feeds.yml            # 每 5 分钟构建并提交 feeds.json
-│   └── articles.yml         # 每 15 分钟构建并提交 articles.json
+│   ├── articles.yml         # 每 15 分钟构建并提交 articles.json
+│   └── rankings.yml         # 每 30 分钟构建并提交 rankings.json
 └── 📦 scripts/
     ├── build-feeds.mjs      # RSS 快照 + X 从业者 Bluesky 镜像构建（fast-xml-parser）
     ├── build-articles.mjs   # 全文快照构建（cheerio 抽取+消毒）
+    ├── build-rankings.mjs   # 排行榜快照构建（__NEXT_DATA__ 提取 + HF JSON）
     └── package.json         # 仅构建期依赖（运行时零依赖）
 ```
 
@@ -306,7 +316,10 @@ node build-feeds.mjs
 # ④ 构建全文快照
 node build-articles.mjs
 
-# ⑤ 语法检查
+# ⑤ 构建排行榜快照
+node build-rankings.mjs
+
+# ⑥ 语法检查
 cd ..
 node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 ```
@@ -321,7 +334,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 2. ⚙️ **Settings → Pages → Source: Deploy from a branch → `main` / `/(root)`**。
 3. ⏳ 等待几分钟，访问 `https://<username>.github.io/<repo>/`。
 
-仓库已包含 `.nojekyll`，Pages 直接以纯静态方式服务；`feeds.yml` 会在 **push 与每 5 分钟定时** 自动刷新并提交快照，`articles.yml` 每 15 分钟刷新全文快照。
+仓库已包含 `.nojekyll`，Pages 直接以纯静态方式服务；`feeds.yml` 会在 **push 与每 5 分钟定时** 自动刷新并提交快照，`articles.yml` 每 15 分钟刷新全文快照，`rankings.yml` 每 30 分钟刷新排行榜快照。
 
 ---
 
@@ -330,7 +343,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 | 配置项 | 位置 | 说明 |
 | --- | --- | --- |
 | 💬 Giscus 评论 | `app.js` 顶部 `GISCUS` | 填入 `repo` / `repoId` / `category` / `categoryId` 后启用，未配置时显示友好提示 |
-| 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` / `X_ACCOUNTS` | 增删 RSS 源、X 从业者账号、关键词过滤、抓取上限 |
+| 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` / `X_ACCOUNTS` + `scripts/build-rankings.mjs` 的 `SOURCES` | 增删 RSS 源、X 从业者账号、排行榜源、关键词过滤、抓取上限 |
 | 🧠 分类关键词 | `app.js` 的 `CATEGORIES` | 每个分类的 `kw` 数组，命中即归类 |
 | 📚 课程内容 | `learn.js` 的 `LESSONS` / `PARTS`、`python.js` 的 `LESSONS` / `PARTS` | 每节为 `{part, no, zh, en, hue, tags, lead, blocks}` 双语数据，改数据即改课程 |
 | 🎨 主题 | `common.js` + `styles.css` | CSS 变量与主题列表，新增主题只需加一个 `data-theme` 分支 |
@@ -347,7 +360,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 | 运行时 | 纯 HTML / CSS / JavaScript，无框架、无构建步骤 |
 | 课程渲染 | 数据驱动（`PARTS` / `LESSONS`），正则分词代码高亮 + clipboard API |
 | CI 构建（Node 20+） | `fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒） |
-| 数据源 | RSS/Atom 快照 + X 一线从业者 Bluesky 镜像 + Hacker News / DEV.to 官方 API |
+| 数据源 | RSS/Atom 快照 + X 一线从业者 Bluesky 镜像 + OpenRouter / Artificial Analysis / HuggingFace 排行榜 + Hacker News / DEV.to 官方 API |
 | 托管 | GitHub Actions + GitHub Pages（`.nojekyll` 纯静态） |
 | 评论 | Giscus（GitHub Discussions） |
 

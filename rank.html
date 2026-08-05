@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="mac">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>模型排行榜 · AI SIGNAL</title>
+<meta name="description" content="大模型实时排行榜：OpenRouter 月度使用量、Artificial Analysis 综合能力、HuggingFace 开源下载量。">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("signal-theme");
+      document.documentElement.setAttribute("data-theme", t || "mac");
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/favicon-192.png">
+<link rel="apple-touch-icon" href="icons/favicon-180.png">
+<meta name="theme-color" content="#0b0c0e">
+<link rel="stylesheet" href="styles.css">
+<style>
+  .rank-board { border: 1px solid var(--line); border-radius: var(--radius-m); background: var(--surface); overflow: hidden; }
+  .rank-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  .rank-table thead th {
+    font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--text-faint); text-align: left; font-weight: 500;
+    padding: 12px 14px; border-bottom: 1px solid var(--line);
+  }
+  .rank-table td { padding: 9px 14px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+  .rank-table tbody tr:last-child td { border-bottom: none; }
+  .rank-table tbody tr:hover { background: color-mix(in srgb, var(--accent) 5%, transparent); }
+  .rank-no { font-family: var(--font-mono); color: var(--text-faint); font-size: 12px; width: 40px; }
+  .rank-no.top1 { color: #ffb020; font-weight: 700; }
+  .rank-no.top2 { color: #c9d2da; font-weight: 700; }
+  .rank-no.top3 { color: #e08f5a; font-weight: 700; }
+  .rank-name { font-weight: 600; color: var(--text); }
+  .rank-org { color: var(--text-faint); font-size: 12px; }
+  .rank-value { font-family: var(--font-mono); color: var(--accent); text-align: right; white-space: nowrap; }
+  .rank-bar-wrap { display: flex; align-items: center; gap: 10px; }
+  .rank-bar { flex: 1; min-width: 80px; height: 6px; border-radius: 3px; background: color-mix(in srgb, var(--line) 60%, transparent); overflow: hidden; }
+  .rank-bar i { display: block; height: 100%; border-radius: 3px; background: linear-gradient(90deg, color-mix(in srgb, var(--accent) 55%, transparent), var(--accent)); }
+  .rank-tabs { display: flex; flex-wrap: wrap; gap: 8px; padding: 20px 0 4px; }
+  .rank-meta { color: var(--text-faint); font-size: 12px; padding: 12px 14px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .rank-meta a { color: var(--accent); text-decoration: none; }
+  .rank-meta a:hover { text-decoration: underline; }
+  .rank-empty { padding: 40px 14px; text-align: center; color: var(--text-faint); }
+  .rank-err { padding: 8px 0; color: var(--text-faint); font-size: 12px; }
+</style>
+</head>
+<body data-page="rank">
+
+<a class="skip-link" href="#main" data-i18n="跳到正文">跳到正文</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="SIGNAL 首页">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="brand-name">AI <span class="accent">SIGNAL</span></span>
+      <span class="brand-tag" data-i18n="实时新闻聚合 · 中英双语">实时新闻聚合 · 中英双语</span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="index.html" data-page="news" data-i18n="新闻">新闻</a>
+      <a href="links.html" data-page="links" data-i18n="网站导航">网站导航</a>
+      <a href="rank.html" data-page="rank" data-i18n="模型排行榜">模型排行榜</a>
+      <a href="history.html" data-page="history" data-i18n="发展历史">发展历史</a>
+      <a href="learn.html" data-page="learn" data-i18n="AI 基础">AI 基础</a>
+      <a href="python.html" data-page="python" data-i18n="Python 入门">Python 入门</a>
+    </nav>
+    <div class="header-actions">
+      <span class="signal off" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <div id="theme-mount"></div>
+    </div>
+  </div>
+</header>
+
+<main class="container" id="main">
+  <section class="page-hero">
+    <span class="mono-eyebrow">SIGNAL // LEADERBOARD</span>
+    <h1 data-i18n="大模型排行榜">大模型排行榜</h1>
+    <p class="lead" data-i18n="聚合主流公开榜单：实际使用热度、综合能力与开源生态，每 30 分钟自动刷新。">聚合主流公开榜单：实际使用热度、综合能力与开源生态，每 30 分钟自动刷新。</p>
+  </section>
+
+  <section>
+    <div class="rank-tabs" id="rank-tabs" role="tablist" aria-label="排行榜分类"></div>
+    <div class="rank-board" id="rank-board">
+      <div class="rank-empty" id="rank-loading" data-i18n="加载中…">加载中…</div>
+    </div>
+    <p class="rank-err" id="rank-err" hidden data-i18n="快照不可用，稍后再试。">快照不可用，稍后再试。</p>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">
+      SIGNAL // LEADERBOARD · <span data-i18n="榜单数据来自公开源，仅供参考">榜单数据来自公开源，仅供参考</span>
+    </p>
+  </div>
+</footer>
+
+<script src="common.js"></script>
+<script>
+  (function () {
+    "use strict";
+    var RANK_URL = "rankings.json";
+    var REFRESH_MS = 5 * 60 * 1000;
+    var data = null;
+    var active = null;
+    var T = function (s) { return window.t ? window.t(s) : s; };
+    function pick(o) { return window.SIGNAL_LANG === "en" ? (o && o.en) || "" : (o && o.zh) || ""; }
+
+    function esc(s) {
+      return String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+    }
+
+    function load() {
+      var el = document.getElementById("rank-loading");
+      if (el) el.textContent = T("加载中…");
+      fetch(RANK_URL + "?t=" + Date.now(), { cache: "no-store" })
+        .then(function (r) { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+        .then(function (j) {
+          data = j && Array.isArray(j.boards) ? j.boards : [];
+          if (!data.length) throw new Error("empty boards");
+          if (!active || !data.some(function (b) { return b.id === active; })) active = data[0].id;
+          render();
+          var up = document.getElementById("rank-updated");
+          if (up) up.textContent = relTime(j.builtAt);
+        })
+        .catch(function () {
+          var board = document.getElementById("rank-board");
+          if (board) board.innerHTML = '<div class="rank-empty">' + T("快照不可用，稍后再试。") + "</div>";
+          var err = document.getElementById("rank-err");
+          if (err) err.hidden = false;
+        });
+    }
+
+    function relTime(iso) {
+      var ts = Date.parse(iso || "");
+      if (Number.isNaN(ts)) return "";
+      var d = Date.now() - ts;
+      if (d < 0) return "now";
+      var m = Math.floor(d / 60000);
+      if (m < 1) return "now";
+      if (m < 60) return m + "m";
+      var h = Math.floor(m / 60);
+      if (h < 24) return h + "h";
+      return Math.floor(h / 24) + "d";
+    }
+
+    function boardName(b) {
+      return pick(b.name) || b.id;
+    }
+
+    function renderTabs() {
+      var el = document.getElementById("rank-tabs");
+      if (!el || !data) return;
+      el.innerHTML = "";
+      data.forEach(function (b) {
+        var btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "chip" + (b.id === active ? " active" : "");
+        btn.setAttribute("role", "tab");
+        btn.setAttribute("aria-selected", b.id === active ? "true" : "false");
+        btn.textContent = boardName(b);
+        btn.addEventListener("click", function () { active = b.id; renderTabs(); render(); });
+        el.appendChild(btn);
+      });
+    }
+
+    function render() {
+      renderTabs();
+      var board = document.getElementById("rank-board");
+      if (!board || !data) return;
+      var b = data.filter(function (x) { return x.id === active; })[0];
+      if (!b || !Array.isArray(b.rows) || !b.rows.length) {
+        board.innerHTML = '<div class="rank-empty">' + T("暂无数据") + "</div>";
+        return;
+      }
+      var max = Math.max.apply(null, b.rows.map(function (r) { return r.value || 0; })) || 1;
+      var rows = b.rows.map(function (r, i) {
+        var pct = Math.max(2, Math.round((r.value / max) * 100));
+        var noCls = i === 0 ? " top1" : i === 1 ? " top2" : i === 2 ? " top3" : "";
+        var org = r.org ? '<span class="rank-org"> · ' + esc(r.org) + "</span>" : "";
+        return '<tr><td class="rank-no' + noCls + '">' + (i + 1) + '</td>' +
+          '<td class="rank-name">' + esc(r.name) + org + "</td>" +
+          '<td><div class="rank-bar-wrap"><div class="rank-bar"><i style="width:' + pct + '%"></i></div>' +
+          '<span class="rank-value">' + esc(r.display || r.value) + "</span></div></td></tr>";
+      }).join("");
+      var unit = pick(b.unit);
+      var head = b.rows[0].display !== undefined || b.rows[0].display ? "" : "";
+      board.innerHTML =
+        '<table class="rank-table"><thead><tr>' +
+          '<th class="rank-no">#</th>' +
+          '<th>' + T("模型") + "</th>" +
+          '<th style="text-align:right">' + esc(unit || T("数值")) + "</th>" +
+        "</tr></thead><tbody>" + rows + "</tbody></table>" +
+        '<div class="rank-meta">' +
+          '<span>' + T("更新于") + " " + (b.updated || "") + " · " + T("数据源") + ' <a href="' + esc(b.url || "#") + '" target="_blank" rel="noopener">' + esc(b.id) + "</a></span>" +
+          '<span id="rank-updated">' + T("同步于") + " " + (data.builtAt ? relTime(data.builtAt) + " " + T("前") : "") + "</span>" +
+        "</div>";
+      head; // noop
+    }
+
+    document.addEventListener("signal:lang", function () {
+      renderTabs();
+      render();
+    });
+
+    setInterval(function () { if (document.hidden !== true) load(); }, REFRESH_MS);
+    load();
+  })();
+</script>
+</body>
+</html>

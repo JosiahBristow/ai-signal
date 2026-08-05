@@ -14,7 +14,7 @@
 
   <rect width="1280" height="620" fill="url(#bg)" rx="18"/>
 
-  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">⏱️ 数据快照管道（feeds 每 5 分钟 · articles 每 15 分钟）</text>
+  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">⏱️ 数据快照管道（feeds 5min · articles 15min · rankings 30min）</text>
   <text x="50" y="80" font-size="13.5" fill="#7f8b96">GitHub Actions cron 调度 → 构建 → 提交 → Pages 同步 → 浏览器读取，全自动、幂等、零服务器</text>
 
   <!-- Steps row -->

@@ -2,11 +2,12 @@
 
 Static multi-page AI news aggregator (SIGNAL). Pure HTML/CSS/JS, no framework, no
 build step. Pages: `index.html` (news), `links.html` (site navigation),
-`history.html` (AI history timeline), `learn.html` (AI basics course),
-`python.html` (Python intro course). Data comes from `feeds.json` (RSS snapshot +
-X practitioner Bluesky mirror) + `articles.json` (full-text snapshot for reader
-mode), both produced in CI by GitHub Actions and read same-origin. HN / DEV.to
-are fetched live via their APIs.
+`rank.html` (LLM leaderboards), `history.html` (AI history timeline),
+`learn.html` (AI basics course), `python.html` (Python intro course). Data comes
+from `feeds.json` (RSS snapshot + X practitioner Bluesky mirror) + `articles.json`
+(full-text snapshot for reader mode) + `rankings.json` (leaderboard snapshot),
+produced in CI by GitHub Actions and read same-origin. HN / DEV.to are fetched
+live via their APIs.
 
 ## Current state
 
@@ -18,11 +19,17 @@ are fetched live via their APIs.
   fetch only; cards show `@handle` as author and link to `bsky.app`.
 - Theme system: `common.js` + `styles.css` (`signal-theme` localStorage,
   `data-theme` on `<html>`: paper / midnight / aurora / ink / auto).
-- CI: two workflows — `.github/workflows/feeds.yml` (cron `*/5 * * * *`,
-  builds `feeds.json` via `scripts/build-feeds.mjs`, fast) and
+- CI: three workflows — `.github/workflows/feeds.yml` (cron `*/5 * * * *`,
+  builds `feeds.json` via `scripts/build-feeds.mjs`, fast),
   `.github/workflows/articles.yml` (cron `*/15 * * * *`, builds `articles.json`
-  via `scripts/build-articles.mjs`, heavy full-text fetch). Both commit as
-  signal-bot.
+  via `scripts/build-articles.mjs`, heavy full-text fetch), and
+  `.github/workflows/rankings.yml` (cron `*/30 * * * *`, builds `rankings.json`
+  via `scripts/build-rankings.mjs`, no deps). All commit as signal-bot.
+- Leaderboards: `rank.html` reads `rankings.json` (tabs: OpenRouter monthly usage
+  via `__NEXT_DATA__` extraction, Artificial Analysis via `__NEXT_DATA__`,
+  HuggingFace open downloads via `huggingface.co/api/models` JSON). Live fetch
+  can't be verified locally (sandbox egress blocked) — relies on CI logs to
+  confirm parsing.
 - Browser CORS reality: only allorigins works client-side and it is heavily
   rate-limited; r.jina.ai / codetabs / corsproxy / cors.eu.org are unreliable or
   blocked. Full-text fetching therefore happens server-side in CI only.
@@ -41,10 +48,13 @@ are fetched live via their APIs.
 - Build snapshot: `node scripts/build-feeds.mjs` (RSS + X practitioner Bluesky mirror)
 - Build full-text snapshot: `node scripts/build-articles.mjs` (reads `feeds.json`,
   fetches top articles, sanitizes via cheerio whitelist, writes `articles.json`)
+- Build leaderboard snapshot: `node scripts/build-rankings.mjs` (writes `rankings.json`)
 - Syntax check: `node --check app.js common.js history.js scripts/*.mjs`
 - Bluesky parse unit test (mock fetch, no network): `node /tmp/opencode/bsky-test.mjs`
 - Progressive render test (snapshot-first, live-append, mock fetch):
   `node /tmp/opencode/progressive-test.js`
+- Leaderboard build test (mock fetch): `node /tmp/opencode/rankings-test.mjs`
+- Leaderboard render test (DOM stub): `node /tmp/opencode/rank-render-test.js`
 - Smoke test (jsdom, mock fetch): `node /tmp/opencode/ai-test/smoke.js` — asserts
   pages render, snapshot-first feed loading, category chips, reader mode
   (open/render/close/fallback), history/links pages. (smoke.js currently missing;
