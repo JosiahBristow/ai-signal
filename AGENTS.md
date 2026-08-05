@@ -2,7 +2,8 @@
 
 Static multi-page AI news aggregator (SIGNAL). Pure HTML/CSS/JS, no framework, no
 build step. Pages: `index.html` (news), `links.html` (site navigation),
-`history.html` (AI history timeline). Data comes from `feeds.json` (RSS snapshot)
+`history.html` (AI history timeline), `learn.html` (AI basics course),
+`python.html` (Python intro course). Data comes from `feeds.json` (RSS snapshot)
 + `articles.json` (full-text snapshot for reader mode), both produced in CI by
 GitHub Actions and read same-origin. HN / DEV.to are fetched live via their APIs.
 

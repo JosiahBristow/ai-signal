@@ -26,22 +26,25 @@
 
 ### 这是什么？
 
-**AI SIGNAL** 是一个 **实时聚合中英文 AI 领域最新动态** 的新闻站。它把散落在各个角落的 AI 信息 —— 英文科技媒体的 RSS、中文 AI 媒体的头条、Hacker News / DEV.to 的技术讨论 —— 汇聚成一个「信号台」：
+**AI SIGNAL** 是一个 **实时聚合中英文 AI 领域最新动态** 的新闻站，并附带两门自研教程课。它把散落在各个角落的 AI 信息 —— 英文科技媒体的 RSS、中文 AI 媒体的头条、Hacker News / DEV.to 的技术讨论 —— 汇聚成一个「信号台」：
 
 - **📰 一个页面看全**：TechCrunch AI、The Verge AI、量子位、36氪、Hacker News、DEV.to，六大来源实时滚动。
 - **🧠 自动分类**：模型发布 / 融资商业 / 政策监管 / 安全风险 / 芯片算力 / 机器人 / 研究 / 应用 / 其他，共 **9 大类** 免人工打标。
 - **🔥 热度排名**：基于社区互动与新鲜度的加权信号强度，找出「此刻最该看的 TOP 5」。
 - **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
-- **🌓 七套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 跟随系统，一键即用。
+- **📚 课程教程**：AI 基础 + Python 入门两门浓缩课，采用菜鸟教程式布局 —— 左侧章节目录（滚动高亮）+ 面包屑 + 上下章翻页 + 相关教程，代码块带语法高亮与一键复制。
 - **📜 有图历史**：AI 发展时间线按阶段展示，点击每个阶段进入带插图的详解。
+- **🌓 七套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 跟随系统，一键即用。
 
-### 📂 三大页面
+### 📂 五大页面
 
 | 页面 | Emoji | 说明 |
 | --- | --- | --- |
 | [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
 | [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
 | [`history.html`](history.html) | 📜 | AI 发展历史：五个阶段 + 插图详解 + 关键里程碑时间线 |
+| [`learn.html`](learn.html) | 📚 | AI 基础：机器学习 / 训练评估 / 学习范式 / 深度学习，22 节数据驱动渲染 |
+| [`python.html`](python.html) | 🐍 | Python 入门：基础语法 / 判断循环函数 / 数据容器 / 面向对象，22 节含 40 个高亮代码块 |
 
 ### ✨ 核心能力一览
 
@@ -56,6 +59,9 @@
 | 🌐 | 中英双语 | 全站 i18n 文案 + 按语言筛选新闻，互不影响 |
 | 🎨 | 多主题 | 7 套视觉主题，localStorage 记忆，首屏前注入防闪烁 |
 | 🔍 | 搜索筛选 | 关键词搜索 + 语言 / 分类 / 来源三维过滤 |
+| 📚 | 课程教程 | 菜鸟教程式布局：左侧章节目录 + 滚动高亮 + 上下章翻页 + 相关教程 |
+| 🖥️ | 代码高亮 | Python 教程内置正则分词高亮（关键字/字符串/注释/数字/内建函数） |
+| 📋 | 一键复制 | 代码块一键复制，clipboard API + execCommand 双兜底 |
 | 📜 | 阶段详解 | 历史页每阶段配插图，点击进入带概览与关键节点的详解 |
 | 🗺️ | 网站导航 | 精选 AI 站点分类导航，图标多源降级加载 |
 
@@ -68,6 +74,7 @@
 1. **🚫 浏览器 CORS 限制** —— 浏览器无法直接抓取绝大多数 RSS 与网页全文。传统方案需要自建后端做代理，成本高、维护重。**AI SIGNAL 用「CI 服务端抓取 + 静态快照」绕开 CORS**，浏览器只做同源读取。
 2. **☁️ 不想维护服务器** —— 纯静态站点托管在 GitHub Pages，**零服务器、零数据库、零追踪、零成本**。数据由 GitHub Actions 定时写入 Git 仓库，天然拥有版本历史与回滚能力。
 3. **📚 信息太分散** —— 中文 AI 动态、英文科技新闻、社区讨论散落在不同平台。AI SIGNAL 把它们归一化进**同一条时间线**，并按语言 / 分类 / 来源自由切片。
+4. **🎓 入门门槛高** —— AI 与 Python 的优质中文浓缩资料分散。两门课程按「课件 + 公开资料」整理成渐进式章节，数据驱动渲染，无需下载 PDF。
 
 ### 设计哲学
 
@@ -75,6 +82,7 @@
 - 🪶 **零依赖运行时**：站点本体是纯 HTML/CSS/JS，所有 Node 依赖只存在于 `scripts/` 构建期。
 - 🛡️ **安全兜底**：全文一律服务端白名单消毒后才进 `innerHTML`；无快照时绝不在浏览器端代抓，只回退到新标签页。
 - 💾 **Git 即数据库**：快照提交进仓库，历史内容有版本、可回滚、可审计。
+- 📚 **数据即内容**：课程内容以 JS 数据（`PARTS` / `LESSONS`）形式驱动渲染，增删章节只需改数据。
 
 ### 与常见方案对比
 
@@ -88,6 +96,15 @@
 ---
 
 ## 📸 界面预览
+
+### 课程页：菜鸟教程式布局
+
+「AI 基础」与「Python 入门」采用教程排版 —— 左侧章节目录随滚动高亮当前节，顶部面包屑 + 标题卡，正文每课末尾带「上一章 / 下一章」翻页，右侧为相关教程：
+
+<p align="center">
+  <img src="images/learn/learn-gradient3.jpg" width="46%" alt="AI 基础课程内容">
+  <img src="images/python/py-list-index.jpg" width="46%" alt="Python 数据容器">
+</p>
 
 ### 历史页：阶段详解
 
@@ -158,7 +175,24 @@ flowchart LR
 - **ticker 信号流**：取最新 12 条双份拼接，CSS 动画无缝循环滚动。
 - **站内阅读**：桌面端浮动窗口读全文，手机端卡片内联展开，点空白折叠；无快照自动回退新标签页。
 
-### 4️⃣ 智能分类器：关键词打分
+### 4️⃣ 课程引擎（`learn.js` / `python.js`）
+
+两门课共用一套数据驱动渲染：
+
+```
+PARTS（4 个部分）+ LESSONS（22 节 × 类型化 block）
+  ──► 渲染：PART 分隔卡 + 课程卡片（p/table/callout/list/terms/fig/code）
+  ──► 教程布局：左侧章节目录（按 PART 分组）+ scroll-spy 高亮 + 面包屑
+  ──► 每课尾部「上一章 / 下一章」翻页，右侧「相关教程」面板
+  ──► signal:lang 事件触发全量重渲染（中英双语）
+```
+
+- **block 类型**：`p` / `sub` / `list` / `terms` / `table` / `callout` / `fig` / `code`（仅 Python 课），均为 `{zh, en}` 双语数据。
+- **滚动高亮**：`scroll` + `requestAnimationFrame` 节流，计算当前视口章节并高亮左侧目录、同步面包屑。
+- **代码高亮**：`pyHighlight()` 正则分词，输出 `tok-k`（关键字）/ `tok-s`（字符串）/ `tok-c`（注释）/ `tok-n`（数字）/ `tok-b`（内建函数）/ `tok-d`（装饰器）六类 token，与七套主题 CSS 变量联动。
+- **一键复制**：事件委托处理 `.l-code-copy`，优先 `navigator.clipboard`，失败回退 `execCommand`，按钮反馈「已复制 / 复制失败」。
+
+### 5️⃣ 智能分类器：关键词打分
 
 每条新闻以 **标题 + 摘要** 拼接后，对 9 个分类的预置关键词表做子串匹配，**第一个命中即归类**，全部未命中落入「其他」：
 
@@ -183,7 +217,7 @@ flowchart TD
     P -->|否| R[📦 其他]
 ```
 
-### 5️⃣ 热度算法：互动 × 新鲜度
+### 6️⃣ 热度算法：互动 × 新鲜度
 
 每条新闻计算一个 `heat` 信号强度，驱动热榜与同文去重：
 
@@ -197,7 +231,7 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 
 社区活跃的 HN/DEV.to 新闻天然靠前；RSS 源按时间排序作为时间线的补充，避免被「刷屏热点」淹没。
 
-### 6️⃣ 站内阅读与内容消毒
+### 7️⃣ 站内阅读与内容消毒
 
 ![站内阅读与消毒](docs/reader.svg)
 
@@ -212,14 +246,14 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 
 > 🛡️ **安全底线**：绝不引入未验证的外部脚本，绝不保留 `javascript:` 链接，渲染结果只含干净的文本、链接与图片。
 
-### 7️⃣ 主题系统与双语
+### 8️⃣ 主题系统与双语
 
 - **主题**：`data-theme` 属性挂在 `<html>` 上，CSS 变量驱动整套配色。选择存 `localStorage`（`signal-theme`），且**在 `<head>` 内联脚本首屏前读回**，杜绝主题闪烁。`auto` 主题通过 `matchMedia` 监听系统深浅色。
 - **极简主题**：致敬 suckless.org 的「极简」主题 —— 白底黑字、方正无圆角、无阴影、无毛玻璃，可用 `data-theme="suckless"` 单独启用。
 - **双语**：`common.js` 内置全站 i18n 词表，`window.t()` 统一翻译，`data-i18n` 标记批量应用；语言切换通过 `signal:lang` 自定义事件广播，Giscus 评论语言与主题同步跟随。
 - **事件总线**：主题、语言、刷新均以 `CustomEvent` 广播，模块间低耦合。
 
-### 8️⃣ 导航页图标降级
+### 9️⃣ 导航页图标降级
 
 导航页 28 个站点图标默认请求 Google favicon 服务；不可达时自动探测 Fastly → DuckDuckGo → favicon.im，全部失败则回退为**首字母占位图标**，任何网络环境下都能正常显示。
 
@@ -232,13 +266,17 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ├── 📄 index.html            # 新闻首页（头条/热榜/列表/阅读模式）
 ├── 📄 links.html            # AI 网站导航
 ├── 📄 history.html          # AI 发展历史（阶段详解 + 时间线）
-├── 🎨 styles.css            # 七套主题设计系统（CSS 变量）
+├── 📄 learn.html            # AI 基础课程（菜鸟教程式布局）
+├── 📄 python.html           # Python 入门课程（菜鸟教程式布局）
+├── 🎨 styles.css            # 七套主题设计系统 + 教程布局（CSS 变量）
 ├── ⚙️ common.js             # 主题切换 / 导航 / 双语 i18n
 ├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
+├── 📚 learn.js              # AI 基础课程数据 + 渲染引擎
+├── 🐍 python.js             # Python 课程数据 + 渲染引擎（含代码高亮/复制）
 ├── 📦 feeds.json            # RSS 快照（CI 每 15 分钟生成）
 ├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
-├── 🖼️ images/               # 历史页阶段插图（SVG，5 个阶段）
+├── 🖼️ images/               # 历史页阶段插图（SVG）+ 课程配图（learn/、python/）
 ├── 📚 docs/                 # README 配图（架构/管道/阅读/主题/首页 SVG 图）
 ├── 🤖 .github/workflows/feeds.yml  # 定时构建 + 自动提交
 └── 📦 scripts/
@@ -267,7 +305,7 @@ node build-articles.mjs
 
 # ⑤ 语法检查
 cd ..
-node --check app.js common.js history.js scripts/*.mjs
+node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 ```
 
 > 🖥️ 本地预览直接用任意静态服务器，例如 `python3 -m http.server`。
@@ -291,6 +329,7 @@ node --check app.js common.js history.js scripts/*.mjs
 | 💬 Giscus 评论 | `app.js` 顶部 `GISCUS` | 填入 `repo` / `repoId` / `category` / `categoryId` 后启用，未配置时显示友好提示 |
 | 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` | 增删 RSS 源、关键词过滤、抓取上限 |
 | 🧠 分类关键词 | `app.js` 的 `CATEGORIES` | 每个分类的 `kw` 数组，命中即归类 |
+| 📚 课程内容 | `learn.js` 的 `LESSONS` / `PARTS`、`python.js` 的 `LESSONS` / `PARTS` | 每节为 `{part, no, zh, en, hue, tags, lead, blocks}` 双语数据，改数据即改课程 |
 | 🎨 主题 | `common.js` + `styles.css` | CSS 变量与主题列表，新增主题只需加一个 `data-theme` 分支 |
 | 🌐 文案 | `common.js` 的 `I18N` | 中英词表，`zh`/`en` 字段 |
 | 📜 历史阶段 | `history.js` 的 `ERAS` / `DETAILS` / `ITEMS` | 阶段、详解文案与时间线条目，均为中英双语数据 |
@@ -303,6 +342,7 @@ node --check app.js common.js history.js scripts/*.mjs
 | 类别 | 选型 |
 | --- | --- |
 | 运行时 | 纯 HTML / CSS / JavaScript，无框架、无构建步骤 |
+| 课程渲染 | 数据驱动（`PARTS` / `LESSONS`），正则分词代码高亮 + clipboard API |
 | CI 构建（Node 20+） | `fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒） |
 | 数据源 | RSS/Atom 快照 + Hacker News / DEV.to 官方 API |
 | 托管 | GitHub Actions + GitHub Pages（`.nojekyll` 纯静态） |
@@ -315,6 +355,8 @@ node --check app.js common.js history.js scripts/*.mjs
 > 📚 本站仅聚合链接与摘要，所有内容版权归原网站所有。全文快照用于站内阅读，请以 **15 分钟快照周期内** 的原文为准。
 >
 > 🔗 导航页收录的均为公开资源，跳转行为发生在原网站，本站不承担由此产生的内容责任。
+>
+> 📖 课程页内容根据公开教学资料整理，仅供学习使用；配图来源标注见各页图注。
 
 ---
 
