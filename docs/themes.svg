@@ -8,8 +8,8 @@
 
   <rect width="1280" height="760" fill="url(#bg)" rx="18"/>
 
-  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">🎨 七套主题 · 一键切换 · localStorage 记忆</text>
-  <text x="50" y="80" font-size="13.5" fill="#7f8b96">晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 跟随系统 —— 头部主题下拉菜单即选即生效</text>
+  <text x="50" y="54" font-size="24" font-weight="700" fill="#e8eaed">🎨 八套主题 · 一键切换 · localStorage 记忆</text>
+  <text x="50" y="80" font-size="13.5" fill="#7f8b96">晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 极简暗色(Suckless Dark) / 跟随系统 —— 头部主题下拉菜单即选即生效</text>
 
   <g font-family="system-ui, -apple-system, 'Segoe UI', 'PingFang SC', sans-serif">
     <!-- 1 paper 晨报 -->
@@ -110,12 +110,26 @@
       <rect x="662" y="522" width="200" height="8" rx="4" fill="#1c2024"/>
     </g>
 
+    <!-- 8 suckless-dark 极简暗色 -->
+    <g>
+      <rect x="940" y="340" width="280" height="200" rx="14" fill="#0d0d0d" stroke="#e6e6e6" stroke-width="2"/>
+      <rect x="940" y="340" width="280" height="10" fill="#e6e6e6"/>
+      <text x="962" y="400" fill="#e6e6e6" font-size="17" font-weight="700">⬛ 极简暗色 Suckless Dark</text>
+      <rect x="962" y="418" width="120" height="7" fill="#3a3a3a"/>
+      <rect x="962" y="434" width="180" height="7" fill="#3a3a3a"/>
+      <rect x="962" y="450" width="150" height="7" fill="#3a3a3a"/>
+      <rect x="962" y="476" width="90" height="24" rx="0" fill="#e6e6e6"/>
+      <text x="974" y="493" fill="#0d0d0d" font-size="11">纯黑 · 无圆角 · 无阴影</text>
+      <rect x="962" y="508" width="90" height="8" fill="#2a2a2a"/>
+      <rect x="962" y="522" width="200" height="8" fill="#2a2a2a"/>
+    </g>
+
     <!-- Note -->
     <g font-size="12.5" fill="#7f8b96">
       <rect x="40" y="580" width="1180" height="140" rx="14" fill="#10161c" stroke="#1f2a33"/>
       <text x="62" y="612" fill="#4fd8ff" font-size="16" font-weight="600">🧠 实现原理</text>
       <text x="62" y="638" fill="#c9d2da">localStorage 键 signal-theme 记忆用户选择；data-theme 属性挂在 &lt;html&gt; 上，CSS 变量驱动整套配色</text>
-      <text x="62" y="662" fill="#c9d2da">极简主题（suckless）：白底黑字、方正无圆角、无阴影、无毛玻璃，致敬 suckless.org 的极简哲学</text>
+      <text x="62" y="662" fill="#c9d2da">极简主题（suckless）：白底黑字、方正无圆角、无阴影、无毛玻璃；极简暗色（suckless-dark）黑底白字、深浅互反，致敬 suckless.org 的极简哲学</text>
       <text x="62" y="686" fill="#c9d2da">跟随系统：matchMedia 监听 prefers-color-scheme；主题切换同步 Giscus 评论暗/亮模式</text>
       <text x="62" y="706" fill="#7f8b96">signal:theme / signal:lang 自定义事件全局广播 · 首屏前内联脚本读存储，避免主题闪烁</text>
     </g>

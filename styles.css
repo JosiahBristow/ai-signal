@@ -135,9 +135,8 @@ html[data-theme="ink"] {
    一切从简，软件哲学：做减法
    ============================================================ */
 
-html[data-theme="suckless"] {
-  color-scheme: light;
-
+html[data-theme="suckless"],
+html[data-theme="suckless-dark"] {
   --font-display: "Verdana", "DejaVu Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
   --font-body: "Verdana", "DejaVu Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Arial", sans-serif;
   --font-mono: "Liberation Mono", "DejaVu Sans Mono", ui-monospace, "Cascadia Code", "SF Mono", monospace;
@@ -145,6 +144,25 @@ html[data-theme="suckless"] {
   --radius-s: 0px;
   --radius-m: 0px;
   --radius-l: 0px;
+
+  --shadow: none;
+  --shadow-hover: none;
+  --glow: none;
+  --cat-l: 32%;
+
+  /* 共享的 suckless 组件变量（浅色为默认，暗色在下方覆盖） */
+  --sl-bg: #ffffff;
+  --sl-bg-soft: #e8e8e8;
+  --sl-fg: #000000;
+  --sl-dim: #333333;
+  --sl-faint: #444444;
+  --sl-accent: #004b97;
+  --sl-live: #cc0000;
+  --sl-skel: #d0d0d0;
+}
+
+html[data-theme="suckless"] {
+  color-scheme: light;
 
   --bg: #ffffff;
   --bg-soft: #ffffff;
@@ -159,16 +177,46 @@ html[data-theme="suckless"] {
   --accent-2: #004b97;
   --accent-contrast: #ffffff;
   --live: #cc0000;
-  --shadow: none;
-  --shadow-hover: none;
-  --glow: none;
-  --cat-l: 32%;
   --tok-key: #000000;
   --tok-str: #000000;
   --tok-num: #000000;
   --tok-builtin: #000000;
   --tok-comment: #444444;
   --tok-deco: #000000;
+}
+
+html[data-theme="suckless-dark"] {
+  color-scheme: dark;
+
+  --bg: #0d0d0d;
+  --bg-soft: #0d0d0d;
+  --surface: #0d0d0d;
+  --surface-2: #161616;
+  --line: #ffffff;
+  --line-strong: #ffffff;
+  --text: #e6e6e6;
+  --text-dim: #c4c4c4;
+  --text-faint: #8a8a8a;
+  --accent: #7fb2ff;
+  --accent-2: #7fb2ff;
+  --accent-contrast: #0d0d0d;
+  --live: #ff6b6b;
+  --cat-l: 74%;
+  --tok-key: #e6e6e6;
+  --tok-str: #e6e6e6;
+  --tok-num: #e6e6e6;
+  --tok-builtin: #e6e6e6;
+  --tok-comment: #8a8a8a;
+  --tok-deco: #e6e6e6;
+
+  --sl-bg: #0d0d0d;
+  --sl-bg-soft: #2a2a2a;
+  --sl-fg: #e6e6e6;
+  --sl-dim: #c4c4c4;
+  --sl-faint: #8a8a8a;
+  --sl-accent: #7fb2ff;
+  --sl-live: #ff6b6b;
+  --sl-skel: #3a3a3a;
 }
 
 /* ============================================================
@@ -2204,241 +2252,241 @@ body.reader-open { overflow: hidden; }
 .card.expanded .read-toggle svg { transform: rotate(180deg); }
 
 /* ============================================================
-   SUCKLESS 极简主题 —— 组件覆盖
-   白底黑字 / 纯色方正 / 无圆角 / 无阴影 / 无毛玻璃 / 黑色分隔线
+   SUCKLESS 极简主题 / SUCKLESS 极简暗色 —— 组件覆盖
+   纯色方正 / 无圆角 / 无阴影 / 无毛玻璃 / 黑色分隔线（深浅互反）
    ============================================================ */
 
-html[data-theme="suckless"] body {
-  background: #ffffff;
+html[data-theme="suckless"] body, html[data-theme="suckless-dark"] body {
+  background: var(--sl-bg);
   transition: none;
   -webkit-font-smoothing: auto;
   text-rendering: optimizeSpeed;
 }
-html[data-theme="suckless"] ::selection { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] :focus-visible { outline: 2px solid #000000; outline-offset: 1px; border-radius: 0; }
+html[data-theme="suckless"] ::selection, html[data-theme="suckless-dark"] ::selection { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] :focus-visible, html[data-theme="suckless-dark"] :focus-visible { outline: 2px solid var(--sl-fg); outline-offset: 1px; border-radius: 0; }
 
 /* 去掉毛玻璃 */
-html[data-theme="suckless"] .site-header,
-html[data-theme="suckless"] .theme-panel,
-html[data-theme="suckless"] .reader-panel,
-html[data-theme="suckless"] .card,
-html[data-theme="suckless"] .hero,
-html[data-theme="suckless"] .hot-panel,
-html[data-theme="suckless"] .links-col,
-html[data-theme="suckless"] .skeleton {
+html[data-theme="suckless"] .site-header, html[data-theme="suckless-dark"] .site-header,
+html[data-theme="suckless"] .theme-panel, html[data-theme="suckless-dark"] .theme-panel,
+html[data-theme="suckless"] .reader-panel, html[data-theme="suckless-dark"] .reader-panel,
+html[data-theme="suckless"] .card, html[data-theme="suckless-dark"] .card,
+html[data-theme="suckless"] .hero, html[data-theme="suckless-dark"] .hero,
+html[data-theme="suckless"] .hot-panel, html[data-theme="suckless-dark"] .hot-panel,
+html[data-theme="suckless"] .links-col, html[data-theme="suckless-dark"] .links-col,
+html[data-theme="suckless"] .skeleton, html[data-theme="suckless-dark"] .skeleton {
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 
 /* 头部 */
-html[data-theme="suckless"] .site-header {
-  background: #ffffff;
-  border-bottom: 2px solid #000000;
+html[data-theme="suckless"] .site-header, html[data-theme="suckless-dark"] .site-header {
+  background: var(--sl-bg);
+  border-bottom: 2px solid var(--sl-fg);
 }
-html[data-theme="suckless"] .brand-mark i { background: #000000; border-radius: 0; }
-html[data-theme="suckless"] .brand-name { font-family: var(--font-body); letter-spacing: 0; }
-html[data-theme="suckless"] .brand-tag { color: #444444; }
-html[data-theme="suckless"] .main-nav a { border-radius: 0; color: #000000; }
-html[data-theme="suckless"] .main-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
-html[data-theme="suckless"] .main-nav a.active {
-  color: #ffffff;
-  background: #000000;
+html[data-theme="suckless"] .brand-mark i, html[data-theme="suckless-dark"] .brand-mark i { background: var(--sl-fg); border-radius: 0; }
+html[data-theme="suckless"] .brand-name, html[data-theme="suckless-dark"] .brand-name { font-family: var(--font-body); letter-spacing: 0; }
+html[data-theme="suckless"] .brand-tag, html[data-theme="suckless-dark"] .brand-tag { color: var(--sl-faint); }
+html[data-theme="suckless"] .main-nav a, html[data-theme="suckless-dark"] .main-nav a { border-radius: 0; color: var(--sl-fg); }
+html[data-theme="suckless"] .main-nav a:hover, html[data-theme="suckless-dark"] .main-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
+html[data-theme="suckless"] .main-nav a.active, html[data-theme="suckless-dark"] .main-nav a.active {
+  color: var(--sl-bg);
+  background: var(--sl-fg);
   box-shadow: none;
 }
-html[data-theme="suckless"] .header-btn {
+html[data-theme="suckless"] .header-btn, html[data-theme="suckless-dark"] .header-btn {
   border-radius: 0;
-  border-color: #000000;
-  background: #ffffff;
-  color: #000000;
+  border-color: var(--sl-fg);
+  background: var(--sl-bg);
+  color: var(--sl-fg);
 }
-html[data-theme="suckless"] .header-btn:hover { border-color: #000000; background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .live-label { color: #cc0000; }
+html[data-theme="suckless"] .header-btn:hover, html[data-theme="suckless-dark"] .header-btn:hover { border-color: var(--sl-fg); background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .live-label, html[data-theme="suckless-dark"] .live-label { color: var(--sl-live); }
 
 /* 信号流 ticker */
-html[data-theme="suckless"] .ticker { background: #ffffff; border-bottom: 1px solid #000000; }
-html[data-theme="suckless"] .ticker-label {
+html[data-theme="suckless"] .ticker, html[data-theme="suckless-dark"] .ticker { background: var(--sl-bg); border-bottom: 1px solid var(--sl-fg); }
+html[data-theme="suckless"] .ticker-label, html[data-theme="suckless-dark"] .ticker-label {
   border-radius: 0;
-  border-color: #000000;
-  color: #000000;
+  border-color: var(--sl-fg);
+  color: var(--sl-fg);
 }
-html[data-theme="suckless"] .ticker-track a { color: #1a1a1a; }
-html[data-theme="suckless"] .ticker-track a:hover { color: #004b97; }
+html[data-theme="suckless"] .ticker-track a, html[data-theme="suckless-dark"] .ticker-track a { color: var(--sl-dim); }
+html[data-theme="suckless"] .ticker-track a:hover, html[data-theme="suckless-dark"] .ticker-track a:hover { color: var(--sl-accent); }
 
 /* 筛选条 */
-html[data-theme="suckless"] .filter-group + .filter-group { border-left-color: #000000; }
-html[data-theme="suckless"] .chip {
+html[data-theme="suckless"] .filter-group + .filter-group, html[data-theme="suckless-dark"] .filter-group + .filter-group { border-left-color: var(--sl-fg); }
+html[data-theme="suckless"] .chip, html[data-theme="suckless-dark"] .chip {
   border-radius: 0;
-  border-color: #000000;
-  color: #000000;
-  background: #ffffff;
+  border-color: var(--sl-fg);
+  color: var(--sl-fg);
+  background: var(--sl-bg);
 }
-html[data-theme="suckless"] .chip:hover { border-color: #000000; }
-html[data-theme="suckless"] .chip.active { background: #000000; color: #ffffff; border-color: #000000; }
-html[data-theme="suckless"] .search-wrap input {
+html[data-theme="suckless"] .chip:hover, html[data-theme="suckless-dark"] .chip:hover { border-color: var(--sl-fg); }
+html[data-theme="suckless"] .chip.active, html[data-theme="suckless-dark"] .chip.active { background: var(--sl-fg); color: var(--sl-bg); border-color: var(--sl-fg); }
+html[data-theme="suckless"] .search-wrap input, html[data-theme="suckless-dark"] .search-wrap input {
   border-radius: 0;
-  border-color: #000000;
-  background: #ffffff;
-  color: #000000;
+  border-color: var(--sl-fg);
+  background: var(--sl-bg);
+  color: var(--sl-fg);
 }
-html[data-theme="suckless"] .search-wrap input:focus { border-color: #004b97; }
+html[data-theme="suckless"] .search-wrap input:focus, html[data-theme="suckless-dark"] .search-wrap input:focus { border-color: var(--sl-accent); }
 
 /* 头条 / 热榜 / 卡片 */
-html[data-theme="suckless"] .hero,
-html[data-theme="suckless"] .hot-panel,
-html[data-theme="suckless"] .card {
-  background: #ffffff;
+html[data-theme="suckless"] .hero, html[data-theme="suckless-dark"] .hero,
+html[data-theme="suckless"] .hot-panel, html[data-theme="suckless-dark"] .hot-panel,
+html[data-theme="suckless"] .card, html[data-theme="suckless-dark"] .card {
+  background: var(--sl-bg);
   box-shadow: none;
-  border-color: #000000;
+  border-color: var(--sl-fg);
 }
-html[data-theme="suckless"] .hero { border-width: 2px; }
-html[data-theme="suckless"] .hero:hover,
-html[data-theme="suckless"] .card:hover { transform: none; box-shadow: none; }
-html[data-theme="suckless"] .hero::after { display: none; }
-html[data-theme="suckless"] .card .card-top { border-top-color: #000000; }
-html[data-theme="suckless"] .hero-cover,
-html[data-theme="suckless"] .card-cover { border-radius: 0; background: #ffffff; }
-html[data-theme="suckless"] .card-title { color: #000000; }
-html[data-theme="suckless"] .card-link:hover .card-title { color: #004b97; text-decoration: underline; text-underline-offset: 3px; }
-html[data-theme="suckless"] .card-desc { color: #333333; }
+html[data-theme="suckless"] .hero, html[data-theme="suckless-dark"] .hero { border-width: 2px; }
+html[data-theme="suckless"] .hero:hover, html[data-theme="suckless-dark"] .hero:hover,
+html[data-theme="suckless"] .card:hover, html[data-theme="suckless-dark"] .card:hover { transform: none; box-shadow: none; }
+html[data-theme="suckless"] .hero::after, html[data-theme="suckless-dark"] .hero::after { display: none; }
+html[data-theme="suckless"] .card .card-top, html[data-theme="suckless-dark"] .card .card-top { border-top-color: var(--sl-fg); }
+html[data-theme="suckless"] .hero-cover, html[data-theme="suckless-dark"] .hero-cover,
+html[data-theme="suckless"] .card-cover, html[data-theme="suckless-dark"] .card-cover { border-radius: 0; background: var(--sl-bg); }
+html[data-theme="suckless"] .card-title, html[data-theme="suckless-dark"] .card-title { color: var(--sl-fg); }
+html[data-theme="suckless"] .card-link:hover .card-title, html[data-theme="suckless-dark"] .card-link:hover .card-title { color: var(--sl-accent); text-decoration: underline; text-underline-offset: 3px; }
+html[data-theme="suckless"] .card-desc, html[data-theme="suckless-dark"] .card-desc { color: var(--sl-dim); }
 
 /* 徽章 */
-html[data-theme="suckless"] .badge { border-radius: 0; }
-html[data-theme="suckless"] .badge-src { color: #333333; border-color: #000000; background: #ffffff; }
-html[data-theme="suckless"] .badge-cat {
-  color: #000000;
-  border-color: #000000;
-  background: #ffffff;
+html[data-theme="suckless"] .badge, html[data-theme="suckless-dark"] .badge { border-radius: 0; }
+html[data-theme="suckless"] .badge-src, html[data-theme="suckless-dark"] .badge-src { color: var(--sl-dim); border-color: var(--sl-fg); background: var(--sl-bg); }
+html[data-theme="suckless"] .badge-cat, html[data-theme="suckless-dark"] .badge-cat {
+  color: var(--sl-fg);
+  border-color: var(--sl-fg);
+  background: var(--sl-bg);
 }
-html[data-theme="suckless"] .badge-new { color: #cc0000; border-color: #cc0000; background: #ffffff; }
-html[data-theme="suckless"] .badge-live { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .badge-heat { color: #004b97; border-color: #004b97; }
+html[data-theme="suckless"] .badge-new, html[data-theme="suckless-dark"] .badge-new { color: var(--sl-live); border-color: var(--sl-live); background: var(--sl-bg); }
+html[data-theme="suckless"] .badge-live, html[data-theme="suckless-dark"] .badge-live { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .badge-heat, html[data-theme="suckless-dark"] .badge-heat { color: var(--sl-accent); border-color: var(--sl-accent); }
 
 /* 阅读 / 评论按钮 */
-html[data-theme="suckless"] .read-toggle,
-html[data-theme="suckless"] .comment-toggle,
-html[data-theme="suckless"] .card-open {
+html[data-theme="suckless"] .read-toggle, html[data-theme="suckless-dark"] .read-toggle,
+html[data-theme="suckless"] .comment-toggle, html[data-theme="suckless-dark"] .comment-toggle,
+html[data-theme="suckless"] .card-open, html[data-theme="suckless-dark"] .card-open {
   border-radius: 0;
-  border-color: #000000;
-  color: #1a1a1a;
-  background: #ffffff;
+  border-color: var(--sl-fg);
+  color: var(--sl-dim);
+  background: var(--sl-bg);
 }
-html[data-theme="suckless"] .card-open { color: #004b97; }
-html[data-theme="suckless"] .read-toggle:hover,
-html[data-theme="suckless"] .comment-toggle:hover,
-html[data-theme="suckless"] .card-open:hover { background: #000000; color: #ffffff; border-color: #000000; }
+html[data-theme="suckless"] .card-open, html[data-theme="suckless-dark"] .card-open { color: var(--sl-accent); }
+html[data-theme="suckless"] .read-toggle:hover, html[data-theme="suckless-dark"] .read-toggle:hover,
+html[data-theme="suckless"] .comment-toggle:hover, html[data-theme="suckless-dark"] .comment-toggle:hover,
+html[data-theme="suckless"] .card-open:hover, html[data-theme="suckless-dark"] .card-open:hover { background: var(--sl-fg); color: var(--sl-bg); border-color: var(--sl-fg); }
 
 /* 骨架屏 */
-html[data-theme="suckless"] .skeleton { border-radius: 0; }
-html[data-theme="suckless"] .sk-line { border-radius: 0; background: #d0d0d0; }
+html[data-theme="suckless"] .skeleton, html[data-theme="suckless-dark"] .skeleton { border-radius: 0; }
+html[data-theme="suckless"] .sk-line, html[data-theme="suckless-dark"] .sk-line { border-radius: 0; background: var(--sl-skel); }
 
 /* 加载更多 / 返回顶部 / 来源状态 */
-html[data-theme="suckless"] .load-more {
+html[data-theme="suckless"] .load-more, html[data-theme="suckless-dark"] .load-more {
   border-radius: 0;
-  border-color: #000000;
-  color: #000000;
-  background: #ffffff;
+  border-color: var(--sl-fg);
+  color: var(--sl-fg);
+  background: var(--sl-bg);
 }
-html[data-theme="suckless"] .load-more:hover { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .back-top {
+html[data-theme="suckless"] .load-more:hover, html[data-theme="suckless-dark"] .load-more:hover { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .back-top, html[data-theme="suckless-dark"] .back-top {
   border-radius: 0;
-  border-color: #000000;
-  background: #ffffff;
-  color: #000000;
+  border-color: var(--sl-fg);
+  background: var(--sl-bg);
+  color: var(--sl-fg);
   box-shadow: none;
 }
-html[data-theme="suckless"] .src-chip { border-radius: 0; border-color: #000000; color: #333333; }
+html[data-theme="suckless"] .src-chip, html[data-theme="suckless-dark"] .src-chip { border-radius: 0; border-color: var(--sl-fg); color: var(--sl-dim); }
 
 /* 主题下拉 */
-html[data-theme="suckless"] .theme-panel {
+html[data-theme="suckless"] .theme-panel, html[data-theme="suckless-dark"] .theme-panel {
   border-radius: 0;
-  border-color: #000000;
-  background: #ffffff;
+  border-color: var(--sl-fg);
+  background: var(--sl-bg);
   box-shadow: none;
 }
-html[data-theme="suckless"] .theme-opt { border-radius: 0; }
-html[data-theme="suckless"] .theme-opt:hover { background: #e8e8e8; color: #000000; }
-html[data-theme="suckless"] .theme-opt.active { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .theme-swatch { border-radius: 0; border-color: #000000; }
+html[data-theme="suckless"] .theme-opt, html[data-theme="suckless-dark"] .theme-opt { border-radius: 0; }
+html[data-theme="suckless"] .theme-opt:hover, html[data-theme="suckless-dark"] .theme-opt:hover { background: var(--sl-bg-soft); color: var(--sl-fg); }
+html[data-theme="suckless"] .theme-opt.active, html[data-theme="suckless-dark"] .theme-opt.active { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .theme-swatch, html[data-theme="suckless-dark"] .theme-swatch { border-radius: 0; border-color: var(--sl-fg); }
 
 /* 页脚 */
-html[data-theme="suckless"] .site-footer { border-top: 2px solid #000000; }
+html[data-theme="suckless"] .site-footer, html[data-theme="suckless-dark"] .site-footer { border-top: 2px solid var(--sl-fg); }
 
 /* 站内阅读浮层 */
-html[data-theme="suckless"] .reader-panel { border-radius: 0; border: 2px solid #000000; background: #ffffff; box-shadow: none; }
-html[data-theme="suckless"] .reader-body a,
-html[data-theme="suckless"] .reader-foot a { color: #004b97; }
+html[data-theme="suckless"] .reader-panel, html[data-theme="suckless-dark"] .reader-panel { border-radius: 0; border: 2px solid var(--sl-fg); background: var(--sl-bg); box-shadow: none; }
+html[data-theme="suckless"] .reader-body a, html[data-theme="suckless-dark"] .reader-body a,
+html[data-theme="suckless"] .reader-foot a, html[data-theme="suckless-dark"] .reader-foot a { color: var(--sl-accent); }
 
 /* 链接页 */
-html[data-theme="suckless"] .links-col { border-radius: 0; border-color: #000000; background: #ffffff; }
-html[data-theme="suckless"] .link-item .li-icon { border-radius: 0; border-color: #000000; background: #ffffff; }
-html[data-theme="suckless"] .link-item:hover .li-name { color: #004b97; }
-html[data-theme="suckless"] .li-arrow { color: #004b97; }
+html[data-theme="suckless"] .links-col, html[data-theme="suckless-dark"] .links-col { border-radius: 0; border-color: var(--sl-fg); background: var(--sl-bg); }
+html[data-theme="suckless"] .link-item .li-icon, html[data-theme="suckless-dark"] .link-item .li-icon { border-radius: 0; border-color: var(--sl-fg); background: var(--sl-bg); }
+html[data-theme="suckless"] .link-item:hover .li-name, html[data-theme="suckless-dark"] .link-item:hover .li-name { color: var(--sl-accent); }
+html[data-theme="suckless"] .li-arrow, html[data-theme="suckless-dark"] .li-arrow { color: var(--sl-accent); }
 
 /* 历史页 */
-html[data-theme="suckless"] .era-detail .ed-card {
-  border: 2px solid #000000;
+html[data-theme="suckless"] .era-detail .ed-card, html[data-theme="suckless-dark"] .era-detail .ed-card {
+  border: 2px solid var(--sl-fg);
   border-radius: 0;
-  background: #ffffff;
+  background: var(--sl-bg);
   box-shadow: none;
 }
-html[data-theme="suckless"] .ed-title { color: #000000; }
-html[data-theme="suckless"] .ed-period { border-radius: 0; }
-html[data-theme="suckless"] .ed-label { color: #444444; }
-html[data-theme="suckless"] .ed-back {
+html[data-theme="suckless"] .ed-title, html[data-theme="suckless-dark"] .ed-title { color: var(--sl-fg); }
+html[data-theme="suckless"] .ed-period, html[data-theme="suckless-dark"] .ed-period { border-radius: 0; }
+html[data-theme="suckless"] .ed-label, html[data-theme="suckless-dark"] .ed-label { color: var(--sl-faint); }
+html[data-theme="suckless"] .ed-back, html[data-theme="suckless-dark"] .ed-back {
   border-radius: 0;
-  border-color: #000000;
-  color: #000000;
-  background: #ffffff;
+  border-color: var(--sl-fg);
+  color: var(--sl-fg);
+  background: var(--sl-bg);
 }
-html[data-theme="suckless"] .ed-back:hover { background: #000000; color: #ffffff; }
+html[data-theme="suckless"] .ed-back:hover, html[data-theme="suckless-dark"] .ed-back:hover { background: var(--sl-fg); color: var(--sl-bg); }
 
 /* 课程页 */
-html[data-theme="suckless"] .lesson {
-  border: 2px solid #000000;
-  border-top: 2px solid #000000;
+html[data-theme="suckless"] .lesson, html[data-theme="suckless-dark"] .lesson {
+  border: 2px solid var(--sl-fg);
+  border-top: 2px solid var(--sl-fg);
   border-radius: 0;
-  background: #ffffff;
+  background: var(--sl-bg);
   box-shadow: none;
 }
-html[data-theme="suckless"] .lesson-no,
-html[data-theme="suckless"] .l-block-label { color: #000000; }
-html[data-theme="suckless"] .l-list li::marker { color: #000000; }
-html[data-theme="suckless"] .lesson-toc-chips a { border-radius: 0; border-color: #000000; color: #333333; }
-html[data-theme="suckless"] .lesson-toc-chips a:hover { color: #004b97; }
-html[data-theme="suckless"] .lg-wrap { border-color: #000000; border-radius: 0; background: #ffffff; }
-html[data-theme="suckless"] .lg-table th { background: #ffffff; color: #000000; }
-html[data-theme="suckless"] .lg-table th, html[data-theme="suckless"] .lg-table td { border-color: #000000; }
-html[data-theme="suckless"] .l-callout { border-color: #000000; background: #ffffff; border-radius: 0; }
-html[data-theme="suckless"] .l-callout-head { color: #000000; }
-html[data-theme="suckless"] .l-term { background: #ffffff; border-color: #000000; border-radius: 0; }
-html[data-theme="suckless"] .lesson-tags span { color: #000000; border-color: #000000; }
-html[data-theme="suckless"] .lesson-part { border: 2px solid #000000; border-top: 2px solid #000000; border-radius: 0; background: #ffffff; box-shadow: none; }
-html[data-theme="suckless"] .lesson-part-no { color: #000000; }
-html[data-theme="suckless"] .lesson-toc-part { color: #000000; }
-html[data-theme="suckless"] .l-fig { border-color: #000000; border-radius: 0; background: #ffffff; }
-html[data-theme="suckless"] .l-fig img { border-color: #000000; }
-html[data-theme="suckless"] .l-fig figcaption { color: #333333; }
-html[data-theme="suckless"] .l-fig-credit { color: #444444; }
-html[data-theme="suckless"] .l-code { border: 2px solid #000000; border-left: 2px solid #000000; border-radius: 0; background: #ffffff; color: #000000; }
-html[data-theme="suckless"] .l-code-copy { border: 1px solid #000000; border-radius: 0; background: #ffffff; color: #000000; }
-html[data-theme="suckless"] .l-code-copy:hover { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .l-code-copy.done { color: #004b97; border-color: #004b97; }
-html[data-theme="suckless"] .tut-nav,
-html[data-theme="suckless"] .tut-head,
-html[data-theme="suckless"] .tut-panel { border-radius: 0; border-color: #000000; background: #ffffff; box-shadow: none; }
-html[data-theme="suckless"] .tut-head { border-top-color: #000000; }
-html[data-theme="suckless"] .tut-nav-group h4 { color: #444444; }
-html[data-theme="suckless"] .tut-nav-group a { color: #333333; }
-html[data-theme="suckless"] .tut-nav-group a:hover { background: #e8e8e8; color: #000000; }
-html[data-theme="suckless"] .tut-nav-group a.active { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .tut-nav-group a.active .tut-no { color: #ffffff; }
-html[data-theme="suckless"] .tut-crumb a:hover { color: #004b97; }
-html[data-theme="suckless"] .tut-crumb .cur { color: #000000; }
-html[data-theme="suckless"] .lp-btn { border-color: #000000; border-radius: 0; background: #ffffff; color: #000000; }
-html[data-theme="suckless"] .lp-btn:hover { background: #000000; color: #ffffff; }
-html[data-theme="suckless"] .lp-dir { color: #444444; }
-html[data-theme="suckless"] .tut-panel-links a { color: #333333; }
-html[data-theme="suckless"] .tut-panel-links a:hover { background: #e8e8e8; color: #000000; }
+html[data-theme="suckless"] .lesson-no, html[data-theme="suckless-dark"] .lesson-no,
+html[data-theme="suckless"] .l-block-label, html[data-theme="suckless-dark"] .l-block-label { color: var(--sl-fg); }
+html[data-theme="suckless"] .l-list li::marker, html[data-theme="suckless-dark"] .l-list li::marker { color: var(--sl-fg); }
+html[data-theme="suckless"] .lesson-toc-chips a, html[data-theme="suckless-dark"] .lesson-toc-chips a { border-radius: 0; border-color: var(--sl-fg); color: var(--sl-dim); }
+html[data-theme="suckless"] .lesson-toc-chips a:hover, html[data-theme="suckless-dark"] .lesson-toc-chips a:hover { color: var(--sl-accent); }
+html[data-theme="suckless"] .lg-wrap, html[data-theme="suckless-dark"] .lg-wrap { border-color: var(--sl-fg); border-radius: 0; background: var(--sl-bg); }
+html[data-theme="suckless"] .lg-table th, html[data-theme="suckless-dark"] .lg-table th { background: var(--sl-bg); color: var(--sl-fg); }
+html[data-theme="suckless"] .lg-table th, html[data-theme="suckless-dark"] .lg-table th, html[data-theme="suckless"] .lg-table td, html[data-theme="suckless-dark"] .lg-table td { border-color: var(--sl-fg); }
+html[data-theme="suckless"] .l-callout, html[data-theme="suckless-dark"] .l-callout { border-color: var(--sl-fg); background: var(--sl-bg); border-radius: 0; }
+html[data-theme="suckless"] .l-callout-head, html[data-theme="suckless-dark"] .l-callout-head { color: var(--sl-fg); }
+html[data-theme="suckless"] .l-term, html[data-theme="suckless-dark"] .l-term { background: var(--sl-bg); border-color: var(--sl-fg); border-radius: 0; }
+html[data-theme="suckless"] .lesson-tags span, html[data-theme="suckless-dark"] .lesson-tags span { color: var(--sl-fg); border-color: var(--sl-fg); }
+html[data-theme="suckless"] .lesson-part, html[data-theme="suckless-dark"] .lesson-part { border: 2px solid var(--sl-fg); border-top: 2px solid var(--sl-fg); border-radius: 0; background: var(--sl-bg); box-shadow: none; }
+html[data-theme="suckless"] .lesson-part-no, html[data-theme="suckless-dark"] .lesson-part-no { color: var(--sl-fg); }
+html[data-theme="suckless"] .lesson-toc-part, html[data-theme="suckless-dark"] .lesson-toc-part { color: var(--sl-fg); }
+html[data-theme="suckless"] .l-fig, html[data-theme="suckless-dark"] .l-fig { border-color: var(--sl-fg); border-radius: 0; background: var(--sl-bg); }
+html[data-theme="suckless"] .l-fig img, html[data-theme="suckless-dark"] .l-fig img { border-color: var(--sl-fg); }
+html[data-theme="suckless"] .l-fig figcaption, html[data-theme="suckless-dark"] .l-fig figcaption { color: var(--sl-dim); }
+html[data-theme="suckless"] .l-fig-credit, html[data-theme="suckless-dark"] .l-fig-credit { color: var(--sl-faint); }
+html[data-theme="suckless"] .l-code, html[data-theme="suckless-dark"] .l-code { border: 2px solid var(--sl-fg); border-left: 2px solid var(--sl-fg); border-radius: 0; background: var(--sl-bg); color: var(--sl-fg); }
+html[data-theme="suckless"] .l-code-copy, html[data-theme="suckless-dark"] .l-code-copy { border: 1px solid var(--sl-fg); border-radius: 0; background: var(--sl-bg); color: var(--sl-fg); }
+html[data-theme="suckless"] .l-code-copy:hover, html[data-theme="suckless-dark"] .l-code-copy:hover { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .l-code-copy.done, html[data-theme="suckless-dark"] .l-code-copy.done { color: var(--sl-accent); border-color: var(--sl-accent); }
+html[data-theme="suckless"] .tut-nav, html[data-theme="suckless-dark"] .tut-nav,
+html[data-theme="suckless"] .tut-head, html[data-theme="suckless-dark"] .tut-head,
+html[data-theme="suckless"] .tut-panel, html[data-theme="suckless-dark"] .tut-panel { border-radius: 0; border-color: var(--sl-fg); background: var(--sl-bg); box-shadow: none; }
+html[data-theme="suckless"] .tut-head, html[data-theme="suckless-dark"] .tut-head { border-top-color: var(--sl-fg); }
+html[data-theme="suckless"] .tut-nav-group h4, html[data-theme="suckless-dark"] .tut-nav-group h4 { color: var(--sl-faint); }
+html[data-theme="suckless"] .tut-nav-group a, html[data-theme="suckless-dark"] .tut-nav-group a { color: var(--sl-dim); }
+html[data-theme="suckless"] .tut-nav-group a:hover, html[data-theme="suckless-dark"] .tut-nav-group a:hover { background: var(--sl-bg-soft); color: var(--sl-fg); }
+html[data-theme="suckless"] .tut-nav-group a.active, html[data-theme="suckless-dark"] .tut-nav-group a.active { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .tut-nav-group a.active .tut-no, html[data-theme="suckless-dark"] .tut-nav-group a.active .tut-no { color: var(--sl-bg); }
+html[data-theme="suckless"] .tut-crumb a:hover, html[data-theme="suckless-dark"] .tut-crumb a:hover { color: var(--sl-accent); }
+html[data-theme="suckless"] .tut-crumb .cur, html[data-theme="suckless-dark"] .tut-crumb .cur { color: var(--sl-fg); }
+html[data-theme="suckless"] .lp-btn, html[data-theme="suckless-dark"] .lp-btn { border-color: var(--sl-fg); border-radius: 0; background: var(--sl-bg); color: var(--sl-fg); }
+html[data-theme="suckless"] .lp-btn:hover, html[data-theme="suckless-dark"] .lp-btn:hover { background: var(--sl-fg); color: var(--sl-bg); }
+html[data-theme="suckless"] .lp-dir, html[data-theme="suckless-dark"] .lp-dir { color: var(--sl-faint); }
+html[data-theme="suckless"] .tut-panel-links a, html[data-theme="suckless-dark"] .tut-panel-links a { color: var(--sl-dim); }
+html[data-theme="suckless"] .tut-panel-links a:hover, html[data-theme="suckless-dark"] .tut-panel-links a:hover { background: var(--sl-bg-soft); color: var(--sl-fg); }
 
 /* ---------------- Responsive ---------------- */
 
