@@ -18,9 +18,10 @@ are fetched live via their APIs.
   fetch only; cards show `@handle` as author and link to `bsky.app`.
 - Theme system: `common.js` + `styles.css` (`signal-theme` localStorage,
   `data-theme` on `<html>`: paper / midnight / aurora / ink / auto).
-- CI: `.github/workflows/feeds.yml` — cron `*/15 * * * *` + `workflow_dispatch`;
-  builds `feeds.json` + `articles.json` via `scripts/build-feeds.mjs` and
-  `scripts/build-articles.mjs` (Node + fast-xml-parser + cheerio), commits as
+- CI: two workflows — `.github/workflows/feeds.yml` (cron `*/5 * * * *`,
+  builds `feeds.json` via `scripts/build-feeds.mjs`, fast) and
+  `.github/workflows/articles.yml` (cron `*/15 * * * *`, builds `articles.json`
+  via `scripts/build-articles.mjs`, heavy full-text fetch). Both commit as
   signal-bot.
 - Browser CORS reality: only allorigins works client-side and it is heavily
   rate-limited; r.jina.ai / codetabs / corsproxy / cors.eu.org are unreliable or

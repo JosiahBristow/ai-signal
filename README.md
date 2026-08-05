@@ -50,7 +50,7 @@
 
 | Emoji | 能力 | 说明 |
 | --- | --- | --- |
-| ⚡ | 实时聚合 | 每 15 分钟快照 + 每 5 分钟前端自动刷新，切回页面立即同步 |
+| ⚡ | 实时聚合 | 每 5 分钟快照 + 每 5 分钟前端自动刷新，切回页面立即同步 |
 | 🗂️ | 七大来源 | 5 个快照源（4 个 RSS/Atom + X 一线从业者 Bluesky 镜像）+ HN Algolia API + DEV.to API（浏览器直连） |
 | 🧠 | 智能分类 | 标题 + 摘要关键词打分，9 大分类自动归类 |
 | 🔥 | 热度算法 | 互动量（点赞/评论）与新鲜度加权，热榜即时刷新 |
@@ -132,7 +132,7 @@
 ![系统架构图](docs/architecture.svg)
 
 - **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；原文网页（CI 端抓全文）。
-- **构建层**：`feeds.yml` 工作流，每 15 分钟一轮，生成并提交两个快照文件。
+- **构建层**：`feeds.yml`（每 5 分钟一轮，生成并提交 `feeds.json`）+ `articles.yml`（每 15 分钟一轮，生成并提交 `articles.json`）。
 - **存储层**：GitHub 仓库 `main` 分支 + GitHub Pages 静态托管，`.nojekyll` 保证纯静态直接服务。
 - **渲染层**：浏览器同源 `fetch` 快照，HN/DEV.to 直连官方 API，Giscus 走 iframe，全部无框架拼装。
 
@@ -142,11 +142,11 @@
 
 ```mermaid
 flowchart LR
-    A[cron 每 15 分钟] --> B[build-feeds.mjs]
-    B -->|fast-xml-parser| C[feeds.json<br/>列表/摘要/封面]
-    B --> D[build-articles.mjs]
-    D -->|cheerio 抽取+消毒| E[articles.json<br/>全文/正文长度]
+    A1[cron 每 5 分钟] --> B1[build-feeds.mjs]
+    B1 -->|fast-xml-parser| C[feeds.json<br/>列表/摘要/封面]
     C --> F[signal-bot commit & push]
+    A2[cron 每 15 分钟] --> B2[build-articles.mjs]
+    B2 -->|cheerio 抽取+消毒| E[articles.json<br/>全文/正文长度]
     E --> F
     F --> G[GitHub Pages]
     G --> H[浏览器同源读取]
@@ -273,7 +273,7 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
 ├── 📚 learn.js              # AI 基础课程数据 + 渲染引擎
 ├── 🐍 python.js             # Python 课程数据 + 渲染引擎（含代码高亮/复制）
-├── 📦 feeds.json            # RSS + X 从业者快照（CI 每 15 分钟生成）
+├── 📦 feeds.json            # RSS + X 从业者快照（CI 每 5 分钟生成）
 ├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
 ├── 🖼️ images/               # 历史页阶段插图（SVG）+ 课程配图（learn/、python/）
@@ -318,7 +318,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 2. ⚙️ **Settings → Pages → Source: Deploy from a branch → `main` / `/(root)`**。
 3. ⏳ 等待几分钟，访问 `https://<username>.github.io/<repo>/`。
 
-仓库已包含 `.nojekyll`，Pages 直接以纯静态方式服务；`feeds.yml` 会在 **push 与每 15 分钟定时** 自动刷新并提交快照。
+仓库已包含 `.nojekyll`，Pages 直接以纯静态方式服务；`feeds.yml` 会在 **push 与每 5 分钟定时** 自动刷新并提交快照，`articles.yml` 每 15 分钟刷新全文快照。
 
 ---
 
@@ -352,7 +352,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 
 ## 📄 免责声明
 
-> 📚 本站仅聚合链接与摘要，所有内容版权归原网站所有。全文快照用于站内阅读，请以 **15 分钟快照周期内** 的原文为准。
+> 📚 本站仅聚合链接与摘要，所有内容版权归原网站所有。全文快照用于站内阅读，请以 **5 分钟快照周期内** 的原文为准。
 >
 > 🔗 导航页收录的均为公开资源，跳转行为发生在原网站，本站不承担由此产生的内容责任。
 >
