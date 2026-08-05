@@ -106,6 +106,42 @@ html[data-theme="ink"] {
 }
 
 /* ============================================================
+   SUCKLESS 极简主题 —— 致敬 suckless.org
+   白底黑字 / 纯色方正 / 无圆角 / 无阴影 / 无毛玻璃
+   一切从简，软件哲学：做减法
+   ============================================================ */
+
+html[data-theme="suckless"] {
+  color-scheme: light;
+
+  --font-display: "Verdana", "DejaVu Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --font-body: "Verdana", "DejaVu Sans", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Arial", sans-serif;
+  --font-mono: "Liberation Mono", "DejaVu Sans Mono", ui-monospace, "Cascadia Code", "SF Mono", monospace;
+
+  --radius-s: 0px;
+  --radius-m: 0px;
+  --radius-l: 0px;
+
+  --bg: #ffffff;
+  --bg-soft: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #ffffff;
+  --line: #000000;
+  --line-strong: #000000;
+  --text: #000000;
+  --text-dim: #1a1a1a;
+  --text-faint: #444444;
+  --accent: #004b97;
+  --accent-2: #004b97;
+  --accent-contrast: #ffffff;
+  --live: #cc0000;
+  --shadow: none;
+  --shadow-hover: none;
+  --glow: none;
+  --cat-l: 32%;
+}
+
+/* ============================================================
    MAC 风格主题 —— 仿 macOS 外观（毛玻璃 / SF 字体 / 红绿灯）
    亮暗跟随系统：亮色 = macOS 浅色，暗色 = macOS 深色
    ============================================================ */
@@ -1491,6 +1527,177 @@ body.reader-open { overflow: hidden; }
   border-color: color-mix(in srgb, var(--accent) 50%, transparent);
 }
 .card.expanded .read-toggle svg { transform: rotate(180deg); }
+
+/* ============================================================
+   SUCKLESS 极简主题 —— 组件覆盖
+   白底黑字 / 纯色方正 / 无圆角 / 无阴影 / 无毛玻璃 / 黑色分隔线
+   ============================================================ */
+
+html[data-theme="suckless"] body {
+  background: #ffffff;
+  transition: none;
+  -webkit-font-smoothing: auto;
+  text-rendering: optimizeSpeed;
+}
+html[data-theme="suckless"] ::selection { background: #000000; color: #ffffff; }
+html[data-theme="suckless"] :focus-visible { outline: 2px solid #000000; outline-offset: 1px; border-radius: 0; }
+
+/* 去掉毛玻璃 */
+html[data-theme="suckless"] .site-header,
+html[data-theme="suckless"] .theme-panel,
+html[data-theme="suckless"] .reader-panel,
+html[data-theme="suckless"] .card,
+html[data-theme="suckless"] .hero,
+html[data-theme="suckless"] .hot-panel,
+html[data-theme="suckless"] .links-col,
+html[data-theme="suckless"] .skeleton {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* 头部 */
+html[data-theme="suckless"] .site-header {
+  background: #ffffff;
+  border-bottom: 2px solid #000000;
+}
+html[data-theme="suckless"] .brand-mark i { background: #000000; border-radius: 0; }
+html[data-theme="suckless"] .brand-name { font-family: var(--font-body); letter-spacing: 0; }
+html[data-theme="suckless"] .brand-tag { color: #444444; }
+html[data-theme="suckless"] .main-nav a { border-radius: 0; color: #000000; }
+html[data-theme="suckless"] .main-nav a:hover { text-decoration: underline; text-underline-offset: 3px; }
+html[data-theme="suckless"] .main-nav a.active {
+  color: #ffffff;
+  background: #000000;
+  box-shadow: none;
+}
+html[data-theme="suckless"] .header-btn {
+  border-radius: 0;
+  border-color: #000000;
+  background: #ffffff;
+  color: #000000;
+}
+html[data-theme="suckless"] .header-btn:hover { border-color: #000000; background: #000000; color: #ffffff; }
+html[data-theme="suckless"] .live-label { color: #cc0000; }
+
+/* 信号流 ticker */
+html[data-theme="suckless"] .ticker { background: #ffffff; border-bottom: 1px solid #000000; }
+html[data-theme="suckless"] .ticker-label {
+  border-radius: 0;
+  border-color: #000000;
+  color: #000000;
+}
+html[data-theme="suckless"] .ticker-track a { color: #1a1a1a; }
+html[data-theme="suckless"] .ticker-track a:hover { color: #004b97; }
+
+/* 筛选条 */
+html[data-theme="suckless"] .filter-group + .filter-group { border-left-color: #000000; }
+html[data-theme="suckless"] .chip {
+  border-radius: 0;
+  border-color: #000000;
+  color: #000000;
+  background: #ffffff;
+}
+html[data-theme="suckless"] .chip:hover { border-color: #000000; }
+html[data-theme="suckless"] .chip.active { background: #000000; color: #ffffff; border-color: #000000; }
+html[data-theme="suckless"] .search-wrap input {
+  border-radius: 0;
+  border-color: #000000;
+  background: #ffffff;
+  color: #000000;
+}
+html[data-theme="suckless"] .search-wrap input:focus { border-color: #004b97; }
+
+/* 头条 / 热榜 / 卡片 */
+html[data-theme="suckless"] .hero,
+html[data-theme="suckless"] .hot-panel,
+html[data-theme="suckless"] .card {
+  background: #ffffff;
+  box-shadow: none;
+  border-color: #000000;
+}
+html[data-theme="suckless"] .hero { border-width: 2px; }
+html[data-theme="suckless"] .hero:hover,
+html[data-theme="suckless"] .card:hover { transform: none; box-shadow: none; }
+html[data-theme="suckless"] .hero::after { display: none; }
+html[data-theme="suckless"] .card .card-top { border-top-color: #000000; }
+html[data-theme="suckless"] .hero-cover,
+html[data-theme="suckless"] .card-cover { border-radius: 0; background: #ffffff; }
+html[data-theme="suckless"] .card-title { color: #000000; }
+html[data-theme="suckless"] .card-link:hover .card-title { color: #004b97; text-decoration: underline; text-underline-offset: 3px; }
+html[data-theme="suckless"] .card-desc { color: #333333; }
+
+/* 徽章 */
+html[data-theme="suckless"] .badge { border-radius: 0; }
+html[data-theme="suckless"] .badge-src { color: #333333; border-color: #000000; background: #ffffff; }
+html[data-theme="suckless"] .badge-cat {
+  color: #000000;
+  border-color: #000000;
+  background: #ffffff;
+}
+html[data-theme="suckless"] .badge-new { color: #cc0000; border-color: #cc0000; background: #ffffff; }
+html[data-theme="suckless"] .badge-live { background: #000000; color: #ffffff; }
+html[data-theme="suckless"] .badge-heat { color: #004b97; border-color: #004b97; }
+
+/* 阅读 / 评论按钮 */
+html[data-theme="suckless"] .read-toggle,
+html[data-theme="suckless"] .comment-toggle,
+html[data-theme="suckless"] .card-open {
+  border-radius: 0;
+  border-color: #000000;
+  color: #1a1a1a;
+  background: #ffffff;
+}
+html[data-theme="suckless"] .card-open { color: #004b97; }
+html[data-theme="suckless"] .read-toggle:hover,
+html[data-theme="suckless"] .comment-toggle:hover,
+html[data-theme="suckless"] .card-open:hover { background: #000000; color: #ffffff; border-color: #000000; }
+
+/* 骨架屏 */
+html[data-theme="suckless"] .skeleton { border-radius: 0; }
+html[data-theme="suckless"] .sk-line { border-radius: 0; background: #d0d0d0; }
+
+/* 加载更多 / 返回顶部 / 来源状态 */
+html[data-theme="suckless"] .load-more {
+  border-radius: 0;
+  border-color: #000000;
+  color: #000000;
+  background: #ffffff;
+}
+html[data-theme="suckless"] .load-more:hover { background: #000000; color: #ffffff; }
+html[data-theme="suckless"] .back-top {
+  border-radius: 0;
+  border-color: #000000;
+  background: #ffffff;
+  color: #000000;
+  box-shadow: none;
+}
+html[data-theme="suckless"] .src-chip { border-radius: 0; border-color: #000000; color: #333333; }
+
+/* 主题下拉 */
+html[data-theme="suckless"] .theme-panel {
+  border-radius: 0;
+  border-color: #000000;
+  background: #ffffff;
+  box-shadow: none;
+}
+html[data-theme="suckless"] .theme-opt { border-radius: 0; }
+html[data-theme="suckless"] .theme-opt:hover { background: #e8e8e8; color: #000000; }
+html[data-theme="suckless"] .theme-opt.active { background: #000000; color: #ffffff; }
+html[data-theme="suckless"] .theme-swatch { border-radius: 0; border-color: #000000; }
+
+/* 页脚 */
+html[data-theme="suckless"] .site-footer { border-top: 2px solid #000000; }
+
+/* 站内阅读浮层 */
+html[data-theme="suckless"] .reader-panel { border-radius: 0; border: 2px solid #000000; background: #ffffff; box-shadow: none; }
+html[data-theme="suckless"] .reader-body a,
+html[data-theme="suckless"] .reader-foot a { color: #004b97; }
+
+/* 链接页 */
+html[data-theme="suckless"] .links-col { border-radius: 0; border-color: #000000; background: #ffffff; }
+html[data-theme="suckless"] .link-item .li-icon { border-radius: 0; border-color: #000000; background: #ffffff; }
+html[data-theme="suckless"] .link-item:hover .li-name { color: #004b97; }
+html[data-theme="suckless"] .li-arrow { color: #004b97; }
 
 /* ---------------- Responsive ---------------- */
 

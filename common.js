@@ -10,6 +10,7 @@
     { id: "aurora",   label: "极光",   swatch: "linear-gradient(135deg,#181730 50%,#c792ea 50%)" },
     { id: "ink",      label: "墨绿",   swatch: "linear-gradient(135deg,#12211b 50%,#7fd6a8 50%)" },
     { id: "mac",      label: "Mac 风格", swatch: "linear-gradient(135deg,#f5f5f7 50%,#0071e3 50%)" },
+    { id: "suckless", label: "极简",    swatch: "linear-gradient(135deg,#ffffff 50%,#000000 50%)" },
     { id: "auto",     label: "跟随系统", swatch: "conic-gradient(#ffffff,#000000,#ffffff)" }
   ];
 
@@ -31,6 +32,7 @@
     "午夜": { zh: "午夜", en: "Midnight" },
     "极光": { zh: "极光", en: "Aurora" },
     "墨绿": { zh: "墨绿", en: "Ink" },
+    "极简": { zh: "极简", en: "Suckless" },
     "Mac 风格": { zh: "Mac 风格", en: "Mac" },
     "跟随系统": { zh: "跟随系统", en: "System" },
     "返回顶部": { zh: "返回顶部", en: "Back to top" },

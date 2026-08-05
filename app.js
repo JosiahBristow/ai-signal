@@ -634,7 +634,7 @@
     if (t === "auto" || t === "mac") {
       return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
     }
-    return t === "paper" ? "light" : "dark";
+    return t === "paper" || t === "suckless" ? "light" : "dark";
   }
 
   function giscusLang() {
