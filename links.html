@@ -116,15 +116,16 @@
 
 <script src="common.js"></script>
 <script>
-  /* 网站导航图标降级加载：依次探测备用 favicon 服务，全部失败则回退为首字母占位图标 */
+  /* 网站导航图标降级加载：依次探测备用 favicon 服务，全部失败则回退为首字母占位图标。
+     探测带超时兜底：被墙/慢的服务不会卡死后续 fallback。 */
   (function () {
     "use strict";
     var PROVIDERS = [
       function (d) { return "https://www.google.com/s2/favicons?domain=" + d + "&sz=64"; },
-      function (d) { return "https://icons.fastly.net/icon?url=" + d + "&size=64"; },
-      function (d) { return "https://icons.duckduckgo.com/ip3/" + d + ".ico"; },
-      function (d) { return "https://favicon.im/" + d; }
+      function (d) { return "https://favicon.im/" + d; },
+      function (d) { return "https://icons.duckduckgo.com/ip3/" + d + ".ico"; }
     ];
+    var PROBE_TIMEOUT = 3500;
     function letterIcon(name) {
       var ch = (name || "?").trim().charAt(0).toUpperCase() || "?";
       var svg = '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 64 64">' +
@@ -142,10 +143,10 @@
       var item = img.closest(".link-item");
       var name = item ? (item.querySelector(".li-name") || {}).textContent : "";
       img.referrerPolicy = "no-referrer";
+      img.src = letterIcon(name);
       var i = 0;
       function next() {
         if (i >= PROVIDERS.length) {
-          img.src = letterIcon(name);
           img.style.background = "transparent";
           img.style.border = "none";
           img.style.padding = "0";
@@ -153,9 +154,21 @@
         }
         var src = PROVIDERS[i++](domain);
         var probe = new Image();
+        var done = false;
+        var timer = setTimeout(function () { if (!done) { done = true; next(); } }, PROBE_TIMEOUT);
         probe.referrerPolicy = "no-referrer";
-        probe.onload = function () { img.src = src; };
-        probe.onerror = function () { next(); };
+        probe.onload = function () {
+          if (done) return;
+          done = true;
+          clearTimeout(timer);
+          img.src = src;
+        };
+        probe.onerror = function () {
+          if (done) return;
+          done = true;
+          clearTimeout(timer);
+          next();
+        };
         probe.src = src;
       }
       next();
