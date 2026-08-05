@@ -164,16 +164,17 @@ flowchart LR
 `app.js` 是一个 IIFE 封装的状态机，核心链路：
 
 ```
-加载快照 ──► 七大来源并行加载 ──► 合并 + URL 规范化去重
+加载快照 ──► 五路快照源先渲染 ──► HN/DEV.to 实时源到达后增量合并
   ──► 热度打分 + 智能分类 ──► 渲染（头条/热榜/列表/ticker）
   ──► 每 5 分钟自动刷新 · 窗口聚焦立即同步
 ```
 
 - **去重**：`urlKey()` 抹掉 hash 与 UTM 参数后比较 host + path，跨源同一篇文章只留一份（保留热度更高者）。
+- **渐进渲染**：5 个快照源（RSS + X）先到先渲染，HN/DEV.to（浏览器实时直连、最慢）到达后二次合并，首屏不被慢源阻塞。
 - **加载策略**：RSS 源优先读快照，快照缺失才走 `fetchRss()` 代理链（allorigins → codetabs，失败重试降级）。
 - **懒渲染**：首屏 24 条，`加载更多` 每次 +18；骨架屏 + 来源健康状态提示。
 - **ticker 信号流**：取最新 12 条双份拼接，CSS 动画无缝循环滚动。
-- **站内阅读**：桌面端浮动窗口读全文，手机端卡片内联展开，点空白折叠；无快照自动回退新标签页。
+- **站内阅读**：桌面端浮动窗口读全文，手机端卡片内联展开，点空白折叠；无快照自动回退新标签页。`articles.json` 全文索引按需懒加载，首次点开「全文」才拉取。
 
 ### 4️⃣ 课程引擎（`learn.js` / `python.js`）
 
@@ -278,7 +279,9 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
 ├── 🖼️ images/               # 历史页阶段插图（SVG）+ 课程配图（learn/、python/）
 ├── 📚 docs/                 # README 配图（架构/管道/阅读/主题/首页 SVG 图）
-├── 🤖 .github/workflows/feeds.yml  # 定时构建 + 自动提交
+├── 🤖 .github/workflows/
+│   ├── feeds.yml            # 每 5 分钟构建并提交 feeds.json
+│   └── articles.yml         # 每 15 分钟构建并提交 articles.json
 └── 📦 scripts/
     ├── build-feeds.mjs      # RSS 快照 + X 从业者 Bluesky 镜像构建（fast-xml-parser）
     ├── build-articles.mjs   # 全文快照构建（cheerio 抽取+消毒）
@@ -297,7 +300,7 @@ cd ai-signal
 # ② 安装脚本依赖（Node 20+）
 cd scripts && npm install
 
-# ③ 构建 RSS 快照
+# ③ 构建 RSS + X 从业者快照
 node build-feeds.mjs
 
 # ④ 构建全文快照
@@ -344,7 +347,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 | 运行时 | 纯 HTML / CSS / JavaScript，无框架、无构建步骤 |
 | 课程渲染 | 数据驱动（`PARTS` / `LESSONS`），正则分词代码高亮 + clipboard API |
 | CI 构建（Node 20+） | `fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒） |
-| 数据源 | RSS/Atom 快照 + Hacker News / DEV.to 官方 API |
+| 数据源 | RSS/Atom 快照 + X 一线从业者 Bluesky 镜像 + Hacker News / DEV.to 官方 API |
 | 托管 | GitHub Actions + GitHub Pages（`.nojekyll` 纯静态） |
 | 评论 | Giscus（GitHub Discussions） |
 
