@@ -1,6 +1,6 @@
 # 📡 AI SIGNAL · 实时 AI 新闻聚合台
 
-> **纯前端 · 零依赖 · 无服务器 · 无追踪 · 中英双语** —— 一个开着就能用的实时 AI 新闻信号台。
+> **纯前端 · 零依赖 · 无服务器 · 无追踪 · 中英双语** —— 一个开着就能用的实时 AI 新闻信号台，由 GitHub Actions + GitHub Pages 驱动。
 
 <p align="center">
 
@@ -16,6 +16,12 @@
 
 ---
 
+## 🎬 一图看懂
+
+![首页界面预览](docs/homepage.svg)
+
+---
+
 ## 🧭 项目介绍
 
 ### 这是什么？
@@ -27,8 +33,17 @@
 - **🔥 热度排名**：基于社区互动与新鲜度的加权信号强度，找出「此刻最该看的 TOP 5」。
 - **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
 - **🌓 七套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 跟随系统，一键即用。
+- **📜 有图历史**：AI 发展时间线按阶段展示，点击每个阶段进入带插图的详解。
 
-### 核心能力一览
+### 📂 三大页面
+
+| 页面 | Emoji | 说明 |
+| --- | --- | --- |
+| [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
+| [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
+| [`history.html`](history.html) | 📜 | AI 发展历史：五个阶段 + 插图详解 + 关键里程碑时间线 |
+
+### ✨ 核心能力一览
 
 | Emoji | 能力 | 说明 |
 | --- | --- | --- |
@@ -41,16 +56,8 @@
 | 🌐 | 中英双语 | 全站 i18n 文案 + 按语言筛选新闻，互不影响 |
 | 🎨 | 多主题 | 7 套视觉主题，localStorage 记忆，首屏前注入防闪烁 |
 | 🔍 | 搜索筛选 | 关键词搜索 + 语言 / 分类 / 来源三维过滤 |
-| 📜 | 时间线 | 1943 → 今天的 AI 发展历史时间线（`history.html`） |
-| 🗺️ | 网站导航 | 精选 AI 站点分类导航（`links.html`） |
-
-### 三张页面
-
-| 页面 | Emoji | 说明 |
-| --- | --- | --- |
-| [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
-| [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
-| [`history.html`](history.html) | 📜 | AI 发展历史时间线：关键里程碑 |
+| 📜 | 阶段详解 | 历史页每阶段配插图，点击进入带概览与关键节点的详解 |
+| 🗺️ | 网站导航 | 精选 AI 站点分类导航，图标多源降级加载 |
 
 ---
 
@@ -77,6 +84,23 @@
 | 自建后端聚合站 | ✅ 需要 | ✅ 需要 | ✅ | 💰 服务器费用 | ✅ |
 | 浏览器直连 RSS | ❌ 无 | ❌ | ❌ 大多被 CORS 拦截 | 💸 免费 | ❌ 无 |
 | 第三方聚合平台 | ❌ 无 | ❌ | ✅ | 🆓 免费但受制于人 | 视平台而定 |
+
+---
+
+## 📸 界面预览
+
+### 历史页：阶段详解
+
+点击「思想萌芽 / 黄金时代 / 寒冬与专家系统 / 深度学习复兴 / 大模型时代」任一阶段，进入带插图的详解（概览 + 关键节点），下方时间线同步过滤：
+
+<p align="center">
+  <img src="images/history-origin.svg" width="46%" alt="思想萌芽">
+  <img src="images/history-llm.svg" width="46%" alt="大模型时代">
+</p>
+
+### 主题系统
+
+![主题系统](docs/themes.svg)
 
 ---
 
@@ -120,8 +144,6 @@ flowchart LR
 
 ### 3️⃣ 前端引擎（`app.js`）运行流程
 
-![首页布局](docs/homepage.svg)
-
 `app.js` 是一个 IIFE 封装的状态机，核心链路：
 
 ```
@@ -134,6 +156,7 @@ flowchart LR
 - **加载策略**：RSS 源优先读快照，快照缺失才走 `fetchRss()` 代理链（allorigins → codetabs，失败重试降级）。
 - **懒渲染**：首屏 24 条，`加载更多` 每次 +18；骨架屏 + 来源健康状态提示。
 - **ticker 信号流**：取最新 12 条双份拼接，CSS 动画无缝循环滚动。
+- **站内阅读**：桌面端浮动窗口读全文，手机端卡片内联展开，点空白折叠；无快照自动回退新标签页。
 
 ### 4️⃣ 智能分类器：关键词打分
 
@@ -191,11 +214,14 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 
 ### 7️⃣ 主题系统与双语
 
-![主题系统](docs/themes.svg)
-
 - **主题**：`data-theme` 属性挂在 `<html>` 上，CSS 变量驱动整套配色。选择存 `localStorage`（`signal-theme`），且**在 `<head>` 内联脚本首屏前读回**，杜绝主题闪烁。`auto` 主题通过 `matchMedia` 监听系统深浅色。
+- **极简主题**：致敬 suckless.org 的「极简」主题 —— 白底黑字、方正无圆角、无阴影、无毛玻璃，可用 `data-theme="suckless"` 单独启用。
 - **双语**：`common.js` 内置全站 i18n 词表，`window.t()` 统一翻译，`data-i18n` 标记批量应用；语言切换通过 `signal:lang` 自定义事件广播，Giscus 评论语言与主题同步跟随。
 - **事件总线**：主题、语言、刷新均以 `CustomEvent` 广播，模块间低耦合。
+
+### 8️⃣ 导航页图标降级
+
+导航页 28 个站点图标默认请求 Google favicon 服务；不可达时自动探测 Fastly → DuckDuckGo → favicon.im，全部失败则回退为**首字母占位图标**，任何网络环境下都能正常显示。
 
 ---
 
@@ -205,14 +231,15 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 .
 ├── 📄 index.html            # 新闻首页（头条/热榜/列表/阅读模式）
 ├── 📄 links.html            # AI 网站导航
-├── 📄 history.html          # AI 发展历史时间线
+├── 📄 history.html          # AI 发展历史（阶段详解 + 时间线）
 ├── 🎨 styles.css            # 七套主题设计系统（CSS 变量）
 ├── ⚙️ common.js             # 主题切换 / 导航 / 双语 i18n
 ├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
 ├── 📦 feeds.json            # RSS 快照（CI 每 15 分钟生成）
 ├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
-├── 📚 docs/                 # README 配图（架构/管道/阅读/主题 SVG 图）
+├── 🖼️ images/               # 历史页阶段插图（SVG，5 个阶段）
+├── 📚 docs/                 # README 配图（架构/管道/阅读/主题/首页 SVG 图）
 ├── 🤖 .github/workflows/feeds.yml  # 定时构建 + 自动提交
 └── 📦 scripts/
     ├── build-feeds.mjs      # RSS 快照构建（fast-xml-parser）
@@ -241,9 +268,6 @@ node build-articles.mjs
 # ⑤ 语法检查
 cd ..
 node --check app.js common.js history.js scripts/*.mjs
-
-# ⑥ 冒烟测试（jsdom + mock fetch）
-node /tmp/opencode/ai-test/smoke.js
 ```
 
 > 🖥️ 本地预览直接用任意静态服务器，例如 `python3 -m http.server`。
@@ -269,6 +293,20 @@ node /tmp/opencode/ai-test/smoke.js
 | 🧠 分类关键词 | `app.js` 的 `CATEGORIES` | 每个分类的 `kw` 数组，命中即归类 |
 | 🎨 主题 | `common.js` + `styles.css` | CSS 变量与主题列表，新增主题只需加一个 `data-theme` 分支 |
 | 🌐 文案 | `common.js` 的 `I18N` | 中英词表，`zh`/`en` 字段 |
+| 📜 历史阶段 | `history.js` 的 `ERAS` / `DETAILS` / `ITEMS` | 阶段、详解文案与时间线条目，均为中英双语数据 |
+| 🖼️ 阶段插图 | `images/history-*.svg` | 每个阶段一张配图，替换 `DETAILS` 中的 `img` 路径即可 |
+
+---
+
+## 🛠️ 技术栈
+
+| 类别 | 选型 |
+| --- | --- |
+| 运行时 | 纯 HTML / CSS / JavaScript，无框架、无构建步骤 |
+| CI 构建（Node 20+） | `fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒） |
+| 数据源 | RSS/Atom 快照 + Hacker News / DEV.to 官方 API |
+| 托管 | GitHub Actions + GitHub Pages（`.nojekyll` 纯静态） |
+| 评论 | Giscus（GitHub Discussions） |
 
 ---
 
