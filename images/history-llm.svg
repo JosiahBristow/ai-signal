@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <radialGradient id="brain" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd1e8"/>
+      <stop offset="1" stop-color="#d6468a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="holo" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#f472b6" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#f472b6" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#1a0f1c"/>
+
+  <!-- holographic rings -->
+  <circle cx="560" cy="450" r="360" fill="none" stroke="#f472b6" stroke-width="3" opacity="0.35" stroke-dasharray="20 16"/>
+  <circle cx="560" cy="450" r="300" fill="none" stroke="#d6468a" stroke-width="2" opacity="0.5"/>
+  <circle cx="560" cy="450" r="230" fill="url(#holo)"/>
+  <ellipse cx="560" cy="780" rx="330" ry="70" fill="none" stroke="#d6468a" stroke-width="3" opacity="0.4"/>
+
+  <!-- digital brain of light streams -->
+  <g>
+    <!-- left hemisphere -->
+    <g stroke="#f472b6" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85">
+      <path d="M560 300 C 480 320, 430 380, 430 460 C 430 540, 480 600, 560 620"/>
+      <path d="M560 300 C 510 350, 470 400, 470 460 C 470 520, 510 570, 560 620"/>
+      <path d="M470 460 C 520 440, 540 470, 560 480"/>
+      <path d="M445 410 C 480 420, 510 400, 540 420"/>
+    </g>
+    <!-- right hemisphere -->
+    <g stroke="#e0a2ff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85">
+      <path d="M560 300 C 640 320, 690 380, 690 460 C 690 540, 640 600, 560 620"/>
+      <path d="M560 300 C 610 350, 650 400, 650 460 C 650 520, 610 570, 560 620"/>
+      <path d="M650 460 C 600 440, 580 470, 560 480"/>
+      <path d="M675 410 C 640 420, 610 400, 580 420"/>
+    </g>
+    <!-- center glow -->
+    <circle cx="560" cy="455" r="60" fill="url(#brain)"/>
+    <circle cx="560" cy="455" r="18" fill="#ffffff"/>
+  </g>
+
+  <!-- chat bubbles -->
+  <g>
+    <rect x="980" y="200" width="420" height="130" rx="34" fill="#2b1522" stroke="#f472b6" stroke-width="4"/>
+    <text x="1030" y="265" font-size="30" fill="#ffd1e8">“帮我写一段 Python”</text>
+    <path d="M1050 330 l0 46 l40 -46 z" fill="#2b1522" stroke="#f472b6" stroke-width="3"/>
+
+    <rect x="1080" y="420" width="340" height="110" rx="30" fill="#2b1522" stroke="#e0a2ff" stroke-width="4"/>
+    <text x="1120" y="488" font-size="28" fill="#f2d3ff">推理 · 多模态 · Agent</text>
+
+    <rect x="1120" y="610" width="300" height="96" rx="28" fill="#2b1522" stroke="#f472b6" stroke-width="4"/>
+    <text x="1155" y="672" font-size="26" fill="#ffd1e8">“AGI 还有多远？”</text>
+  </g>
+
+  <!-- floating tokens / data streams -->
+  <g stroke="#f472b6" stroke-width="4" stroke-linecap="round" opacity="0.7">
+    <path d="M80 300 h120 M80 330 h80 M80 360 h100"/>
+    <path d="M150 200 h100 M150 230 h60 M150 260 h80"/>
+  </g>
+  <g fill="#f472b6" opacity="0.9">
+    <circle cx="880" cy="180" r="8"/>
+    <circle cx="940" cy="260" r="6"/>
+    <circle cx="900" cy="720" r="7"/>
+    <circle cx="980" cy="780" r="9"/>
+    <circle cx="1560" cy="500" r="7"/>
+    <circle cx="1520" cy="580" r="5"/>
+  </g>
+
+  <!-- transformer encoder stack (right) -->
+  <g>
+    <rect x="1420" y="120" width="150" height="70" rx="10" fill="#241323" stroke="#d6468a" stroke-width="4"/>
+    <rect x="1420" y="210" width="150" height="70" rx="10" fill="#241323" stroke="#d6468a" stroke-width="4"/>
+    <rect x="1420" y="300" width="150" height="70" rx="10" fill="#241323" stroke="#d6468a" stroke-width="4"/>
+    <rect x="1420" y="390" width="150" height="70" rx="10" fill="#241323" stroke="#d6468a" stroke-width="4"/>
+    <g stroke="#f472b6" stroke-width="4" stroke-linecap="round">
+      <path d="M1440 155 h110 M1440 245 h110 M1440 335 h110 M1440 425 h110"/>
+    </g>
+    <text x="1472" y="352" font-size="18" fill="#f472b6" font-family="ui-monospace,monospace">N×</text>
+  </g>
+
+  <!-- caption strip -->
+  <rect x="0" y="830" width="1600" height="70" fill="#120a14"/>
+  <text x="80" y="872" font-size="26" font-weight="700" fill="#ffe4f0">2017–2026</text>
+  <text x="320" y="872" font-size="24" fill="#f2a8cb">Transformer · ChatGPT · 多模态 · AGI 之争</text>
+  <text x="1240" y="872" font-size="22" fill="#f2a8cb" text-anchor="end">AI SIGNAL // LLM ERA</text>
+</svg>

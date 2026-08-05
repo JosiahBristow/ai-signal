@@ -1,0 +1,108 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <radialGradient id="eye" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#cfe8da"/>
+    </radialGradient>
+    <linearGradient id="robot" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3aa371"/>
+      <stop offset="1" stop-color="#1f6b45"/>
+    </linearGradient>
+    <linearGradient id="machine" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e8eef0"/>
+      <stop offset="1" stop-color="#c3d0d4"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f2f6f0"/>
+
+  <!-- mid-century arch sun -->
+  <circle cx="800" cy="520" r="330" fill="#f6ecd0"/>
+  <circle cx="800" cy="520" r="270" fill="#f2e5b8"/>
+  <circle cx="800" cy="520" r="210" fill="#efdfa8"/>
+
+  <!-- retro robot -->
+  <g>
+    <rect x="260" y="300" width="320" height="420" rx="40" fill="url(#robot)" stroke="#123a26" stroke-width="6"/>
+    <!-- head -->
+    <rect x="300" y="140" width="240" height="220" rx="70" fill="url(#robot)" stroke="#123a26" stroke-width="6"/>
+    <!-- antenna -->
+    <path d="M420 140 L420 60" stroke="#123a26" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="420" cy="46" r="16" fill="#e06a2b"/>
+    <circle cx="420" cy="46" r="6" fill="#ffd9b0"/>
+    <!-- eyes -->
+    <circle cx="370" cy="225" r="34" fill="url(#eye)" stroke="#123a26" stroke-width="5"/>
+    <circle cx="470" cy="225" r="34" fill="url(#eye)" stroke="#123a26" stroke-width="5"/>
+    <circle cx="370" cy="225" r="14" fill="#123a26"/>
+    <circle cx="470" cy="225" r="14" fill="#123a26"/>
+    <!-- smile vents -->
+    <rect x="360" y="300" width="120" height="26" rx="13" fill="#123a26"/>
+    <rect x="372" y="307" width="96" height="12" rx="6" fill="#3aa371"/>
+    <!-- chest buttons -->
+    <g>
+      <circle cx="370" cy="430" r="16" fill="#ff8a5c" stroke="#123a26" stroke-width="4"/>
+      <circle cx="420" cy="430" r="16" fill="#f2d060" stroke="#123a26" stroke-width="4"/>
+      <circle cx="470" cy="430" r="16" fill="#6fd6a0" stroke="#123a26" stroke-width="4"/>
+      <rect x="340" y="480" width="160" height="40" rx="10" fill="#123a26"/>
+      <rect x="352" y="492" width="136" height="16" rx="6" fill="#6fd6a0"/>
+    </g>
+    <!-- arms -->
+    <rect x="200" y="340" width="60" height="240" rx="26" fill="url(#robot)" stroke="#123a26" stroke-width="6"/>
+    <rect x="580" y="340" width="60" height="240" rx="26" fill="url(#robot)" stroke="#123a26" stroke-width="6"/>
+    <circle cx="230" cy="600" r="40" fill="#3aa371" stroke="#123a26" stroke-width="6"/>
+    <circle cx="610" cy="600" r="40" fill="#3aa371" stroke="#123a26" stroke-width="6"/>
+  </g>
+
+  <!-- punch card machine -->
+  <g>
+    <rect x="980" y="330" width="360" height="420" rx="12" fill="url(#machine)" stroke="#31505c" stroke-width="6"/>
+    <rect x="1010" y="380" width="300" height="60" rx="6" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+    <!-- slot -->
+    <rect x="1060" y="520" width="200" height="16" rx="8" fill="#31505c"/>
+    <!-- keypad -->
+    <g>
+      <circle cx="1070" cy="630" r="22" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+      <circle cx="1120" cy="630" r="22" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+      <circle cx="1170" cy="630" r="22" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+      <circle cx="1220" cy="630" r="22" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+      <circle cx="1270" cy="630" r="22" fill="#ffffff" stroke="#31505c" stroke-width="4"/>
+    </g>
+    <!-- stack of punch cards -->
+    <g>
+      <rect x="1400" y="430" width="150" height="220" rx="6" fill="#fbf3d8" stroke="#cbb77f" stroke-width="3"/>
+      <g fill="#cbb77f">
+        <rect x="1420" y="470" width="60" height="8" rx="3"/>
+        <rect x="1420" y="490" width="60" height="8" rx="3"/>
+        <rect x="1440" y="510" width="60" height="8" rx="3"/>
+        <rect x="1420" y="530" width="60" height="8" rx="3"/>
+        <rect x="1455" y="550" width="60" height="8" rx="3"/>
+        <rect x="1420" y="570" width="60" height="8" rx="3"/>
+        <rect x="1435" y="590" width="60" height="8" rx="3"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- geometric mid-century shapes -->
+  <g fill="#3aa371" opacity="0.85">
+    <path d="M40 700 l70 -120 70 120 z"/>
+    <circle cx="1520" cy="180" r="46"/>
+    <rect x="60" y="160" width="90" height="90" rx="18" transform="rotate(14 105 205)"/>
+  </g>
+  <g fill="#e06a2b" opacity="0.8">
+    <path d="M1460 720 l60 -90 60 90 z"/>
+    <circle cx="120" cy="640" r="30"/>
+  </g>
+
+  <!-- floating sparkle stars -->
+  <g fill="#3aa371">
+    <path d="M900 200 l14 30 30 14 -30 14 -14 30 -14 -30 -30 -14 30 -14 z"/>
+    <path d="M1150 140 l10 22 22 10 -22 10 -10 22 -10 -22 -22 -10 22 -10 z"/>
+    <path d="M950 760 l12 26 26 12 -26 12 -12 26 -12 -26 -26 -12 26 -12 z"/>
+  </g>
+
+  <!-- caption strip -->
+  <rect x="0" y="830" width="1600" height="70" fill="#123a26"/>
+  <text x="80" y="872" font-size="26" font-weight="700" fill="#f2f6f0">1956–1966</text>
+  <text x="320" y="872" font-size="24" fill="#a8e4c4">达特茅斯会议 · 感知机 · ELIZA</text>
+  <text x="1240" y="872" font-size="22" fill="#a8e4c4" text-anchor="end">AI SIGNAL // GOLDEN AGE</text>
+</svg>

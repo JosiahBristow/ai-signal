@@ -1270,6 +1270,117 @@ button {
 .tl-item.hot .tl-desc { color: var(--text-dim); }
 .tl-item.hot { border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent); border-radius: var(--radius-m); padding: 16px 18px 16px 46px; margin-left: -6px; }
 
+/* ---------------- Era detail (阶段详解) ---------------- */
+
+.era-detail {
+  padding: 22px 0 4px;
+  scroll-margin-top: calc(var(--header-h) + 14px);
+}
+.ed-card {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 14fr);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-l);
+  background: var(--surface);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  border-top: 3px solid hsl(var(--ed-h, 45) var(--cat-s) var(--cat-l));
+}
+.ed-media { position: relative; min-height: 240px; }
+.ed-media img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ed-period {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  color: #ffffff;
+  background: rgba(10, 10, 14, 0.6);
+  padding: 5px 12px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+}
+.ed-body {
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.ed-kicker {
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: hsl(var(--ed-h, 45) var(--cat-s) var(--cat-l));
+}
+.ed-title { font-size: 26px; font-weight: 700; margin-top: 2px; }
+.ed-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-top: 4px;
+}
+.ed-overview {
+  color: var(--text-dim);
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0;
+}
+.ed-points {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+.ed-points li {
+  position: relative;
+  padding-left: 22px;
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: var(--text);
+}
+.ed-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 7px;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: hsl(var(--ed-h, 45) var(--cat-s) var(--cat-l));
+}
+.ed-back {
+  align-self: flex-start;
+  margin-top: 6px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-size: 12.5px;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.ed-back:hover { color: var(--text); border-color: var(--line-strong); }
+
+@media (max-width: 820px) {
+  .ed-card { grid-template-columns: 1fr; }
+  .ed-media { aspect-ratio: 16 / 9; min-height: 0; }
+  .ed-body { padding: 20px; }
+}
+
 /* ---------------- Reader mode ---------------- */
 
 .reader-overlay {
@@ -1698,6 +1809,24 @@ html[data-theme="suckless"] .links-col { border-radius: 0; border-color: #000000
 html[data-theme="suckless"] .link-item .li-icon { border-radius: 0; border-color: #000000; background: #ffffff; }
 html[data-theme="suckless"] .link-item:hover .li-name { color: #004b97; }
 html[data-theme="suckless"] .li-arrow { color: #004b97; }
+
+/* 历史页 */
+html[data-theme="suckless"] .era-detail .ed-card {
+  border: 2px solid #000000;
+  border-radius: 0;
+  background: #ffffff;
+  box-shadow: none;
+}
+html[data-theme="suckless"] .ed-title { color: #000000; }
+html[data-theme="suckless"] .ed-period { border-radius: 0; }
+html[data-theme="suckless"] .ed-label { color: #444444; }
+html[data-theme="suckless"] .ed-back {
+  border-radius: 0;
+  border-color: #000000;
+  color: #000000;
+  background: #ffffff;
+}
+html[data-theme="suckless"] .ed-back:hover { background: #000000; color: #ffffff; }
 
 /* ---------------- Responsive ---------------- */
 

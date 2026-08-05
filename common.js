@@ -147,6 +147,9 @@
       zh: "按公开资料整理，聚焦关键里程碑",
       en: "Compiled from public sources, focused on key milestones"
     },
+    "阶段概览": { zh: "阶段概览", en: "Overview" },
+    "关键节点": { zh: "关键节点", en: "Key milestones" },
+    "返回全部时间线": { zh: "返回全部时间线", en: "Back to full timeline" },
     "里程碑": { zh: "里程碑", en: "Milestone" }
   };
 

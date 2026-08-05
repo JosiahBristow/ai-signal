@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffd98a" stop-opacity="0.9"/>
+      <stop offset="0.55" stop-color="#e8a34a" stop-opacity="0.5"/>
+      <stop offset="1" stop-color="#e8a34a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="tube" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffe9b8"/>
+      <stop offset="1" stop-color="#e07b1f"/>
+    </radialGradient>
+    <linearGradient id="rack" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6b4315"/>
+      <stop offset="1" stop-color="#3d2610"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#f4ecd8"/>
+
+  <!-- subtle blueprint grid -->
+  <g stroke="#b99a5e" stroke-opacity="0.25" stroke-width="1">
+    <path d="M0 112h1600M0 225h1600M0 337h1600M0 450h1600M0 562h1600M0 675h1600M0 787h1600"/>
+    <path d="M160 0v900M320 0v900M480 0v900M800 0v900M1120 0v900M1280 0v900M1440 0v900"/>
+  </g>
+
+  <!-- paper schematic card -->
+  <g>
+    <rect x="920" y="180" width="560" height="540" rx="14" fill="#fffdf4" stroke="#c9b27a" stroke-width="3"/>
+    <rect x="920" y="180" width="560" height="44" fill="#efe4c8"/>
+    <!-- neuron: dendrites -->
+    <g stroke="#b06f08" stroke-width="5" fill="none" stroke-linecap="round">
+      <path d="M1200 520 L1200 380"/>
+      <path d="M1200 520 L1140 600"/>
+      <path d="M1200 520 L1260 600"/>
+      <path d="M1200 380 L1120 320"/>
+      <path d="M1200 380 L1280 330"/>
+      <path d="M1140 600 L1070 660"/>
+      <path d="M1260 600 L1330 660"/>
+    </g>
+    <!-- soma -->
+    <circle cx="1200" cy="500" r="52" fill="#fffdf4" stroke="#b06f08" stroke-width="6"/>
+    <circle cx="1200" cy="500" r="34" fill="#f0d9a8" stroke="#b06f08" stroke-width="3"/>
+    <!-- axon -->
+    <path d="M1252 500 L1420 500" stroke="#b06f08" stroke-width="5"/>
+    <g stroke="#b06f08" stroke-width="4" stroke-linecap="round">
+      <path d="M1420 500 l-22 -16 M1420 500 l-22 16"/>
+    </g>
+    <!-- dendrite end nodes -->
+    <g fill="#b06f08">
+      <circle cx="1120" cy="320" r="10"/>
+      <circle cx="1280" cy="330" r="10"/>
+      <circle cx="1070" cy="660" r="10"/>
+      <circle cx="1330" cy="660" r="10"/>
+    </g>
+    <!-- math markings -->
+    <g fill="none" stroke="#d6b871" stroke-width="2">
+      <circle cx="1020" cy="300" r="26"/>
+      <circle cx="1020" cy="300" r="14"/>
+      <path d="M1420 260 l18 26 M1438 260 l-18 26"/>
+    </g>
+  </g>
+
+  <!-- early analog computer -->
+  <g>
+    <!-- main cabinet -->
+    <rect x="180" y="200" width="460" height="560" rx="10" fill="url(#rack)" stroke="#2a1a08" stroke-width="4"/>
+    <rect x="210" y="232" width="400" height="60" rx="6" fill="#8a5a2b" stroke="#2a1a08" stroke-width="3"/>
+    <!-- dials -->
+    <circle cx="260" cy="262" r="16" fill="#f4ecd8" stroke="#2a1a08" stroke-width="3"/>
+    <path d="M260 262 l-10 -8" stroke="#b06f08" stroke-width="4"/>
+    <circle cx="330" cy="262" r="16" fill="#f4ecd8" stroke="#2a1a08" stroke-width="3"/>
+    <path d="M330 262 l8 -9" stroke="#b06f08" stroke-width="4"/>
+    <rect x="380" y="242" width="120" height="40" rx="4" fill="#2a1a08"/>
+    <g fill="#e07b1f">
+      <rect x="392" y="252" width="26" height="20" rx="3"/>
+      <rect x="426" y="252" width="26" height="20" rx="3"/>
+      <rect x="460" y="252" width="26" height="20" rx="3"/>
+    </g>
+    <!-- vacuum tube rows -->
+    <g>
+      <rect x="230" y="320" width="360" height="210" rx="8" fill="#57360f" stroke="#2a1a08" stroke-width="3"/>
+      <g>
+        <circle cx="290" cy="380" r="26" fill="url(#tube)"/>
+        <circle cx="290" cy="380" r="10" fill="#ffe9b8"/>
+        <circle cx="392" cy="380" r="26" fill="url(#tube)"/>
+        <circle cx="392" cy="380" r="10" fill="#ffe9b8"/>
+        <circle cx="494" cy="380" r="26" fill="url(#tube)"/>
+        <circle cx="494" cy="380" r="10" fill="#ffe9b8"/>
+        <circle cx="290" cy="490" r="26" fill="url(#tube)"/>
+        <circle cx="290" cy="490" r="10" fill="#ffe9b8"/>
+        <circle cx="392" cy="490" r="26" fill="url(#tube)"/>
+        <circle cx="392" cy="490" r="10" fill="#ffe9b8"/>
+        <circle cx="494" cy="490" r="26" fill="url(#tube)"/>
+        <circle cx="494" cy="490" r="10" fill="#ffe9b8"/>
+      </g>
+      <circle cx="410" cy="380" r="90" fill="url(#glow)" opacity="0.7"/>
+    </g>
+    <!-- tape reels -->
+    <g>
+      <rect x="250" y="560" width="90" height="150" rx="6" fill="#8a5a2b" stroke="#2a1a08" stroke-width="3"/>
+      <circle cx="295" cy="600" r="26" fill="#f4ecd8" stroke="#2a1a08" stroke-width="3"/>
+      <circle cx="295" cy="600" r="10" fill="#2a1a08"/>
+      <rect x="480" y="560" width="90" height="150" rx="6" fill="#8a5a2b" stroke="#2a1a08" stroke-width="3"/>
+      <circle cx="525" cy="600" r="26" fill="#f4ecd8" stroke="#2a1a08" stroke-width="3"/>
+      <circle cx="525" cy="600" r="10" fill="#2a1a08"/>
+    </g>
+    <!-- wires -->
+    <g fill="none" stroke="#b06f08" stroke-width="5" stroke-linecap="round" opacity="0.85">
+      <path d="M180 300 C 60 300, 60 180, 300 170"/>
+      <path d="M640 620 C 780 640, 780 760, 700 800"/>
+    </g>
+  </g>
+
+  <!-- floating sparks -->
+  <g fill="#e07b1f" opacity="0.8">
+    <circle cx="760" cy="240" r="6"/>
+    <circle cx="820" cy="300" r="4"/>
+    <circle cx="720" cy="360" r="5"/>
+    <circle cx="860" cy="470" r="7"/>
+    <circle cx="700" cy="520" r="4"/>
+    <circle cx="840" cy="640" r="6"/>
+    <circle cx="780" cy="700" r="5"/>
+    <circle cx="890" cy="760" r="4"/>
+  </g>
+
+  <!-- caption strip -->
+  <rect x="0" y="830" width="1600" height="70" fill="#2a1a08"/>
+  <text x="80" y="872" font-size="26" font-weight="700" fill="#f4ecd8">1943–1956</text>
+  <text x="320" y="872" font-size="24" fill="#e8c98f">M-P 神经元 · 图灵测试 · 达特茅斯会议</text>
+  <text x="1240" y="872" font-size="22" fill="#e8c98f" text-anchor="end">AI SIGNAL // ORIGINS</text>
+</svg>

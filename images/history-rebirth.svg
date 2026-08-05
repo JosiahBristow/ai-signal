@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <radialGradient id="nn" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#b794ff" stop-opacity="0.85"/>
+      <stop offset="1" stop-color="#7c4fc9" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="node" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.5" stop-color="#c9b1f2"/>
+      <stop offset="1" stop-color="#7c4fc9"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#141226"/>
+
+  <!-- ambient glow -->
+  <circle cx="800" cy="450" r="460" fill="url(#nn)" opacity="0.55"/>
+
+  <!-- neural network: 4 layers -->
+  <g>
+    <g stroke="#8a63d8" stroke-width="3" opacity="0.55">
+      <line x1="420" y1="450" x2="700" y2="260"/>
+      <line x1="420" y1="450" x2="700" y2="450"/>
+      <line x1="420" y1="450" x2="700" y2="640"/>
+      <line x1="700" y1="260" x2="980" y2="330"/>
+      <line x1="700" y1="260" x2="980" y2="450"/>
+      <line x1="700" y1="260" x2="980" y2="570"/>
+      <line x1="700" y1="450" x2="980" y2="330"/>
+      <line x1="700" y1="450" x2="980" y2="450"/>
+      <line x1="700" y1="450" x2="980" y2="570"/>
+      <line x1="700" y1="640" x2="980" y2="330"/>
+      <line x1="700" y1="640" x2="980" y2="450"/>
+      <line x1="700" y1="640" x2="980" y2="570"/>
+      <line x1="980" y1="330" x2="1240" y2="390"/>
+      <line x1="980" y1="450" x2="1240" y2="390"/>
+      <line x1="980" y1="570" x2="1240" y2="390"/>
+    </g>
+    <!-- input nodes -->
+    <g fill="url(#node)">
+      <circle cx="420" cy="260" r="22"/>
+      <circle cx="420" cy="360" r="22"/>
+      <circle cx="420" cy="450" r="22"/>
+      <circle cx="420" cy="540" r="22"/>
+      <circle cx="420" cy="640" r="22"/>
+    </g>
+    <!-- hidden layer 1 -->
+    <g fill="url(#node)">
+      <circle cx="700" cy="260" r="26"/>
+      <circle cx="700" cy="450" r="26"/>
+      <circle cx="700" cy="640" r="26"/>
+    </g>
+    <!-- hidden layer 2 -->
+    <g fill="url(#node)">
+      <circle cx="980" cy="330" r="26"/>
+      <circle cx="980" cy="450" r="26"/>
+      <circle cx="980" cy="570" r="26"/>
+    </g>
+    <!-- output -->
+    <g>
+      <circle cx="1240" cy="390" r="34" fill="url(#node)" stroke="#a78bfa" stroke-width="4"/>
+      <circle cx="1240" cy="390" r="14" fill="#ffffff"/>
+    </g>
+    <!-- glow on active path -->
+    <path d="M1240 390 L1340 390" stroke="#a78bfa" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- GPU chip stacks -->
+  <g>
+    <g>
+      <rect x="120" y="620" width="220" height="60" rx="8" fill="#241f3a" stroke="#7c4fc9" stroke-width="3"/>
+      <rect x="150" y="580" width="220" height="60" rx="8" fill="#1d1930" stroke="#5e3d9c" stroke-width="3"/>
+      <rect x="180" y="540" width="220" height="60" rx="8" fill="#181427" stroke="#5e3d9c" stroke-width="3"/>
+      <g stroke="#a78bfa" stroke-width="3">
+        <path d="M230 620 l40 60 M290 620 l40 60 M350 620 l40 60"/>
+        <path d="M230 580 l40 60 M290 580 l40 60 M350 580 l40 60"/>
+      </g>
+      <text x="230" y="578" font-size="20" fill="#c9b1f2" font-family="ui-monospace,monospace">GPU</text>
+    </g>
+    <g>
+      <rect x="1260" y="560" width="200" height="56" rx="8" fill="#241f3a" stroke="#7c4fc9" stroke-width="3"/>
+      <rect x="1288" y="524" width="200" height="56" rx="8" fill="#1d1930" stroke="#5e3d9c" stroke-width="3"/>
+      <g stroke="#a78bfa" stroke-width="3">
+        <path d="M1330 524 l36 54 M1388 524 l36 54 M1446 524 l36 54"/>
+      </g>
+      <text x="1330" y="484" font-size="20" fill="#c9b1f2" font-family="ui-monospace,monospace">CUDA</text>
+    </g>
+  </g>
+
+  <!-- grid floor -->
+  <g stroke="#8a63d8" stroke-opacity="0.25" stroke-width="2">
+    <path d="M0 720 h1600 M0 760 h1600 M0 800 h1600 M0 840 h1600"/>
+    <path d="M320 720 v180 M640 720 v180 M960 720 v180 M1280 720 v180"/>
+  </g>
+
+  <!-- caption strip -->
+  <rect x="0" y="830" width="1600" height="70" fill="#0e0c1c"/>
+  <text x="80" y="872" font-size="26" font-weight="700" fill="#efecfd">1997–2016</text>
+  <text x="320" y="872" font-size="24" fill="#b59dea">深蓝 · AlexNet · GAN · AlphaGo</text>
+  <text x="1240" y="872" font-size="22" fill="#b59dea" text-anchor="end">AI SIGNAL // DEEP LEARNING</text>
+</svg>

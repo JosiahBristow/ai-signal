@@ -1,0 +1,117 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" font-family="system-ui, -apple-system, sans-serif">
+  <defs>
+    <radialGradient id="screen" cx="50%" cy="50%" r="50%">
+      <stop offset="0" stop-color="#9ff2c0"/>
+      <stop offset="1" stop-color="#2f7a52"/>
+    </radialGradient>
+    <linearGradient id="mainframe" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#41536b"/>
+      <stop offset="1" stop-color="#24334a"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1600" height="900" fill="#eef1f5"/>
+
+  <!-- cold ambient grid -->
+  <g stroke="#8fa2b8" stroke-opacity="0.18" stroke-width="1">
+    <path d="M0 150h1600M0 300h1600M0 450h1600M0 600h1600M0 750h1600"/>
+    <path d="M200 0v900M400 0v900M600 0v900M800 0v900M1000 0v900M1200 0v900M1400 0v900"/>
+  </g>
+
+  <!-- mainframe towers -->
+  <g>
+    <rect x="200" y="220" width="300" height="580" rx="8" fill="url(#mainframe)" stroke="#16202e" stroke-width="5"/>
+    <g fill="#1b2434" stroke="#0f1622" stroke-width="2">
+      <rect x="230" y="260" width="240" height="70" rx="4"/>
+      <rect x="230" y="360" width="240" height="70" rx="4"/>
+      <rect x="230" y="460" width="240" height="70" rx="4"/>
+      <rect x="230" y="560" width="240" height="70" rx="4"/>
+    </g>
+    <!-- reel lights -->
+    <g fill="#d5dce6">
+      <circle cx="262" cy="295" r="14"/>
+      <circle cx="262" cy="395" r="14"/>
+      <circle cx="262" cy="495" r="14"/>
+      <circle cx="262" cy="595" r="14"/>
+    </g>
+    <g fill="#7fd6a8">
+      <circle cx="300" cy="295" r="10"/>
+      <circle cx="300" cy="395" r="10"/>
+      <circle cx="300" cy="495" r="10"/>
+      <circle cx="300" cy="595" r="10"/>
+    </g>
+
+    <rect x="560" y="300" width="300" height="500" rx="8" fill="url(#mainframe)" stroke="#16202e" stroke-width="5"/>
+    <g fill="#1b2434" stroke="#0f1622" stroke-width="2">
+      <rect x="590" y="340" width="240" height="70" rx="4"/>
+      <rect x="590" y="440" width="240" height="70" rx="4"/>
+      <rect x="590" y="540" width="240" height="70" rx="4"/>
+    </g>
+    <g fill="#7fd6a8">
+      <rect x="622" y="375" width="176" height="6" rx="3"/>
+      <rect x="622" y="475" width="176" height="6" rx="3"/>
+      <rect x="622" y="575" width="176" height="6" rx="3"/>
+    </g>
+
+    <rect x="920" y="170" width="300" height="630" rx="8" fill="url(#mainframe)" stroke="#16202e" stroke-width="5"/>
+    <!-- glowing terminal screens -->
+    <g>
+      <rect x="950" y="210" width="240" height="150" rx="6" fill="#0d1a12" stroke="#2f7a52" stroke-width="4"/>
+      <g stroke="#5fe09a" stroke-width="6" stroke-linecap="round" fill="none">
+        <path d="M970 250 h140"/>
+        <path d="M970 280 h90"/>
+        <path d="M970 310 h120"/>
+        <path d="M1120 310 h50"/>
+      </g>
+      <rect x="950" y="400" width="240" height="150" rx="6" fill="#0d1a12" stroke="#2f7a52" stroke-width="4"/>
+      <g stroke="#5fe09a" stroke-width="6" stroke-linecap="round" fill="none">
+        <path d="M970 440 h100"/>
+        <path d="M970 470 h140"/>
+        <path d="M970 500 h60"/>
+        <path d="M1120 500 h40"/>
+      </g>
+    </g>
+  </g>
+
+  <!-- falling snow -->
+  <g fill="#ffffff" stroke="#b9c7d6" stroke-width="1">
+    <circle cx="90" cy="120" r="7"/>
+    <circle cx="240" cy="90" r="5"/>
+    <circle cx="430" cy="140" r="8"/>
+    <circle cx="680" cy="80" r="6"/>
+    <circle cx="820" cy="130" r="5"/>
+    <circle cx="1030" cy="90" r="7"/>
+    <circle cx="1230" cy="120" r="6"/>
+    <circle cx="1420" cy="100" r="8"/>
+    <circle cx="1520" cy="150" r="5"/>
+    <circle cx="150" cy="330" r="6"/>
+    <circle cx="360" cy="300" r="5"/>
+    <circle cx="520" cy="360" r="7"/>
+    <circle cx="760" cy="320" r="5"/>
+    <circle cx="1120" cy="340" r="6"/>
+    <circle cx="1400" cy="380" r="5"/>
+    <circle cx="1560" cy="340" r="7"/>
+    <circle cx="110" cy="620" r="6"/>
+    <circle cx="420" cy="660" r="5"/>
+    <circle cx="700" cy="640" r="7"/>
+    <circle cx="1350" cy="680" r="6"/>
+    <circle cx="1560" cy="700" r="5"/>
+  </g>
+
+  <!-- cold figure walking away (silhouette) -->
+  <g fill="#24334a">
+    <circle cx="1250" cy="700" r="26"/>
+    <path d="M1250 726 v60 M1218 760 h64 M1226 726 l-34 44 M1274 726 l34 44"/>
+    <path d="M1250 786 v60"/>
+    <g stroke="#24334a" stroke-width="16" stroke-linecap="round">
+      <path d="M1250 786 l-60 -18"/>
+      <path d="M1250 786 l60 18"/>
+    </g>
+  </g>
+
+  <!-- caption strip -->
+  <rect x="0" y="830" width="1600" height="70" fill="#16202e"/>
+  <text x="80" y="872" font-size="26" font-weight="700" fill="#eef1f5">1969–1993</text>
+  <text x="320" y="872" font-size="24" fill="#9fb4c9">两次 AI 寒冬 · 专家系统 · 反向传播</text>
+  <text x="1240" y="872" font-size="22" fill="#9fb4c9" text-anchor="end">AI SIGNAL // WINTER</text>
+</svg>
