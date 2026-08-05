@@ -29,6 +29,7 @@
 
   var ARTICLES_URL = "articles.json";
   var readerIndex = null;
+  var readerIndexPromise = null;
 
   function loadSnapshot() {
     return fetchWithTimeout(SNAPSHOT_URL + "?t=" + Date.now(), 8000).then(function (r) {
@@ -81,6 +82,11 @@
       readerIndex = null;
       return null;
     });
+  }
+
+  function ensureReaderIndex() {
+    if (!readerIndexPromise) readerIndexPromise = loadReaderIndex();
+    return readerIndexPromise;
   }
 
   var CATEGORIES = [
@@ -356,7 +362,8 @@
     var bars = document.getElementById("signal-bars");
     if (bars) bars.classList.remove("off");
     var snapP = loadSnapshot().catch(function () { snapshot = null; return null; });
-    var jobs = SOURCES.map(function (s) {
+
+    function loadOne(s) {
       return s.load(snapP).then(function (items) {
         state.sourceOk[s.id] = { ok: true, n: items.length };
         return items;
@@ -364,23 +371,41 @@
         state.sourceOk[s.id] = { ok: false, n: 0 };
         return [];
       });
-    });
-    return Promise.all(jobs).then(function (groups) {
-      state.all = finalize(merge(groups.reduce(function (acc, g) { return acc.concat(g); }, [])));
+    }
+
+    function applyGroups(groups) {
+      state.all = finalize(merge(state.all.concat.apply(state.all, groups)));
+      state.lastSync = Date.now();
+      renderSourceStatus();
+      if (!state.tickerBuilt) buildTicker();
+      state.visible = PAGE_SIZE;
+      render();
       if (readerIndex) {
         state.all.forEach(function (it) {
           var art = readerIndex[urlKey(it.url)];
           if (art && art.cover && !it.cover) it.cover = art.cover;
         });
       }
-      state.lastSync = Date.now();
-      renderSourceStatus();
-      if (!state.tickerBuilt) buildTicker();
-      state.visible = PAGE_SIZE;
-      render();
       var up = document.getElementById("last-update");
       if (up) up.textContent = relTime(state.lastSync) + (window.t ? window.t(" 同步") : " 同步");
       return state.all.length;
+    }
+
+    var snapJobs = [];
+    var liveJobs = [];
+    SOURCES.forEach(function (s) {
+      (s.id === "hn" || s.id === "devto" ? liveJobs : snapJobs).push(loadOne(s));
+    });
+
+    return Promise.all(snapJobs).then(function (snapGroups) {
+      applyGroups(snapGroups);
+      return Promise.all(liveJobs).then(function (liveGroups) {
+        if (liveGroups.some(function (g) { return g.length; })) {
+          state.tickerBuilt = false;
+          applyGroups(liveGroups);
+        }
+        return state.all.length;
+      });
     });
   }
 
@@ -720,6 +745,13 @@
 
   function openReader(url) {
     var art = readerIndex ? readerIndex[urlKey(url)] : null;
+    if (!readerIndexPromise) {
+      ensureReaderIndex().then(function () {
+        if (readerIndex) openReader(url);
+        else window.open(url, "_blank", "noopener");
+      });
+      return;
+    }
     if (!art || !art.content) {
       window.open(url, "_blank", "noopener");
       return;
@@ -777,6 +809,19 @@
     if (btn) btn.setAttribute("aria-expanded", "false");
   }
 
+  function fillCardFull(card, url) {
+    var full = card.querySelector(".card-full");
+    if (!full) return;
+    card.dataset.loaded = "1";
+    var art = readerIndex ? readerIndex[urlKey(url)] : null;
+    if (art && art.content) {
+      full.innerHTML = art.content;
+    } else {
+      full.innerHTML = '<div class="card-full-note">' + (window.t ? window.t("暂无全文快照") : "暂无全文快照") +
+        '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + (window.t ? window.t("前往原文 ↗") : "前往原文 ↗") + "</a></div>";
+    }
+  }
+
   function expandCard(card, url) {
     var full = card.querySelector(".card-full");
     var btn = card.querySelector(".read-toggle");
@@ -786,14 +831,13 @@
       return;
     }
     if (card.dataset.loaded !== "1") {
-      var art = readerIndex ? readerIndex[urlKey(url)] : null;
-      if (art && art.content) {
-        full.innerHTML = art.content;
+      if (readerIndex) {
+        fillCardFull(card, url);
       } else {
-        full.innerHTML = '<div class="card-full-note">' + (window.t ? window.t("暂无全文快照") : "暂无全文快照") +
-          '<a href="' + esc(url) + '" target="_blank" rel="noopener">' + (window.t ? window.t("前往原文 ↗") : "前往原文 ↗") + "</a></div>";
+        ensureReaderIndex().then(function () {
+          if (card.dataset.loaded !== "1") fillCardFull(card, url);
+        });
       }
-      card.dataset.loaded = "1";
     }
     card.classList.add("expanded");
     full.hidden = false;
@@ -863,7 +907,6 @@
     renderSourceStatus();
     setupComments();
     setupReader();
-    loadReaderIndex();
 
     document.addEventListener("signal:refresh", function () { refresh(); });
 

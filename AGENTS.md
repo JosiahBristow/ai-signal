@@ -42,6 +42,8 @@ are fetched live via their APIs.
   fetches top articles, sanitizes via cheerio whitelist, writes `articles.json`)
 - Syntax check: `node --check app.js common.js history.js scripts/*.mjs`
 - Bluesky parse unit test (mock fetch, no network): `node /tmp/opencode/bsky-test.mjs`
+- Progressive render test (snapshot-first, live-append, mock fetch):
+  `node /tmp/opencode/progressive-test.js`
 - Smoke test (jsdom, mock fetch): `node /tmp/opencode/ai-test/smoke.js` — asserts
   pages render, snapshot-first feed loading, category chips, reader mode
   (open/render/close/fallback), history/links pages. (smoke.js currently missing;
