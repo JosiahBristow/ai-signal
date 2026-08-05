@@ -3,13 +3,19 @@
 Static multi-page AI news aggregator (SIGNAL). Pure HTML/CSS/JS, no framework, no
 build step. Pages: `index.html` (news), `links.html` (site navigation),
 `history.html` (AI history timeline), `learn.html` (AI basics course),
-`python.html` (Python intro course). Data comes from `feeds.json` (RSS snapshot)
-+ `articles.json` (full-text snapshot for reader mode), both produced in CI by
-GitHub Actions and read same-origin. HN / DEV.to are fetched live via their APIs.
+`python.html` (Python intro course). Data comes from `feeds.json` (RSS snapshot +
+X practitioner Bluesky mirror) + `articles.json` (full-text snapshot for reader
+mode), both produced in CI by GitHub Actions and read same-origin. HN / DEV.to
+are fetched live via their APIs.
 
 ## Current state
 
 - News engine: `app.js` (load, dedupe, classify, heat, render, reader mode, giscus).
+  Source `x` ("X · AI 从业者") is snapshot-only: 14 curated AI practitioners
+  (`X_ACCOUNTS` in `build-feeds.mjs`), mirrored via Bluesky's free public AT
+  protocol API (`public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed`), since X
+  has no free API and RSSHub's Twitter route needs a private token. CI-side
+  fetch only; cards show `@handle` as author and link to `bsky.app`.
 - Theme system: `common.js` + `styles.css` (`signal-theme` localStorage,
   `data-theme` on `<html>`: paper / midnight / aurora / ink / auto).
 - CI: `.github/workflows/feeds.yml` — cron `*/15 * * * *` + `workflow_dispatch`;
@@ -31,13 +37,15 @@ GitHub Actions and read same-origin. HN / DEV.to are fetched live via their APIs
 
 - Install script deps (Node 20+): `npm install` in `scripts/` (installs
   fast-xml-parser + cheerio; lockfile committed).
-- Build RSS snapshot: `node scripts/build-feeds.mjs`
+- Build snapshot: `node scripts/build-feeds.mjs` (RSS + X practitioner Bluesky mirror)
 - Build full-text snapshot: `node scripts/build-articles.mjs` (reads `feeds.json`,
   fetches top articles, sanitizes via cheerio whitelist, writes `articles.json`)
 - Syntax check: `node --check app.js common.js history.js scripts/*.mjs`
+- Bluesky parse unit test (mock fetch, no network): `node /tmp/opencode/bsky-test.mjs`
 - Smoke test (jsdom, mock fetch): `node /tmp/opencode/ai-test/smoke.js` — asserts
   pages render, snapshot-first feed loading, category chips, reader mode
-  (open/render/close/fallback), history/links pages.
+  (open/render/close/fallback), history/links pages. (smoke.js currently missing;
+  a minimal DOM-stub check lives at `/tmp/opencode/news-x-test.js`.)
 
 ## Guidance
 

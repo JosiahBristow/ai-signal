@@ -28,7 +28,7 @@
 
 **AI SIGNAL** 是一个 **实时聚合中英文 AI 领域最新动态** 的新闻站，并附带两门自研教程课。它把散落在各个角落的 AI 信息 —— 英文科技媒体的 RSS、中文 AI 媒体的头条、Hacker News / DEV.to 的技术讨论 —— 汇聚成一个「信号台」：
 
-- **📰 一个页面看全**：TechCrunch AI、The Verge AI、量子位、36氪、Hacker News、DEV.to，六大来源实时滚动。
+- **📰 一个页面看全**：TechCrunch AI、The Verge AI、量子位、36氪、X 一线 AI 从业者动态、Hacker News、DEV.to，七大来源实时滚动。
 - **🧠 自动分类**：模型发布 / 融资商业 / 政策监管 / 安全风险 / 芯片算力 / 机器人 / 研究 / 应用 / 其他，共 **9 大类** 免人工打标。
 - **🔥 热度排名**：基于社区互动与新鲜度的加权信号强度，找出「此刻最该看的 TOP 5」。
 - **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
@@ -51,7 +51,7 @@
 | Emoji | 能力 | 说明 |
 | --- | --- | --- |
 | ⚡ | 实时聚合 | 每 15 分钟快照 + 每 5 分钟前端自动刷新，切回页面立即同步 |
-| 🗂️ | 六大来源 | 4 个 RSS/Atom 源（快照）+ HN Algolia API + DEV.to API（浏览器直连） |
+| 🗂️ | 七大来源 | 5 个快照源（4 个 RSS/Atom + X 一线从业者 Bluesky 镜像）+ HN Algolia API + DEV.to API（浏览器直连） |
 | 🧠 | 智能分类 | 标题 + 摘要关键词打分，9 大分类自动归类 |
 | 🔥 | 热度算法 | 互动量（点赞/评论）与新鲜度加权，热榜即时刷新 |
 | 📖 | 站内阅读 | `articles.json` 全文快照，服务端白名单消毒后渲染 |
@@ -131,7 +131,7 @@
 
 ![系统架构图](docs/architecture.svg)
 
-- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；原文网页（CI 端抓全文）。
+- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；原文网页（CI 端抓全文）。
 - **构建层**：`feeds.yml` 工作流，每 15 分钟一轮，生成并提交两个快照文件。
 - **存储层**：GitHub 仓库 `main` 分支 + GitHub Pages 静态托管，`.nojekyll` 保证纯静态直接服务。
 - **渲染层**：浏览器同源 `fetch` 快照，HN/DEV.to 直连官方 API，Giscus 走 iframe，全部无框架拼装。
@@ -164,7 +164,7 @@ flowchart LR
 `app.js` 是一个 IIFE 封装的状态机，核心链路：
 
 ```
-加载快照 ──► 六大来源并行加载 ──► 合并 + URL 规范化去重
+加载快照 ──► 七大来源并行加载 ──► 合并 + URL 规范化去重
   ──► 热度打分 + 智能分类 ──► 渲染（头条/热榜/列表/ticker）
   ──► 每 5 分钟自动刷新 · 窗口聚焦立即同步
 ```
@@ -273,14 +273,14 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
 ├── 📚 learn.js              # AI 基础课程数据 + 渲染引擎
 ├── 🐍 python.js             # Python 课程数据 + 渲染引擎（含代码高亮/复制）
-├── 📦 feeds.json            # RSS 快照（CI 每 15 分钟生成）
+├── 📦 feeds.json            # RSS + X 从业者快照（CI 每 15 分钟生成）
 ├── 📦 articles.json         # 全文快照（CI 生成，已消毒）
 ├── 🖼️ favicon.svg + icons/  # 站点图标（多尺寸）
 ├── 🖼️ images/               # 历史页阶段插图（SVG）+ 课程配图（learn/、python/）
 ├── 📚 docs/                 # README 配图（架构/管道/阅读/主题/首页 SVG 图）
 ├── 🤖 .github/workflows/feeds.yml  # 定时构建 + 自动提交
 └── 📦 scripts/
-    ├── build-feeds.mjs      # RSS 快照构建（fast-xml-parser）
+    ├── build-feeds.mjs      # RSS 快照 + X 从业者 Bluesky 镜像构建（fast-xml-parser）
     ├── build-articles.mjs   # 全文快照构建（cheerio 抽取+消毒）
     └── package.json         # 仅构建期依赖（运行时零依赖）
 ```
@@ -327,7 +327,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 | 配置项 | 位置 | 说明 |
 | --- | --- | --- |
 | 💬 Giscus 评论 | `app.js` 顶部 `GISCUS` | 填入 `repo` / `repoId` / `category` / `categoryId` 后启用，未配置时显示友好提示 |
-| 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` | 增删 RSS 源、关键词过滤、抓取上限 |
+| 📡 数据源 | `app.js` 的 `SOURCES` + `scripts/build-feeds.mjs` 的 `FEEDS` / `X_ACCOUNTS` | 增删 RSS 源、X 从业者账号、关键词过滤、抓取上限 |
 | 🧠 分类关键词 | `app.js` 的 `CATEGORIES` | 每个分类的 `kw` 数组，命中即归类 |
 | 📚 课程内容 | `learn.js` 的 `LESSONS` / `PARTS`、`python.js` 的 `LESSONS` / `PARTS` | 每节为 `{part, no, zh, en, hue, tags, lead, blocks}` 双语数据，改数据即改课程 |
 | 🎨 主题 | `common.js` + `styles.css` | CSS 变量与主题列表，新增主题只需加一个 `data-theme` 分支 |

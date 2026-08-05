@@ -51,6 +51,7 @@
         title: a.title,
         url: a.url,
         source: sid,
+        author: a.author || "",
         lang: sourceById(sid) ? sourceById(sid).lang : "en",
         time: a.time || Date.now(),
         excerpt: a.excerpt || "",
@@ -111,7 +112,11 @@
     { id: "qbitai", label: "量子位", lang: "zh", badge: "量子位",
       load: function (snapP) { return withSnapshot(snapP, "qbitai", "https://www.qbitai.com/feed"); } },
     { id: "kr36", label: "36氪", lang: "zh", badge: "36氪",
-      load: function (snapP) { return withSnapshot(snapP, "kr36", "https://36kr.com/feed", true); } }
+      load: function (snapP) { return withSnapshot(snapP, "kr36", "https://36kr.com/feed", true); } },
+    { id: "x", label: "X · AI 从业者", lang: "en", badge: "X",
+      load: function (snapP) { return (snapP || Promise.resolve()).then(function () {
+        return snapshotArticles("x") || [];
+      }); } }
   ];
 
   function withSnapshot(snapP, sid, feedUrl, filterZh) {
@@ -556,6 +561,7 @@
           (a.excerpt ? "<p class=\"card-desc\">" + esc(a.excerpt) + "</p>" : "") +
         "</a>" +
         '<div class="card-foot">' +
+          (a.author ? '<span class="meta-item">' + esc(a.author) + "</span><span class=\"meta-sep\">·</span>" : "") +
           '<span class="meta-item">' + esc(src ? src.label : a.source) + "</span>" +
           '<span class="meta-sep">·</span>' +
           '<span class="meta-item">' + relTime(a.time) + "</span>" +
