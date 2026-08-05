@@ -1,7 +1,12 @@
 /* SIGNAL — 服务端大模型排行榜快照构建脚本
    由 GitHub Actions 定时运行：抓取三大排行榜数据源，归一化后写入同源 rankings.json，
    供前端 rank.html 直接读取。仅此脚本依赖无，站点本身零依赖。
-   每个源独立 try/catch：单个源失败不影响其他源，前端只渲染成功的榜单。 */
+   每个源独立 try/catch：单个源失败不影响其他源，前端只渲染成功的榜单。
+
+   数据源（2026-08 实测结构）：
+   - OpenRouter：/api/frontend/v1/rankings/models（JSON，按日期+模型排列，客户端拉取的真实使用量）
+   - Artificial Analysis：/models 页面内嵌 ld+json Dataset 块（Intelligence Index）
+   - HuggingFace：/api/models?sort=downloads（公开 JSON） */
 
 import { writeFileSync, readFileSync, existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
@@ -11,11 +16,12 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT = join(ROOT, "rankings.json");
 const UA = "Mozilla/5.0 (compatible; SignalNews/1.0; +https://github.com)";
 
-const HF_MODELS_URL = "https://huggingface.co/api/models?sort=downloads&direction=-1&limit=100&filter=text-generation";
-const OPENROUTER_URL = "https://openrouter.ai/rankings";
-const AA_URL = "https://artificialanalysis.ai/leaderboards/models";
+const OR_API = "https://openrouter.ai/api/frontend/v1/rankings/models";
+const AA_URL = "https://artificialanalysis.ai/models";
+const HF_URL = "https://huggingface.co/api/models?sort=downloads&direction=-1&limit=100&filter=text-generation";
 
 const HF_MIN_DOWNLOADS = 1000;
+const TOP_N = 50;
 
 async function fetchText(url, timeoutMs) {
   const c = new AbortController();
@@ -27,39 +33,6 @@ async function fetchText(url, timeoutMs) {
   } finally {
     clearTimeout(to);
   }
-}
-
-function extractNextData(html) {
-  const m = html.match(/<script id="__NEXT_DATA__"[^>]*>([\s\S]*?)<\/script>/);
-  if (!m) return null;
-  try {
-    return JSON.parse(m[1]);
-  } catch (e) {
-    return null;
-  }
-}
-
-function walk(obj, pred, out, depth) {
-  if (out.length) return out;
-  if (depth > 12 || obj == null) return out;
-  if (pred(obj)) { out.push(obj); return out; }
-  if (Array.isArray(obj)) {
-    for (const v of obj) { walk(v, pred, out, depth + 1); if (out.length) return out; }
-  } else if (typeof obj === "object") {
-    for (const k of Object.keys(obj)) { walk(obj[k], pred, out, depth + 1); if (out.length) return out; }
-  }
-  return out;
-}
-
-function findRankingArray(data, keys) {
-  const out = walk(data, (o) => {
-    if (!Array.isArray(o) || !o.length) return false;
-    const first = o[0];
-    if (typeof first !== "object" || first == null) return false;
-    const hay = JSON.stringify(first).toLowerCase();
-    return keys.every((k) => hay.includes(k));
-  }, [], 0);
-  return out[0] || null;
 }
 
 function num(v) {
@@ -75,73 +48,98 @@ function fmt(n) {
   return String(Math.round(n));
 }
 
-/* ============ OpenRouter 月度使用量排行 ============ */
+/* ============ OpenRouter 月度使用量排行 ============
+   返回按 model_permaslug 聚合的近 7 天 completion+prompt tokens 总量。 */
 async function loadOpenRouter() {
-  const html = await fetchText(OPENROUTER_URL, 20000);
-  const data = extractNextData(html);
-  if (!data) throw new Error("no __NEXT_DATA__");
-  const arr = findRankingArray(data, ["rank"]);
-  if (!arr) throw new Error("ranking array not found");
-  const rows = arr
-    .filter((r) => r && (r.name || r.id))
-    .map((r) => {
-      const tokens = num(r.monthly_tokens ?? r.tokens ?? r.token_count ?? r.total_tokens ?? r.monthly_usage ?? 0);
-      return {
-        name: String(r.name || r.id || "").trim(),
-        org: String(r.organization || r.author || r.org || "").trim(),
-        value: tokens,
-        display: tokens ? fmt(tokens) : ""
-      };
-    })
-    .filter((r) => r.name && r.value > 0)
-    .slice(0, 50);
-  if (!rows.length) throw new Error("no rows extracted");
-  return { id: "openrouter", name: { zh: "OpenRouter 月度使用量", en: "OpenRouter monthly usage" }, unit: { zh: "月 token 使用量", en: "monthly tokens" }, url: OPENROUTER_URL, rows };
+  const data = JSON.parse(await fetchText(OR_API, 20000));
+  const rows = data && Array.isArray(data.data) ? data.data : [];
+  if (!rows.length) throw new Error("empty api data");
+  const agg = new Map();
+  for (const e of rows) {
+    if (!e || !e.model_permaslug) continue;
+    const key = e.model_permaslug;
+    const cur = agg.get(key) || { comp: 0, prompt: 0 };
+    cur.comp += num(e.total_completion_tokens);
+    cur.prompt += num(e.total_prompt_tokens);
+    agg.set(key, cur);
+  }
+  const out = Array.from(agg.entries())
+    .map(([slug, v]) => ({
+      name: slug,
+      org: String(slug.split("/")[0] || "").trim(),
+      value: v.comp,
+      display: fmt(v.comp),
+      extra: { prompt: fmt(v.prompt) }
+    }))
+    .filter((r) => r.value > 0)
+    .sort((a, b) => b.value - a.value)
+    .slice(0, TOP_N);
+  if (!out.length) throw new Error("no rows aggregated");
+  return {
+    id: "openrouter",
+    name: { zh: "OpenRouter 月度使用量", en: "OpenRouter monthly usage" },
+    unit: { zh: "近 7 天完成 token 量", en: "completion tokens, 7d" },
+    url: "https://openrouter.ai/rankings",
+    rows: out
+  };
 }
 
-/* ============ Artificial Analysis 综合能力排行 ============ */
+/* ============ Artificial Analysis 综合能力排行 ============
+   从页面 ld+json Dataset 块取 Intelligence Index（label + intelligenceIndex）。 */
 async function loadAA() {
   const html = await fetchText(AA_URL, 20000);
-  const data = extractNextData(html);
-  if (!data) throw new Error("no __NEXT_DATA__");
-  const arr = findRankingArray(data, ["intelligence"]);
-  if (!arr) throw new Error("ranking array not found");
-  const rows = arr
-    .filter((r) => r && (r.name || r.model))
+  const blocks = [];
+  const re = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
+  let m;
+  while ((m = re.exec(html))) {
+    try { blocks.push(JSON.parse(m[1])); } catch (e) { /* skip */ }
+  }
+  let dataset = null;
+  for (const b of blocks) {
+    if (b && b["@type"] === "Dataset" && b.name === "Artificial Analysis Intelligence Index" && Array.isArray(b.data)) {
+      dataset = b;
+      break;
+    }
+  }
+  if (!dataset) throw new Error("intelligence dataset not found");
+  const rows = dataset.data
+    .filter((r) => r && r.label)
     .map((r) => {
-      const score = num(r.intelligence_index ?? r.intelligence ?? r.score ?? r.intelligenceIndex ?? 0);
-      return {
-        name: String(r.name || r.model || "").trim(),
-        org: String(r.organization || r.org || r.vendor || "").trim(),
-        value: score,
-        display: score ? score.toFixed(1) : ""
-      };
+      const score = num(r.intelligenceIndex ?? r.intelligence_index ?? 0);
+      return { name: String(r.label).trim(), org: "", value: score, display: score ? score.toFixed(1) : "" };
     })
-    .filter((r) => r.name && r.value > 0)
-    .slice(0, 50);
+    .filter((r) => r.value > 0)
+    .slice(0, TOP_N);
   if (!rows.length) throw new Error("no rows extracted");
-  return { id: "aa", name: { zh: "Artificial Analysis 综合能力", en: "Artificial Analysis intelligence" }, unit: { zh: "综合能力指数", en: "intelligence index" }, url: AA_URL, rows };
+  return {
+    id: "aa",
+    name: { zh: "Artificial Analysis 综合能力", en: "Artificial Analysis intelligence" },
+    unit: { zh: "综合能力指数", en: "intelligence index" },
+    url: "https://artificialanalysis.ai/leaderboards/models",
+    rows
+  };
 }
 
 /* ============ HuggingFace 开源模型下载排行 ============ */
 async function loadHF() {
-  const data = JSON.parse(await fetchText(HF_MODELS_URL, 20000));
+  const data = JSON.parse(await fetchText(HF_URL, 20000));
   if (!Array.isArray(data)) throw new Error("bad json");
   const rows = data
-    .filter((m) => m && m.id && num(m.downloads) >= HF_MIN_DOWNLOADS)
-    .map((m) => {
-      const d = num(m.downloads);
-      return {
-        name: String(m.id || "").trim(),
-        org: String((m.author || m.id || "").split("/")[0] || "").trim(),
-        value: d,
-        display: fmt(d)
-      };
+    .filter((mdl) => mdl && mdl.id && num(mdl.downloads) >= HF_MIN_DOWNLOADS)
+    .map((mdl) => {
+      const d = num(mdl.downloads);
+      return { name: String(mdl.id || "").trim(), org: String((mdl.author || mdl.id || "").split("/")[0] || "").trim(), value: d, display: fmt(d) };
     })
     .filter((r) => r.name && r.value > 0)
-    .slice(0, 50);
+    .slice(0, TOP_N);
   if (!rows.length) throw new Error("no rows extracted");
-  return { id: "hf", name: { zh: "HuggingFace 开源下载量", en: "HuggingFace open downloads" }, unit: { zh: "累计下载量", en: "total downloads" }, url: "https://huggingface.co/models?sort=downloads", rows };
+  return {
+    id: "hf",
+    name: { zh: "HuggingFace 开源下载量", en: "HuggingFace open downloads" },
+    unit: { zh: "累计下载量", en: "total downloads" },
+    url: "https://huggingface.co/models?sort=downloads",
+    rows
+  };
 }
 
 const SOURCES = [

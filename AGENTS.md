@@ -26,10 +26,10 @@ live via their APIs.
   `.github/workflows/rankings.yml` (cron `*/30 * * * *`, builds `rankings.json`
   via `scripts/build-rankings.mjs`, no deps). All commit as signal-bot.
 - Leaderboards: `rank.html` reads `rankings.json` (tabs: OpenRouter monthly usage
-  via `__NEXT_DATA__` extraction, Artificial Analysis via `__NEXT_DATA__`,
-  HuggingFace open downloads via `huggingface.co/api/models` JSON). Live fetch
-  can't be verified locally (sandbox egress blocked) — relies on CI logs to
-  confirm parsing.
+  via `/api/frontend/v1/rankings/models` JSON, Artificial Analysis via
+  `ld+json` Dataset blocks on `/models`, HuggingFace open downloads via
+  `huggingface.co/api/models` JSON). OpenRouter + AA verified live from sandbox;
+  HF blocked in sandbox but is a standard public API, verified in CI logs.
 - Browser CORS reality: only allorigins works client-side and it is heavily
   rate-limited; r.jina.ai / codetabs / corsproxy / cors.eu.org are unreliable or
   blocked. Full-text fetching therefore happens server-side in CI only.

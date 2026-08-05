@@ -134,7 +134,7 @@
 
 ![系统架构图](docs/architecture.svg)
 
-- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；大模型排行榜（OpenRouter / Artificial Analysis 页面 `__NEXT_DATA__` 提取 + HuggingFace 公开 JSON API）；原文网页（CI 端抓全文）。
+- **数据源层**：TechCrunch / The Verge / 量子位 / 36氪 的 RSS/Atom（CI 端抓取）；X 一线 AI 从业者动态（X 无免费 API，经 Bluesky 公共 AT 协议接口抓同一批从业者的镜像动态，CI 端抓取，来源标注为从业者账号）；Hacker News Algolia、DEV.to 的开放 API（浏览器端直连，自带 CORS 头）；大模型排行榜（OpenRouter 前端 API JSON + Artificial Analysis 页面 ld+json + HuggingFace 公开 JSON API）；原文网页（CI 端抓全文）。
 - **构建层**：`feeds.yml`（每 5 分钟一轮，生成并提交 `feeds.json`）+ `articles.yml`（每 15 分钟一轮，生成并提交 `articles.json`）+ `rankings.yml`（每 30 分钟一轮，生成并提交 `rankings.json`）。
 - **存储层**：GitHub 仓库 `main` 分支 + GitHub Pages 静态托管，`.nojekyll` 保证纯静态直接服务。
 - **渲染层**：浏览器同源 `fetch` 快照，HN/DEV.to 直连官方 API，Giscus 走 iframe，全部无框架拼装。
@@ -151,7 +151,7 @@ flowchart LR
     A2[cron 每 15 分钟] --> B2[build-articles.mjs]
     B2 -->|cheerio 抽取+消毒| E[articles.json<br/>全文/正文长度]
     A3[cron 每 30 分钟] --> B3[build-rankings.mjs]
-    B3 -->|__NEXT_DATA__ / JSON| R[rankings.json<br/>三榜快照]
+    B3 -->|前端 API JSON / ld+json| R[rankings.json<br/>三榜快照]
     E --> F
     R --> F
     F --> G[GitHub Pages]
@@ -294,7 +294,7 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 └── 📦 scripts/
     ├── build-feeds.mjs      # RSS 快照 + X 从业者 Bluesky 镜像构建（fast-xml-parser）
     ├── build-articles.mjs   # 全文快照构建（cheerio 抽取+消毒）
-    ├── build-rankings.mjs   # 排行榜快照构建（__NEXT_DATA__ 提取 + HF JSON）
+    ├── build-rankings.mjs   # 排行榜快照构建（OpenRouter API + AA ld+json + HF JSON）
     └── package.json         # 仅构建期依赖（运行时零依赖）
 ```
 
