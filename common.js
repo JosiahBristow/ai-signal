@@ -25,6 +25,8 @@
     "新闻": { zh: "新闻", en: "News" },
     "网站导航": { zh: "网站导航", en: "Directory" },
     "发展历史": { zh: "发展历史", en: "History" },
+    "AI 基础": { zh: "AI 基础", en: "AI Basics" },
+    "Python 入门": { zh: "Python 入门", en: "Python" },
     "主导航": { zh: "主导航", en: "Main navigation" },
     "刷新": { zh: "刷新", en: "Refresh" },
     "主题": { zh: "主题", en: "Theme" },
@@ -150,7 +152,30 @@
     "阶段概览": { zh: "阶段概览", en: "Overview" },
     "关键节点": { zh: "关键节点", en: "Key milestones" },
     "返回全部时间线": { zh: "返回全部时间线", en: "Back to full timeline" },
-    "里程碑": { zh: "里程碑", en: "Milestone" }
+    "里程碑": { zh: "里程碑", en: "Milestone" },
+    /* 课程页 */
+    "AI 基础知识": { zh: "AI 基础知识", en: "AI Basics" },
+    "从机器学习到深度学习的一堂浓缩入门课：数据、模型、损失函数、训练优化，再到 CNN、RNN、Transformer 与生成式 AI。": {
+      zh: "从机器学习到深度学习的一堂浓缩入门课：数据、模型、损失函数、训练优化，再到 CNN、RNN、Transformer 与生成式 AI。",
+      en: "A condensed intro to AI: data, models, loss functions, training optimization, then CNNs, RNNs, Transformers and generative AI."
+    },
+    "课程目录": { zh: "课程目录", en: "Curriculum" },
+    "从第一个 print 到类与对象：基础语法、判断、循环、函数、数据容器与面向对象编程的浓缩入门课。": {
+      zh: "从第一个 print 到类与对象：基础语法、判断、循环、函数、数据容器与面向对象编程的浓缩入门课。",
+      en: "From your first print to classes & objects — a condensed intro covering basics, conditionals, loops, functions, data containers and OOP."
+    },
+    "课程内容根据公开教学资料整理，仅供学习使用": {
+      zh: "课程内容根据公开教学资料整理，仅供学习使用",
+      en: "Course content compiled from public lecture materials for learning purposes"
+    },
+    "复制": { zh: "复制", en: "Copy" },
+    "复制代码": { zh: "复制代码", en: "Copy code" },
+    "已复制": { zh: "已复制", en: "Copied" },
+    "复制失败": { zh: "复制失败", en: "Copy failed" },
+    "首页": { zh: "首页", en: "Home" },
+    "相关教程": { zh: "相关教程", en: "Related courses" },
+    "上一章": { zh: "上一章", en: "Previous lesson" },
+    "下一章": { zh: "下一章", en: "Next lesson" }
   };
 
   function storedLang() {

@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI 发展历史 · AI SIGNAL</title>
-<meta name="description" content="人工智能发展简史时间线：从 1943 年神经元模型到 2026 年大模型与 AGI 之争。">
+<title>Python 入门 · AI SIGNAL</title>
+<meta name="description" content="Python 入门课：字面量与数据类型、变量、运算符、字符串、判断、循环、函数、数据容器（列表/元组/字符串/集合/字典）与面向对象编程的浓缩教程。">
 <script>
   (function () {
     try {
@@ -23,7 +23,7 @@
 <meta name="theme-color" content="#0b0c0e">
 <link rel="stylesheet" href="styles.css">
 </head>
-<body data-page="history">
+<body data-page="python">
 
 <a class="skip-link" href="#main" data-i18n="跳到正文">跳到正文</a>
 
@@ -48,29 +48,58 @@
   </div>
 </header>
 
-<main class="container" id="main">
-  <section class="page-hero">
-    <span class="mono-eyebrow">SIGNAL // TIMELINE</span>
-    <h1 data-i18n="AI 发展历史">AI 发展历史</h1>
-    <p class="lead" data-i18n="从 1943 年的神经元模型到今天的大模型竞赛，一条浓缩的人工智能发展时间线。">从 1943 年的神经元模型到今天的大模型竞赛，一条浓缩的人工智能发展时间线。</p>
-  </section>
+<main class="container tut-container" id="main">
+  <div class="tutorial-wrap">
 
-  <section class="era-filters" id="era-filters" aria-label="按年代筛选"></section>
+    <aside class="tut-nav" aria-label="课程目录">
+      <div class="tut-nav-title" data-i18n="课程目录">课程目录</div>
+      <nav class="tut-nav-links" id="tut-nav"></nav>
+    </aside>
 
-  <section class="era-detail" id="era-detail" aria-label="阶段详解" hidden></section>
+    <div class="tut-main">
+      <nav class="tut-crumb" aria-label="面包屑导航">
+        <a href="index.html" data-i18n="首页">首页</a><span class="sep">/</span>
+        <a href="python.html" data-i18n="Python 入门">Python 入门</a><span class="sep">/</span>
+        <span class="cur" id="crumb-cur">第 1 章</span>
+      </nav>
 
-  <section class="timeline" id="timeline" aria-label="时间线"></section>
+      <header class="tut-head">
+        <span class="mono-eyebrow">SIGNAL // COURSE</span>
+        <h1 data-i18n="Python 入门">Python 入门</h1>
+        <p class="lead" data-i18n="从第一个 print 到类与对象：基础语法、判断、循环、函数、数据容器与面向对象编程的浓缩入门课。">从第一个 print 到类与对象：基础语法、判断、循环、函数、数据容器与面向对象编程的浓缩入门课。</p>
+      </header>
+
+      <nav class="lesson-toc" aria-label="课程目录">
+        <span class="lesson-toc-label" data-i18n="课程目录">课程目录</span>
+        <div class="lesson-toc-chips" id="lesson-toc"></div>
+      </nav>
+
+      <section class="lessons" id="lessons" aria-label="课程内容"></section>
+    </div>
+
+    <aside class="tut-aside">
+      <div class="tut-panel">
+        <h3 class="tut-panel-title" data-i18n="相关教程">相关教程</h3>
+        <ul class="tut-panel-links">
+          <li><a href="learn.html" data-i18n="AI 基础">AI 基础</a></li>
+          <li><a href="history.html" data-i18n="AI 发展历史">AI 发展历史</a></li>
+          <li><a href="links.html" data-i18n="网站导航">网站导航</a></li>
+        </ul>
+      </div>
+    </aside>
+
+  </div>
 </main>
 
 <footer class="site-footer">
   <div class="container">
     <p style="font-family:var(--font-mono);font-size:11px;color:var(--text-faint);">
-      SIGNAL // TIMELINE · <span data-i18n="按公开资料整理，聚焦关键里程碑">按公开资料整理，聚焦关键里程碑</span>
+      SIGNAL // COURSE · <span data-i18n="课程内容根据公开教学资料整理，仅供学习使用">课程内容根据公开教学资料整理，仅供学习使用</span>
     </p>
   </div>
 </footer>
 
 <script src="common.js"></script>
-<script src="history.js"></script>
+<script src="python.js"></script>
 </body>
 </html>
