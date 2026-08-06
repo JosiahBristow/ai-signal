@@ -3,10 +3,16 @@ name: build-feeds
 on:
   schedule:
     - cron: '*/5 * * * *'
+  repository_dispatch:
+    types: [sync-feeds]
   workflow_dispatch:
   push:
     branches: [main]
     paths-ignore: ['feeds.json', 'articles.json']
+
+concurrency:
+  group: feeds
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -16,10 +22,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
 
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: npm
+          cache-dependency-path: scripts/package-lock.json
 
       - name: Install feed builder dependencies
         run: npm ci

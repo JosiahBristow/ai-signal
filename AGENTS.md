@@ -19,12 +19,22 @@ live via their APIs.
   fetch only; cards show `@handle` as author and link to `bsky.app`.
 - Theme system: `common.js` + `styles.css` (`signal-theme` localStorage,
   `data-theme` on `<html>`: paper / midnight / aurora / ink / auto).
-- CI: three workflows — `.github/workflows/feeds.yml` (cron `*/5 * * * *`,
-  builds `feeds.json` via `scripts/build-feeds.mjs`, fast),
+- CI: three workflows — `.github/workflows/feeds.yml` (cron `*/5 * * * *`
+  **plus** `repository_dispatch` type `sync-feeds`, builds `feeds.json` via
+  `scripts/build-feeds.mjs`, fast; `concurrency` group `feeds` with
+  `cancel-in-progress` so 1-min dispatches never pile up; node_modules cached
+  via setup-node `cache: npm`),
   `.github/workflows/articles.yml` (cron `*/15 * * * *`, builds `articles.json`
   via `scripts/build-articles.mjs`, heavy full-text fetch), and
   `.github/workflows/rankings.yml` (cron `*/30 * * * *`, builds `rankings.json`
   via `scripts/build-rankings.mjs`, no deps). All commit as signal-bot.
+- Sync speed: GitHub Actions `schedule` floor is 5 min (plus queue delay), so
+  headlines sync is accelerated by an **external 1-min scheduler** (cron-job.org)
+  POSTing to `https://api.github.com/repos/JosiahBristow/ai-signal/dispatches`
+  with body `{"event_type": "sync-feeds"}` and header `Authorization: Bearer
+  <PAT>` (fine-grained PAT, Contents read+write on this repo only; the token
+  lives in the external cron service, not in GitHub). `*/5` cron stays as
+  fallback if the external service is down.
 - Leaderboards: `rank.html` reads `rankings.json` (tabs: OpenRouter monthly usage
   via `/api/frontend/v1/rankings/models` JSON, Artificial Analysis via
   `ld+json` Dataset blocks on `/models`, HuggingFace open downloads via
