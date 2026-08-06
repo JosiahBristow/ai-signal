@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="mac">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 对话 · AI SIGNAL</title>
+<meta name="description" content="模仿 DeepSeek 界面的浏览器内 AI 对话：无需注册免费试用，或填入 DeepSeek API Key 直连官方接口。密钥仅保存在本机浏览器。">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("signal-theme");
+      document.documentElement.setAttribute("data-theme", t || "mac");
+    } catch (e) {}
+  })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/favicon-192.png">
+<link rel="apple-touch-icon" href="icons/favicon-180.png">
+<meta name="theme-color" content="#0b0c0e">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body data-page="chat">
+
+<a class="skip-link" href="#main" data-i18n="跳到正文">跳到正文</a>
+
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html" aria-label="SIGNAL 首页">
+      <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+      <span class="brand-name">AI <span class="accent">SIGNAL</span></span>
+      <span class="brand-tag" data-i18n="实时新闻聚合 · 中英双语">实时新闻聚合 · 中英双语</span>
+    </a>
+    <nav class="main-nav" aria-label="主导航">
+      <a href="index.html" data-page="news" data-i18n="新闻">新闻</a>
+      <a href="links.html" data-page="links" data-i18n="网站导航">网站导航</a>
+      <a href="rank.html" data-page="rank" data-i18n="模型排行榜">模型排行榜</a>
+      <a href="history.html" data-page="history" data-i18n="发展历史">发展历史</a>
+      <a href="learn.html" data-page="learn" data-i18n="AI 基础">AI 基础</a>
+      <a href="python.html" data-page="python" data-i18n="Python 入门">Python 入门</a>
+      <a href="chat.html" data-page="chat" data-i18n="对话">对话</a>
+    </nav>
+    <div class="header-actions">
+      <span class="signal off" aria-hidden="true"><span></span><span></span><span></span><span></span></span>
+      <div id="theme-mount"></div>
+    </div>
+  </div>
+</header>
+
+<div class="ds-app" id="ds-app">
+
+  <aside class="ds-sidebar">
+    <div class="ds-sidebar-top">
+      <button class="ds-new" id="ds-new" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+        <span data-i18n="新建对话">新建对话</span>
+      </button>
+      <div class="ds-search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="ds-search-input" type="search" placeholder="搜索对话…" data-i18n-ph="搜索对话…" aria-label="搜索对话">
+      </div>
+    </div>
+    <div class="ds-conv-list" id="ds-conv-list" aria-label="会话列表"></div>
+    <div class="ds-sidebar-bottom">
+      <button class="ds-settings-btn" id="ds-settings-btn" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+        <span data-i18n="设置">设置</span>
+      </button>
+    </div>
+  </aside>
+
+  <section class="ds-main" id="main">
+    <header class="ds-topbar">
+      <button class="ds-burger" id="ds-burger" type="button" aria-label="打开会话列表">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <button class="ds-model" id="ds-model-btn" type="button" aria-haspopup="true" aria-expanded="false">
+        <span class="ds-logo" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3 2 21h20L12 3Z"/></svg></span>
+        <span class="ds-model-name" id="ds-model-name">DeepSeek-V4 Flash</span>
+        <svg class="ds-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+      <span class="ds-mode-badge" id="ds-mode-badge">免费试用</span>
+    </header>
+
+    <div class="ds-chat" id="ds-chat">
+      <div class="ds-messages" id="ds-messages" role="log" aria-live="polite"></div>
+
+      <div class="ds-empty" id="ds-empty">
+        <h1 class="ds-greeting" data-i18n="你好，我是 AI SIGNAL，很高兴见到你 👋">你好，我是 AI SIGNAL，很高兴见到你 👋</h1>
+        <p class="ds-empty-sub" data-i18n="支持流式输出。Enter 发送，Shift+Enter 换行。">支持流式输出。Enter 发送，Shift+Enter 换行。</p>
+        <div class="ds-suggest-grid" id="ds-suggest"></div>
+      </div>
+    </div>
+
+    <div class="ds-composer-wrap">
+      <div class="ds-composer" id="ds-composer">
+        <textarea id="ds-input" rows="1" placeholder="给 DeepSeek 发消息" data-i18n-ph="给 DeepSeek 发消息" aria-label="输入消息"></textarea>
+        <div class="ds-composer-tools">
+          <button class="ds-tool" id="ds-think" type="button" title="深度思考 (R1)">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.6L19.4 9l-5.6 1.8L12 16.4l-1.8-5.6L4.6 9l5.6-1.4L12 2zM5 15l.9 2.6L8.5 18l-2.6.9L5 21l-.9-2.1L1.5 18l2.6-.4L5 15zM19 13l.7 1.9 1.9.7-1.9.7L19 18l-.7-1.7-1.9-.7 1.9-.7L19 13z"/></svg>
+            <span data-i18n="深度思考">深度思考</span>
+          </button>
+          <button class="ds-tool" id="ds-search" type="button" title="联网搜索">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3a15 15 0 0 1 0 18a15 15 0 0 1 0-18z"/></svg>
+            <span data-i18n="联网搜索">联网搜索</span>
+          </button>
+          <button class="ds-send" id="ds-send" type="button" aria-label="发送">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19V5"/><path d="m5 12 7-7 7 7"/></svg>
+          </button>
+        </div>
+      </div>
+      <p class="ds-disclaimer" data-i18n="内容由第三方模型生成，请自行甄别 · 对话与密钥仅保存在本机浏览器">内容由第三方模型生成，请自行甄别 · 对话与密钥仅保存在本机浏览器</p>
+    </div>
+  </section>
+</div>
+
+<div class="ds-model-menu" id="ds-model-menu" hidden>
+  <div class="ds-model-group">
+    <div class="ds-model-group-title">DeepSeek API</div>
+    <button type="button" data-select="deepseek" data-model="deepseek-v4-flash">
+      <span class="ds-opt-name">DeepSeek-V4 Flash</span><span class="ds-opt-desc">深度思考默认 · 免费额度优先</span>
+    </button>
+    <button type="button" data-select="deepseek" data-model="deepseek-v4-pro">
+      <span class="ds-opt-name">DeepSeek-V4 Pro</span><span class="ds-opt-desc">更强推理（深度思考）</span>
+    </button>
+  </div>
+  <div class="ds-model-group" id="ds-free-group">
+    <div class="ds-model-group-title">免费试用 · 无需密钥</div>
+    <button type="button" data-select="free" data-model="openai"><span class="ds-opt-name">Pollinations · OpenAI</span></button>
+    <button type="button" data-select="free" data-model="openai-fast"><span class="ds-opt-name">Pollinations · OpenAI Fast</span></button>
+  </div>
+</div>
+
+<div class="ds-dialog" id="ds-settings" hidden role="dialog" aria-modal="true" aria-label="设置">
+  <div class="ds-dialog-panel">
+    <div class="ds-dialog-head">
+      <h2 data-i18n="设置">设置</h2>
+      <button class="ds-dialog-close" id="ds-settings-close" type="button" aria-label="关闭">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <div class="ds-form-group">
+      <label data-i18n="对话服务">对话服务</label>
+      <div class="ds-radio-row">
+        <button type="button" class="ds-radio" data-svc="free">
+          <span class="ds-radio-dot"></span>
+          <span><b data-i18n="免费试用">免费试用</b><em data-i18n="无需注册，约 15 秒一次请求">无需注册，约 15 秒一次请求</em></span>
+        </button>
+        <button type="button" class="ds-radio" data-svc="deepseek">
+          <span class="ds-radio-dot"></span>
+          <span><b data-i18n="DeepSeek API">DeepSeek API</b><em data-i18n="填入你自己的 API Key，直连 api.deepseek.com">填入你自己的 API Key，直连 api.deepseek.com</em></span>
+        </button>
+      </div>
+    </div>
+
+    <div class="ds-form-group" id="ds-key-group" hidden>
+      <label for="ds-key">API Key</label>
+      <div class="ds-key-row">
+        <input type="password" id="ds-key" placeholder="sk-…" autocomplete="off" spellcheck="false">
+        <button class="ds-key-toggle" id="ds-key-toggle" type="button" data-i18n="显示">显示</button>
+      </div>
+      <p class="ds-hint" data-i18n="密钥仅保存在本机浏览器 localStorage，请求直接发往 DeepSeek 官方接口，不经过本站服务器。可前往 platform.deepseek.com 获取。">密钥仅保存在本机浏览器 localStorage，请求直接发往 DeepSeek 官方接口，不经过本站服务器。可前往 platform.deepseek.com 获取。</p>
+      <p class="ds-hint" id="ds-key-status" data-i18n="尚未设置 Key">尚未设置 Key</p>
+      <button class="ds-save-key" id="ds-key-save" type="button" data-i18n="保存">保存</button>
+    </div>
+
+    <div class="ds-form-group">
+      <label data-i18n="关于">关于</label>
+      <p class="ds-hint" data-i18n="本页为纯前端实现：免费模式由 Pollinations.ai 提供；API 模式直连 DeepSeek 官方接口。">本页为纯前端实现：免费模式由 Pollinations.ai 提供；API 模式直连 DeepSeek 官方接口。</p>
+    </div>
+  </div>
+</div>
+
+<div class="ds-toast" id="ds-toast" hidden></div>
+
+<script src="common.js"></script>
+<script src="chat.js"></script>
+</body>
+</html>

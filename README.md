@@ -35,13 +35,15 @@
 - **📖 站内阅读**：全文快照本地渲染，不用跳走，断网也能看缓存内容。
 - **📚 课程教程**：AI 基础 + Python 入门两门浓缩课，采用菜鸟教程式布局 —— 左侧章节目录（滚动高亮）+ 面包屑 + 上下章翻页 + 相关教程，代码块带语法高亮与一键复制。
 - **📜 有图历史**：AI 发展时间线按阶段展示，点击每个阶段进入带插图的详解。
+- **💬 内置 AI 对话**：DeepSeek 风格对话页，免费模式（Pollinations.ai 匿名）开箱即用，也可填入 DeepSeek API Key 直连官方接口。
 - **🌓 八套主题 + 中英双语**：晨报 / 午夜 / 极光 / 墨绿 / Mac 风格 / 极简(Suckless) / 极简暗色(Suckless Dark) / 跟随系统，一键即用。
 
-### 📂 六大页面
+### 📂 七大页面
 
 | 页面 | Emoji | 说明 |
 | --- | --- | --- |
 | [`index.html`](index.html) | 📰 | 新闻首页：头条 / 热门 TOP5 / 信号流 / 卡片列表 / 站内阅读 |
+| [`chat.html`](chat.html) | 💬 | AI 对话：免费试用 + DeepSeek API 直连，深度思考 / 联网搜索 / 代码高亮 |
 | [`links.html`](links.html) | 🗺️ | AI 网站导航：对话模型 / 开源社区 / 资讯 / 研究 / 工具 |
 | [`rank.html`](rank.html) | 🏆 | 大模型排行榜：使用量 / 综合能力 / 开源下载三大榜单标签切换 |
 | [`history.html`](history.html) | 📜 | AI 发展历史：五个阶段 + 插图详解 + 关键里程碑时间线 |
@@ -65,6 +67,10 @@
 | 📚 | 课程教程 | 菜鸟教程式布局：左侧章节目录 + 滚动高亮 + 上下章翻页 + 相关教程 |
 | 🖥️ | 代码高亮 | Python 教程内置正则分词高亮（关键字/字符串/注释/数字/内建函数） |
 | 📋 | 一键复制 | 代码块一键复制，clipboard API + execCommand 双兜底 |
+| 💬 | AI 对话 | 免费匿名（Pollinations.ai）+ 可选 DeepSeek API 直连，无自有服务器 |
+| 🧠 | 深度思考 | DeepSeek 走 reasoner 模型 / 免费模式开推理开关，均可切换 |
+| 🔎 | 联网搜索 | 注入站内 `feeds.json` 快照作上下文，两种服务通用 |
+| ✨ | 代码高亮 | 对话内代码块正则分词高亮（约 20 种语言），配色随八套主题联动 |
 | 📜 | 阶段详解 | 历史页每阶段配插图，点击进入带概览与关键节点的详解 |
 | 🗺️ | 网站导航 | 精选 AI 站点分类导航，图标多源降级加载 |
 
@@ -264,6 +270,15 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 
 导航页 28 个站点图标默认请求 Google favicon 服务；不可达时自动探测 Fastly → DuckDuckGo → favicon.im，全部失败则回退为**首字母占位图标**，任何网络环境下都能正常显示。
 
+### 🔟 AI 对话页（`chat.js`）
+
+DeepSeek 官网风格的纯前端对话页，两种服务：
+
+- **免费模式**：Pollinations.ai 匿名接口（`https://text.pollinations.ai/openai`），无需 Key 开箱即用；约 15s/模型限流自动排队（`state.cooldowns`），429/402 等映射为友好中文提示。模型列表启动时实时拉取，失败回退内置 `openai` / `openai-fast`。
+- **API 模式**：填入 DeepSeek Key 后浏览器直连官方 `api.deepseek.com/chat/completions`（CORS 已放行），Key 仅存本机 `localStorage`。
+
+会话存于 `signal-chat-msgs`，支持流式输出（SSE `data:` 逐行解析）、AbortController 停止、每条消息复制。composer 两个开关：**深度思考**（DeepSeek→`deepseek-reasoner`；免费→`reasoning_effort:"high"`+推理提示）与**联网搜索**（注入站内同源 `feeds.json` 快照作 grounding，两种服务通用）。对话内代码块由 `highlight()` 正则分词高亮，复用课程的 `tok-*` token 类，颜色自动跟随八套主题。
+
 ---
 
 ## 🗂️ 目录结构
@@ -271,14 +286,16 @@ heat = 0.15 × (新鲜度衰减)                                  # 无互动(RS
 ```
 .
 ├── 📄 index.html            # 新闻首页（头条/热榜/列表/阅读模式）
+├── 📄 chat.html             # AI 对话页（DeepSeek 风格，免费+API 双模式）
 ├── 📄 links.html            # AI 网站导航
 ├── 📄 rank.html             # 大模型排行榜（三榜标签切换）
 ├── 📄 history.html          # AI 发展历史（阶段详解 + 时间线）
 ├── 📄 learn.html            # AI 基础课程（菜鸟教程式布局）
 ├── 📄 python.html           # Python 入门课程（菜鸟教程式布局）
-├── 🎨 styles.css            # 八套主题设计系统 + 教程布局（CSS 变量）
+├── 🎨 styles.css            # 八套主题设计系统 + 教程布局 + 对话页（CSS 变量）
 ├── ⚙️ common.js             # 主题切换 / 导航 / 双语 i18n
 ├── 🧠 app.js                # 新闻引擎（加载/去重/分类/热度/渲染/阅读/评论）
+├── 💬 chat.js               # 对话引擎（流式/深度思考/联网搜索/代码高亮）
 ├── 📚 learn.js              # AI 基础课程数据 + 渲染引擎
 ├── 🐍 python.js             # Python 课程数据 + 渲染引擎（含代码高亮/复制）
 ├── 📦 feeds.json            # RSS + X 从业者快照（CI 每 5 分钟生成）
@@ -359,6 +376,7 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 | --- | --- |
 | 运行时 | 纯 HTML / CSS / JavaScript，无框架、无构建步骤 |
 | 课程渲染 | 数据驱动（`PARTS` / `LESSONS`），正则分词代码高亮 + clipboard API |
+| AI 对话 | Pollinations.ai 匿名免费模式 + DeepSeek 官方 API 直连，SSE 流式，零后端 |
 | CI 构建（Node 20+） | `fast-xml-parser`（RSS/Atom 解析）、`cheerio`（全文抽取与消毒） |
 | 数据源 | RSS/Atom 快照 + X 一线从业者 Bluesky 镜像 + OpenRouter / Artificial Analysis / HuggingFace 排行榜 + Hacker News / DEV.to 官方 API |
 | 托管 | GitHub Actions + GitHub Pages（`.nojekyll` 纯静态） |
@@ -373,6 +391,8 @@ node --check app.js common.js history.js learn.js python.js scripts/*.mjs
 > 🔗 导航页收录的均为公开资源，跳转行为发生在原网站，本站不承担由此产生的内容责任。
 >
 > 📖 课程页内容根据公开教学资料整理，仅供学习使用；配图来源标注见各页图注。
+>
+> 💬 对话页 AI 生成内容仅供参考，可能包含错误；免费模式由第三方 Pollinations.ai 提供，API 模式下 Key 仅存于本机浏览器。
 
 ---
 

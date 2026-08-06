@@ -43,6 +43,30 @@ live via their APIs.
 - Browser CORS reality: only allorigins works client-side and it is heavily
   rate-limited; r.jina.ai / codetabs / corsproxy / cors.eu.org are unreliable or
   blocked. Full-text fetching therefore happens server-side in CI only.
+- Chat page (`chat.html` + `chat.js`): DeepSeek-style UI, pure front-end. Two
+  services: `free` (Pollinations.ai anonymous, `https://text.pollinations.ai/openai`,
+  ~15s rate limit per model, auto-queued via `state.cooldowns`) and `deepseek`
+  (direct `https://api.deepseek.com/chat/completions`, Bearer key from
+  `signal-chat-settings` localStorage). Conversations in `signal-chat-msgs`,
+  chat page colors map to the site's theme tokens (`--ds-*` → `--bg`/`--surface`/
+  `--surface-2`/`--text`/`--accent`/`--line`/`--live`), so the chat follows the
+  site theme automatically (no independent light/dark toggle). Model
+  picker applies to the current conversation; missing key auto-opens Settings.
+  Per-conversation composer toggles: 深度思考 (DeepSeek→`deepseek-reasoner`,
+  free→`reasoning_effort:"high"`+system prompt) and 联网搜索 (injects the site's
+  own same-origin `feeds.json` snapshot as grounding context, works on both
+  services). Free model list is live-fetched from `text.pollinations.ai/models`
+  with fallback `openai`/`openai-fast` — Pollinations deprecated the legacy
+  multi-model names (`mistral`/`deepseek`/`gemma`/`llama` and web-search models
+  all return 404). SSE parsed from `data:` lines; `402`/`401`/`403`/`429`
+  mapped to friendly Chinese error text; abort via AbortController adds
+  `（已停止）`. Assistant markdown rendered by a lightweight in-chat parser:
+  paragraphs/lists/headings/inline code + fenced code blocks with a per-block
+  copy button; code is highlighted by a zero-dep regex tokenizer
+  (`highlight()` in `chat.js`, fence language hints) that colors with the
+  theme's `--tok-*` tokens (`tok-c/s/k/b/n`, same short classes as the learn
+  page), so highlighting adapts to all site themes. No build step, no runtime
+  deps.
 - Git: initialized with `main` branch, remote `origin` =
   `git@github.com:JosiahBristow/ai-signal.git` (SSH). Hosted on GitHub
   Pages (project site) at `https://josiahbristow.github.io/ai-signal/`
@@ -65,6 +89,8 @@ live via their APIs.
   `node /tmp/opencode/progressive-test.js`
 - Leaderboard build test (mock fetch): `node /tmp/opencode/rankings-test.mjs`
 - Leaderboard render test (DOM stub): `node /tmp/opencode/rank-render-test.js`
+- Chat page test (DOM stub, mock fetch + SSE stream):
+  `node /tmp/opencode/chat-test.js`
 - Smoke test (jsdom, mock fetch): `node /tmp/opencode/ai-test/smoke.js` — asserts
   pages render, snapshot-first feed loading, category chips, reader mode
   (open/render/close/fallback), history/links pages. (smoke.js currently missing;
